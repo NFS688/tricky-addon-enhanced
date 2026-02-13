@@ -1,0 +1,131 @@
+# Changelog
+
+All notable changes to Tricky Addon Enhanced. Each release is installable as a standalone Magisk/KernelSU/APatch module ZIP.
+
+## v4.9-auto (2026-02-13)
+
+### Features
+- **Volume key install-time selection** — press Vol- during flash to disable automatic target.txt population. Manual mode seeds only GMS/GSF/Vending so attestation works out of the box; Vol+ or 10s timeout defaults to full automation. Respects `automation_target_enabled` in config (`2661584`)
+- **Build script** — `package.sh` auto-bumps versionCode and builds the release ZIP in one command (`8648fa7`)
+
+### Fixes
+- **78-bug codebase audit** — supervisor kill chain (PID tracking, SIGTERM cascade via process group, exponential backoff 1-60s), property race elimination (prop.sh sole VBMeta authority), keybox pipeline hardening (staged decode, 6-point validation, TOCTOU fix, rotating backup, 60s minimum interval), health monitor circuit breaker (10 max restarts, resets on recovery), atomic PID files, TLS enforced on wget, POSIX bashism cleanup (`8a8ada9`)
+- **Keybox preserved on failed fetch** — no-network boot was falling through to bundled AOSP keybox, overwriting a valid device-specific one. Guard now preserves existing keybox; bundled fallback only fires on fresh install (`3089524`)
+- **WebUI CLI sourcing** — manual keybox fetch was hanging because keybox_manager.sh lost logging.sh/utils.sh sourcing, causing `read_config` undefined. Restored sourcing for all CLI entry points (`3089524`)
+- **MODPATH collision** — get_extra.sh manager scripts inherited `common/` subdirectory path instead of module root, causing `common/common/` sourcing failures on `--fetch-keybox-now`, `--set-security-patch-now`, `--check-conflicts` (`3089524`)
+- **WebUI uninstall** — module.prop was restored to `MODPATH` (common/) instead of `MODDIR` (module root), so ksud/apd couldn't find the module to remove (`4367b7b`)
+- **Bounded post-fs-data wait** — KernelSU kills post-fs-data after 10s; unbounded while loop on slow /data mounts capped at 8 iterations (`ae03ca4`)
+- **Strict manager detection** — loose `[ "$APATCH" ]` matched any non-empty string; aligned to `[ "$APATCH" = "true" ]` (`ae03ca4`)
+- **WebUI input validation** — innerHTML replaced with textContent for app names, hex validation on boot_hash input, shell metacharacter stripping on security patch values, config key/value whitelisting against sed injection (`08a004a`, `8a8ada9`)
+
+### Performance
+- **Cache-first app list** — localStorage renders instantly on subsequent opens with stale-while-revalidate background refresh. `fetchAppList`/`loadTranslations`/`getBasePath` fire in parallel instead of waterfall. Generation counter prevents stale writes (`3e9063c`)
+
+### Refactoring
+- **Consolidated read_config()** — was defined in 5 files with subtly different behavior; unified in utils.sh with `cut -f2-` (handles values containing `=`), trim, and file existence check. Removed duplicates from keybox_manager.sh, security_patch_manager.sh, status_monitor.sh, health_check.sh (`4a00a14`)
+
+## v4.8-auto (2026-02-07)
+
+### Fixes
+- **VBHash extraction broken on some devices** — APK-based attestation extraction fails silently on certain OEM/Android combos (reported on OnePlus 12 / ColorOS 16 / Android 16). VBHash now captured directly from `ro.boot.vbmeta.digest` at install time — instant, zero dependencies, works on all AVB-enabled devices. APK method retained as last-resort fallback (#2) (`3ed7269`)
+- **VBHash hex validation** — all extraction paths regex-validate the hash as exactly 64 lowercase hex characters, rejecting malformed or empty values before persisting
+
+### Improvements
+- **Discoverable log directory** — logs moved from hidden `/data/adb/tricky_store/.automation/` to `/data/adb/Tricky-addon-enhanced/logs/`
+- **Separated concerns** — log files and automation state (exclude patterns, known packages, daemon PID) no longer share the same directory
+
+### Internals
+- VBHash extraction refactored into three composable functions: `extract_from_property()`, `extract_from_apk()`, `persist_and_apply_hash()`
+- `LOG_BASE_DIR` updated across 8 files
+- Uninstall cleanup covers both old and new directory paths
+
+## v4.7-supervisor (2026-02-07)
+
+### Features
+- **Native process supervisor** — single compiled binary (5.6KB ARM64, 3.9KB ARM32) manages all 5 background processes via fork/wait/restart, based on TEESimulator's supervisor.cpp pattern (`022ee63`)
+- **Full self-healing** — daemon, health monitor, status monitor, keybox loop, and security patch loop all restart within 1s of silent death
+- **PR_SET_PDEATHSIG** — child processes auto-killed if supervisor dies, preventing orphaned processes
+- **Root manager cache refresh** — force-stops KSU/Magisk/APatch manager after new app is added to target.txt, ensuring WebUI shows fresh package list immediately
+- **Uninstall-aware exit** — supervised scripts exit with code 42 on module removal; supervisor stops cleanly without restart loops
+
+### Internals
+- Replaced shell supervisor (supervisor.sh) with native ARM64/ARM32 binary
+- Extracted shared utility functions to `common/utils.sh`
+- service.sh reduced from 257 to 141 lines
+- Uninstall signal touches both `/data/adb/modules/TA_utl/remove` and `.TA_utl/remove` paths
+
+## v4.6-auto (2026-02-06)
+
+### Features
+- **4-source keybox failover** — Yurikey → Upstream → IntegrityBox → bundled backup, with XML validation and custom keybox protection
+- **Aggressive boot-time fetch** — keybox and security patch retry up to 10 times with 3s backoff after network ready
+- **Install-time patch upgrade** — security patch dates fetched from Google during module flash, not just at boot
+- **Automatic security patch updates** — detects attestation engine variant (James, Standard, Legacy) and sets system/boot/vendor dates at configurable intervals
+- **VBHash spoofing** — one-time extraction via camouflaged APK, persists to `/data/adb/boot_hash`, 15 properties spoofed as locked bootloader
+- **TEESimulator health monitor** — polls attestation engine every 10s with 5s grace period, auto-restarts on crash
+- **Live status monitor** — module description updates every 30s with real-time app count, keybox source, patch level, VBHash state
+- **Live target watcher** — WebUI polls target.txt every 3s and hot-inserts app cards without full reload
+- **Dynamic engine detection** — auto-detects TEESimulator vs TrickyStore from daemon `--nice-name` parameter
+- **Module conflict detection** — 19 conflicting modules detected at install and boot
+- **Unified logging** — centralized 1MB rotation across 13 scripts
+
+### Fixes
+- **Status monitor app count** — whitespace/CR normalization; count now matches WebUI (`8c5dbf5`)
+- **Monitor cleanup on uninstall** — status monitor and health check detect the `remove` flag within 30s, restore original description, exit cleanly (`8c5dbf5`)
+- **TEESimulator variant misdetection** — versionCode-based detection now correctly identifies standard variant (`f14b5b4`)
+- **Security patch fallback regression** — auto-update no longer overwrites valid dates with stale ROM values when Google fetch fails
+- **Config preservation** — keybox and `enhanced.conf` survive reinstalls and engine switches (`0f6a581`)
+
+### WebUI
+- Modern glass morphism design with AMOLED-friendly dark gradients
+- Health status banner with live attestation engine state
+- Redesigned Save FAB and Uninstall button with glass morphism
+- Scroll indicator in settings panel
+- Automation settings bottom sheet
+- 6 accent color presets with random selection
+- 23 languages with RTL support
+
+## v4.5-auto (2026-02-03)
+
+### Features
+- **Live status monitor** — module.prop description updates every 30s with active app count, keybox source, and patch level (`999e8a8`)
+- **Live target watcher** — WebUI watches target.txt changes with event delegation and exec timeout (`54b50ab`)
+- **Dynamic engine detection** — health monitor auto-detects TEESimulator vs TrickyStore at runtime (`ab23edd`)
+- **Config preservation** — keybox and enhanced.conf preserved across reinstalls and engine switches (`0f6a581`)
+- **Playwright test suite** — dynamic mock environment for WebUI testing (`db790de`)
+
+### Fixes
+- **TEESimulator misdetected as legacy** in security patch pipeline (`f14b5b4`)
+
+## v4.4-auto (2026-02-02)
+
+### Features
+- **VBHash one-time persistence** — extracted hash persisted to `/data/adb/boot_hash`, APK camouflaged as `com.ceco.gravitybox.unlocker` (`e934494`, `6ca7ab7`)
+- **TEESimulator health monitor** — background supervisor polls attestation engine, auto-restarts on crash (`a465142`)
+- **WebUI automation integration** — automation.js backend integration, elite toast notifications with glass morphism (`92dc9cd`)
+- **VBHash extraction** — extracts `verifiedBootHash` from KeyStore attestation extension (OID `1.3.6.1.4.1.11129.2.1.17`) via temp APK (`92dc9cd`)
+
+### Fixes
+- **Boot hash display** — sed filter was inverted, showing PEM comments instead of hash (`ed9aa68`)
+- **GPU performance** — removed 12 backdrop-filter blur() calls and 3 infinite CSS animations (`ed9aa68`)
+
+### WebUI
+- Modern glass morphism overhaul with AMOLED dark gradients (`c3b5ab6`)
+- 29 bug fixes including bounds checks, null guards, race conditions (`97d2b97`)
+- 6 accent color presets with randomization toggle
+- Signature rotating rainbow ring logo
+- Light/dark mode, RTL, accessibility (focus states, ARIA)
+
+## v4.3-auto (2026-01-20)
+
+### Initial Release
+- **Dual-source keybox** with 4-source failover (Yurikey → Upstream → IntegrityBox → Bundled)
+- **Auto security patch updates** — system/boot/vendor dates from Google
+- **Module conflict detection** — 16 regular + 1 aggressive + 2 app conflicts
+- **WebUI** with automation settings
+- **POSIX sh / BusyBox ash** compatible — no bashisms, properly quoted, injection-safe
+- Supports Magisk, KernelSU (32234+), APatch (11159+)
+
+---
+
+*Enhanced fork of [Tricky Addon](https://github.com/KOWX712/Tricky-Addon-Update-Target-List) by KOWX712*
