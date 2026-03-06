@@ -1,27 +1,27 @@
 MODPATH=${0%/*}
+MODDIR="$MODPATH"
 PATH=$MODPATH/common/bin:/data/adb/ap/bin:/data/adb/ksu/bin:/data/adb/magisk:$PATH
-HIDE_DIR="/data/adb/modules/.TA_utl"
-TS="/data/adb/modules/tricky_store"
+HIDE_DIR="/data/adb/modules/.TA_enhanced"
 TSPA="/data/adb/modules/tsupport-advance"
-TS_DIR="/data/adb/tricky_store"
 
-. "$MODPATH/common/logging.sh"
-log_init "BOOT" "boot"
+. "$MODPATH/common/common.sh"
+detect_manager
 
-. "$MODPATH/common/utils.sh"
+_log "INFO" "Service started (manager=$MANAGER)"
 
-log_info "Service started"
-
+# Denylist merge function (Magisk only)
 add_denylist_to_target() {
-    target_file="/data/adb/tricky_store/target.txt"
-    tmp_file="${target_file}.tmp"
+    local target_file="$TS_DIR/target.txt"
+    local tmp_file="${target_file}.tmp"
+    local exclamation_target question_target existing denylist
+
     exclamation_target=$(grep '!' "$target_file" | sed 's/!$//')
     question_target=$(grep '?' "$target_file" | sed 's/?$//')
     existing=$(sed 's/[!?]$//' "$target_file")
     denylist=$(magisk --denylist ls 2>/dev/null | awk -F'|' '{print $1}' | grep -v "isolated")
 
     if ! printf "%s\n" "$existing" "$denylist" | sort -u > "$tmp_file"; then
-        log_error "Failed to write target.txt from denylist"
+        _log "ERROR" "Failed to write target.txt from denylist"
         rm -f "$tmp_file"
         return 1
     fi
@@ -29,7 +29,6 @@ add_denylist_to_target() {
     for pkg in $exclamation_target; do
         sed -i "s/^${pkg}$/${pkg}!/" "$tmp_file"
     done
-
     for pkg in $question_target; do
         sed -i "s/^${pkg}$/${pkg}?/" "$tmp_file"
     done
@@ -37,114 +36,101 @@ add_denylist_to_target() {
     mv "$tmp_file" "$target_file"
 }
 
-# Spoof security patch
-if [ -f "/data/adb/tricky_store/security_patch_auto_config" ]; then
-    if ! sh "$MODPATH/common/get_extra.sh" --security-patch; then
-        log_warn "Security patch spoof via get_extra failed"
-    fi
+# Security Patch (pre-boot, config-gated)
+sp_auto=$(read_config security_patch.auto_update true)
+if [ "$sp_auto" = "true" ]; then
+    "$BIN" security-patch set 2>/dev/null || _log "WARN" "Security patch set failed"
 fi
 
-# Handle sensitive prop in background
-log_info "Prop spoofing started"
+# Property Spoofing (background)
+_log "INFO" "Prop spoofing started"
 sh "$MODPATH/prop.sh" &
 
-# Disable TSupport-A auto update target to prevent overwrite
+# TSupport-A Interop
 if [ -d "$TSPA" ]; then
-    if ! touch "/storage/emulated/0/stop-tspa-auto-target" 2>/dev/null; then
-        log_warn "Failed to create TSPA stop file (storage not ready)"
-    fi
+    touch "/storage/emulated/0/stop-tspa-auto-target" 2>/dev/null || true
 elif [ ! -d "$TSPA" ] && [ -f "/storage/emulated/0/stop-tspa-auto-target" ]; then
     rm -f "/storage/emulated/0/stop-tspa-auto-target"
 fi
 
-# Magisk operation
+# Magisk Module Hiding
+# Dot-prefix hides from Magisk's module list scan (stable since Magisk v24+).
+# service.sh re-copies on every boot so the hidden copy is always fresh.
 if [ -f "$MODPATH/action.sh" ]; then
-    # Hide module from Magisk manager
     if [ "$MODPATH" != "$HIDE_DIR" ]; then
-        log_info "Module hiding (Magisk)"
+        _log "INFO" "Module hiding (Magisk)"
         rm -rf "$HIDE_DIR"
-        if ! mkdir -p "$HIDE_DIR"; then
-            log_error "Failed to create hide directory: $HIDE_DIR"
-        fi
-        if ! busybox chcon --reference="$MODPATH" "$HIDE_DIR" 2>/dev/null; then
-            log_warn "chcon failed on hide directory (selinux may be permissive)"
-        fi
+        mkdir -p "$HIDE_DIR"
+        busybox chcon --reference="$MODPATH" "$HIDE_DIR" 2>/dev/null || true
         if ! cp -af "$MODPATH/." "$HIDE_DIR/"; then
-            log_error "Failed to copy module to hide directory"
+            _log "ERROR" "Module hiding copy failed, using original path"
+            rm -rf "$HIDE_DIR"
+        else
+            MODPATH="$HIDE_DIR"
+            MODDIR="$MODPATH"
+            BIN="$MODPATH/bin/${ABI}/ta-enhanced"
         fi
     fi
-    MODPATH="$HIDE_DIR"
 
-    # Add target from denylist
-    [ -f "/data/adb/tricky_store/target_from_denylist" ] && add_denylist_to_target
+    # Merge Magisk denylist into target.txt (flag-file-gated)
+    [ -f "$TS_DIR/target_from_denylist" ] && add_denylist_to_target
 else
+    # KSU/APatch: clean up any stale hidden dir
     [ -d "$HIDE_DIR" ] && rm -rf "$HIDE_DIR"
 fi
 
-# Hide module from APatch, KernelSU, KSUWebUIStandalone, MMRL
+# Hide module.prop from manager UI
+# StatusTask writes dynamic description to TrickyStore's module.prop.
 rm -f "$MODPATH/module.prop"
 
-# Symlink tricky store
+# Symlink Management
 if [ -f "$MODPATH/action.sh" ] && [ ! -e "$TS/action.sh" ]; then
-    if ln -s "$MODPATH/action.sh" "$TS/action.sh" 2>/dev/null; then
-        log_info "Symlink created: action.sh"
-    else
-        log_warn "Failed to create action.sh symlink"
-    fi
+    ln -s "$MODPATH/action.sh" "$TS/action.sh" 2>/dev/null || true
 fi
 if [ ! -e "$TS/webroot" ]; then
-    if ln -s "$MODPATH/webui" "$TS/webroot" 2>/dev/null; then
-        log_info "Symlink created: webroot"
-    else
-        log_warn "Failed to create webroot symlink"
-    fi
+    ln -s "$MODPATH/webui" "$TS/webroot" 2>/dev/null || true
+fi
+if [ ! -e "$TS/banner.png" ] && [ -f "$MODPATH/banner.png" ]; then
+    ln -s "$MODPATH/banner.png" "$TS/banner.png" 2>/dev/null || true
+fi
+if [ -f "$TS/module.prop" ] && ! grep -q "^banner=" "$TS/module.prop"; then
+    sed -i '$ a\banner=banner.png' "$TS/module.prop" 2>/dev/null || true
 fi
 
-log_info "Waiting for boot completion"
-until [ "$(getprop sys.boot_completed)" = "1" ]; do
-    sleep 1
-done
-log_info "Boot completed detected"
+# Wait for Boot Completion
+_log "INFO" "Waiting for boot completion"
+# getprop -w blocks until property is set (Android 10+)
+# Timeout after 120s to prevent hanging on broken boots
+timeout 120 getprop -w sys.boot_completed 2>/dev/null || {
+    until [ "$(getprop sys.boot_completed)" = "1" ]; do
+        sleep 5
+    done
+}
+_log "INFO" "Boot completed"
 
-# VBHash extraction (prop.sh handles all property spoofing)
-vbhash_enabled=$(read_config vbhash_enabled 1)
-if [ "$vbhash_enabled" = "1" ] && [ -f "$MODPATH/common/vbhash_manager.sh" ]; then
-    log_info "Running VBHash extraction..."
-    if ! sh "$MODPATH/common/vbhash_manager.sh" --extract; then
-        log_warn "VBHash extraction returned non-zero"
-    fi
-elif [ "$vbhash_enabled" != "1" ]; then
-    log_info "VBHash extraction disabled by config"
+# VBHash Extraction (config-gated)
+vbhash_enabled=$(read_config vbhash.enabled true)
+if [ "$vbhash_enabled" = "true" ]; then
+    _log "INFO" "Running VBHash extraction"
+    "$BIN" vbhash extract 2>/dev/null || _log "WARN" "VBHash extraction failed"
+else
+    _log "INFO" "VBHash extraction disabled"
 fi
 
-# Check for module conflicts at boot
-if [ -f "$MODPATH/common/conflict_manager.sh" ]; then
-    . "$MODPATH/common/conflict_manager.sh"
-    log_info "Checking for conflicts at boot..."
-    if ! check_module_conflicts; then
-        log_warn "Conflicts detected, check conflict.log"
-    fi
-fi
+# Conflict Check
+_log "INFO" "Checking for conflicts at boot"
+"$BIN" conflict check 2>/dev/null || _log "WARN" "Conflicts detected, check conflict.log"
 
-# Create temporary directory
-if ! mkdir -p "$MODPATH/common/tmp"; then
-    log_warn "Failed to create tmp directory"
-fi
+# Create tmp directory (needed by action.sh for KSU WebUI APK download)
+mkdir -p "$MODPATH/common/tmp"
 
-sh "$MODPATH/common/get_extra.sh" --xposed >> "$LOG_BASE_DIR/main.log" 2>&1 &
+# Xposed Detection (background)
+"$BIN" status xposed-scan >> "$LOG_BASE_DIR/main.log" 2>&1 &
 
-[ -f "$MODPATH/action.sh" ] && rm -rf "/data/adb/modules/TA_utl"
+# Magisk: clean up unhidden module dir
+[ -f "$MODPATH/action.sh" ] && rm -rf "/data/adb/modules/TA_enhanced"
 
-# Native fork/wait supervisor — all background processes under one watchdog
-# Exit 42 = uninstall (don't respawn), other exits = crash (respawn with backoff)
-log_info "Starting native supervisor for all background processes"
-"$MODPATH/common/bin/supervisor" \
-    "$MODPATH/common/run_keybox.sh" \
-    "$MODPATH/common/run_secpatch.sh" \
-    "$MODPATH/common/run_daemon.sh" \
-    "$MODPATH/common/run_health.sh" \
-    "$MODPATH/common/run_status.sh" &
-sup_pid=$!
-mkdir -p "/data/adb/tricky_store/.automation"
-echo "$sup_pid" > "/data/adb/tricky_store/.automation/supervisor.pid"
-log_info "Supervisor started (pid=$sup_pid)"
+# Launch Daemon
+_log "INFO" "Starting ta-enhanced daemon"
+"$BIN" daemon --manager "$MANAGER" &
+_log "INFO" "Daemon launched"

@@ -3,8 +3,8 @@
 # Runs early boot (before sys.boot_completed). No other script calls resetprop.
 
 MODPATH="${0%/*}"
-. "$MODPATH/common/logging.sh"
-log_init "PROP" "boot"
+MODDIR="$MODPATH"
+. "$MODPATH/common/common.sh"
 
 _PROP_SPOOF_COUNT=0
 _PROP_FAIL_COUNT=0
@@ -17,13 +17,11 @@ check_reset_prop() {
     if [ "$VALUE" = "$EXPECTED" ]; then
         return 0
     fi
-    # Set even if absent — critical VBMeta props must exist
     if resetprop -n "$NAME" "$EXPECTED" 2>/dev/null; then
         _PROP_SPOOF_COUNT=$((_PROP_SPOOF_COUNT + 1))
-        log_debug "Spoofed: $NAME=$EXPECTED"
     else
         _PROP_FAIL_COUNT=$((_PROP_FAIL_COUNT + 1))
-        log_error "Failed to spoof: $NAME"
+        _log "ERROR" "Failed to spoof: $NAME"
     fi
 }
 
@@ -35,10 +33,9 @@ contains_reset_prop() {
         *"$CONTAINS"*)
             if resetprop -n "$NAME" "$NEWVAL" 2>/dev/null; then
                 _PROP_SPOOF_COUNT=$((_PROP_SPOOF_COUNT + 1))
-                log_debug "Spoofed (contains): $NAME=$NEWVAL"
             else
                 _PROP_FAIL_COUNT=$((_PROP_FAIL_COUNT + 1))
-                log_error "Failed to spoof (contains): $NAME"
+                _log "ERROR" "Failed to spoof (contains): $NAME"
             fi
             ;;
     esac
@@ -52,17 +49,16 @@ ensure_prop() {
     if [ -z "$VALUE" ]; then
         if resetprop -n "$NAME" "$NEWVAL" 2>/dev/null; then
             _PROP_SPOOF_COUNT=$((_PROP_SPOOF_COUNT + 1))
-            log_debug "Spoofed (ensure): $NAME=$NEWVAL"
         else
             _PROP_FAIL_COUNT=$((_PROP_FAIL_COUNT + 1))
-            log_error "Failed to spoof (ensure): $NAME"
+            _log "ERROR" "Failed to spoof (ensure): $NAME"
         fi
     fi
 }
 
-log_info "Property spoofing starting"
+_log "INFO" "Property spoofing starting"
 if ! resetprop -w sys.boot_completed 0 2>/dev/null; then
-    log_warn "resetprop -w sys.boot_completed timeout or failure"
+    _log "WARN" "resetprop -w sys.boot_completed timeout or failure"
 fi
 
 # Core boot verification props
@@ -91,23 +87,21 @@ check_reset_prop "ro.secureboot.lockstate" "locked"
 check_reset_prop "ro.boot.realmebootstate" "green"
 check_reset_prop "ro.boot.realme.lockstate" "1"
 
-# From TSE: Additional props
+# Additional props
 check_reset_prop "ro.crypto.state" "encrypted"
 
-# Delete qemu property entirely — some detectors check existence, not value
+# Delete qemu property entirely -- some detectors check existence, not value
 if [ -n "$(resetprop ro.kernel.qemu)" ]; then
     if resetprop --delete ro.kernel.qemu 2>/dev/null; then
         _PROP_SPOOF_COUNT=$((_PROP_SPOOF_COUNT + 1))
-        log_debug "Deleted: ro.kernel.qemu"
     else
-        # Fallback: blank it if delete unsupported
         resetprop -n ro.kernel.qemu "" 2>/dev/null
         _PROP_FAIL_COUNT=$((_PROP_FAIL_COUNT + 1))
-        log_warn "Could not delete ro.kernel.qemu, blanked instead"
+        _log "WARN" "Could not delete ro.kernel.qemu, blanked instead"
     fi
 fi
 
-# Hide that we booted from recovery when magisk is in recovery mode
+# Hide recovery boot mode
 contains_reset_prop "ro.bootmode" "recovery" "unknown"
 contains_reset_prop "ro.boot.bootmode" "recovery" "unknown"
 contains_reset_prop "vendor.boot.bootmode" "recovery" "unknown"
@@ -118,39 +112,37 @@ if [ -f "/data/adb/boot_hash" ]; then
     if echo "$hash_value" | grep -qE '^[a-f0-9]{64}$'; then
         if resetprop -n ro.boot.vbmeta.digest "$hash_value" 2>/dev/null; then
             _PROP_SPOOF_COUNT=$((_PROP_SPOOF_COUNT + 1))
-            log_info "VBMeta digest set from boot_hash: $(printf '%.16s' "$hash_value")..."
+            _log "INFO" "VBMeta digest set from boot_hash: $(printf '%.16s' "$hash_value")..."
         else
             _PROP_FAIL_COUNT=$((_PROP_FAIL_COUNT + 1))
-            log_error "Failed to set vbmeta.digest from boot_hash"
+            _log "ERROR" "Failed to set vbmeta.digest from boot_hash"
         fi
     else
-        log_warn "boot_hash invalid (not 64-char hex), removing"
+        _log "WARN" "boot_hash invalid (not 64-char hex), removing"
         rm -f /data/adb/boot_hash
     fi
-else
-    log_debug "No boot_hash file found"
 fi
 
-# VBMeta metadata props — ensure they exist even if kernel didn't set them
+# VBMeta metadata props -- ensure they exist even if kernel didn't set them
 ensure_prop "ro.boot.vbmeta.device_state" "locked"
 ensure_prop "ro.boot.vbmeta.invalidate_on_error" "yes"
 ensure_prop "ro.boot.vbmeta.avb_version" "1.2"
 ensure_prop "ro.boot.vbmeta.hash_alg" "sha256"
 
-# Dynamic vbmeta_size — use partition byte size with A/B slot suffix
+# Dynamic vbmeta_size -- use partition byte size with A/B slot suffix + multi-path fallback
 slot_suffix=$(getprop ro.boot.slot_suffix 2>/dev/null)
-vbmeta_dev="/dev/block/by-name/vbmeta${slot_suffix}"
-if [ -b "$vbmeta_dev" ]; then
-    VBMETA_SIZE=$(blockdev --getsize64 "$vbmeta_dev" 2>/dev/null)
-    if [ -n "$VBMETA_SIZE" ]; then
-        ensure_prop "ro.boot.vbmeta.size" "$VBMETA_SIZE"
-    else
-        log_warn "blockdev failed on $vbmeta_dev, using default size"
-        ensure_prop "ro.boot.vbmeta.size" "4096"
+VBMETA_SIZE=""
+for candidate in \
+    "/dev/block/by-name/vbmeta${slot_suffix}" \
+    "/dev/block/by-name/vbmeta" \
+    "/dev/block/by-name/vbmeta_a" \
+    "/dev/block/by-name/vbmeta_b"; do
+    if [ -b "$candidate" ]; then
+        VBMETA_SIZE=$(blockdev --getsize64 "$candidate" 2>/dev/null)
+        [ -n "$VBMETA_SIZE" ] && [ "$VBMETA_SIZE" -gt 0 ] 2>/dev/null && break
+        VBMETA_SIZE=""
     fi
-else
-    log_debug "vbmeta block device not found ($vbmeta_dev), using default size"
-    ensure_prop "ro.boot.vbmeta.size" "4096"
-fi
+done
+ensure_prop "ro.boot.vbmeta.size" "${VBMETA_SIZE:-4096}"
 
-log_info "Property spoofing complete: $_PROP_SPOOF_COUNT spoofed, $_PROP_FAIL_COUNT failed"
+_log "INFO" "Property spoofing complete: $_PROP_SPOOF_COUNT spoofed, $_PROP_FAIL_COUNT failed"

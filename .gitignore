@@ -34,3 +34,26 @@ webui-mockup/
 
 # Native build source (binaries in bin/ are tracked)
 native/
+
+# Rust build artifacts
+rust/target/
+bin/arm64-v8a/ta-enhanced
+bin/armeabi-v7a/ta-enhanced
+
+# WebUI build
+webui/node_modules/
+webui/dist/
+
+# MCP / Claude dev tooling
+.claude/
+.mcp.json
+.mcp-vector-search/
+vectors.db*
+
+# Credentials
+*.pem
+*.key
+*.jks
+*.keystore
+.env
+.env.*
