@@ -1,6 +1,6 @@
 <p align="center">
   <h1 align="center">⚡ Tricky Addon Enhanced</h1>
-  <p align="center"><b>Automated Play Integrity for Rooted Android</b></p>
+  <p align="center"><b>Automated TrickyStore & TEESimulator Management</b></p>
   <p align="center">Flash once. Forget forever.</p>
   <p align="center">
     <img src="https://img.shields.io/badge/version-v5.3.0-orange?style=for-the-badge" alt="Version">
