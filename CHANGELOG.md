@@ -1,6 +1,58 @@
 # Changelog
 
-All notable changes to Tricky Addon Enhanced. Each release is installable as a standalone Magisk/KernelSU/APatch module ZIP.
+## v5.3.0 (2026-03-06)
+
+### Ground-Up Rust Rewrite
+
+The entire backend has been rewritten from scratch in Rust. Shell scripts were too fragile — hundreds of thousands of wakeups per day, fork-per-config-read, race conditions, and cascading failures. All eliminated.
+
+| Metric | Shell (v4.x) | Rust (v5.x) |
+|---|---|---|
+| Wakeups/day | 884,449 | ~100 |
+| JVM spawns/day | 20,170 | ~200 |
+| Processes | 6 | 1 |
+| Background CPU | ~28 min/day | <1 min/day |
+| Config reads | 43,200 forks/day | 0 (in-memory) |
+| App detection | 10s–minutes | Instant (inotify) |
+
+### Native Daemon
+- Single `ta-enhanced` binary (4.0MB arm64, 2.7MB armv7) replaces 16 shell scripts
+- Unified scheduler — keybox, security patch, health, status, automation in one process
+- inotify app detection — new installs targeted instantly
+- In-memory TOML config — zero fork overhead
+- Proper signal handling, graceful shutdown
+
+### CLI
+- `ta-enhanced config get/set` — type-safe config with validation and clamping
+- `ta-enhanced keybox fetch/validate/generate/backup` — full keybox pipeline
+- `ta-enhanced security-patch set/get-latest` — engine-aware patch management
+- `ta-enhanced webui-init` — batched JSON endpoint (replaces ~14 shell calls)
+- `ta-enhanced conflict check` — structured conflict detection
+- `ta-enhanced applist` — package enumeration with labels
+
+### Device Keybox Generation
+- ECDSA P-256 + RSA-2048 via `ring` — valid AOSP-level keybox without remote sources
+
+### WebUI
+- Batched init — single shell call, <300ms cold start
+- Cache-first hydration from localStorage
+- Font subset 287KB → 5KB (28 icons)
+- Non-blocking external CSS via media swap
+- Keybox automation panel — 6 source cards, interval chips (1h–7d), custom input with min/hr/day toggle
+- About dialog rebranded — Enginex0 author, SuperPowers Telegram, full credits
+- Debounced health refresh (30s throttle)
+- SukiSU theme caching
+
+### Shell Elimination
+- 16 scripts deleted, `service.sh` reduced to daemon launcher
+- Config migrated from `enhanced.conf` to `config.toml` (auto-migration on first boot)
+- Module ID: `TA_utl` → `TA_enhanced`
+
+### Bug Fixes
+- Daemon double-init panic after daemonize fork (tracing subscriber inherited by child)
+- All 16 audit bugs from v4.9 eliminated by architectural change
+
+---
 
 ## v4.9-auto (2026-02-13)
 
@@ -127,5 +179,3 @@ All notable changes to Tricky Addon Enhanced. Each release is installable as a s
 - Supports Magisk, KernelSU (32234+), APatch (11159+)
 
 ---
-
-*Enhanced fork of [Tricky Addon](https://github.com/KOWX712/Tricky-Addon-Update-Target-List) by KOWX712*
