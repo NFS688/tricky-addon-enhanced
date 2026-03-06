@@ -12,6 +12,16 @@
         --window-inset-left: 0px;
         --window-inset-right: 0px;
       }
+      .interval-grid{display:flex;gap:8px;padding:8px 0}
+      .interval-chip{flex:1;padding:8px 0;border:1px solid rgba(255,255,255,.12);border-radius:20px;background:0 0;color:var(--md-sys-color-on-surface,#e0e0e0);font-size:13px;font-weight:500;cursor:pointer;transition:all .2s;text-align:center;font-family:inherit}
+      .interval-chip.selected{background:rgba(var(--accent-rgb,0,214,143),.2);border-color:rgb(var(--accent-rgb,0,214,143));color:rgb(var(--accent-rgb,0,214,143))}
+      .interval-custom{display:flex;gap:8px;padding:4px 0;align-items:center}
+      .interval-input{flex:1;padding:8px 12px;border:1px solid rgba(255,255,255,.12);border-radius:12px;background:0 0;color:var(--md-sys-color-on-surface,#e0e0e0);font-size:13px;font-family:inherit;outline:0;min-width:0}
+      .interval-input:focus{border-color:rgb(var(--accent-rgb,0,214,143))}
+      .unit-toggle{display:flex;border:1px solid rgba(255,255,255,.12);border-radius:20px;overflow:hidden}
+      .unit-btn{padding:8px 14px;border:0;background:0 0;color:var(--md-sys-color-on-surface,#e0e0e0);font-size:13px;font-family:inherit;cursor:pointer;transition:all .2s}
+      .unit-btn.selected{background:rgba(var(--accent-rgb,0,214,143),.2);color:rgb(var(--accent-rgb,0,214,143))}
+      .interval-set-btn{flex:0 0 auto;padding:8px 16px}
     </style>
   <link rel="preload" href="./assets/material-symbols-outlined-D4N9P62f.woff2" as="font" type="font/woff2" crossorigin>
   <script type="module" crossorigin src="./assets/index-migrated.min.js"></script>
@@ -48,24 +58,10 @@
                 <md-menu-item id="add-system-app" data-i18n="menu_add_system_app"></md-menu-item>
                 <md-divider role="separator" tabindex="-1"></md-divider>
                 <md-menu-item id="automation-settings" class="automation-menu-item">
-                    <md-icon slot="start">auto_awesome</md-icon>
-                    <div slot="headline">Automation Settings</div>
+                    <md-icon slot="start" style="color: #FFD700;">auto_awesome</md-icon>
+                    <div slot="headline">Keybox Automation</div>
                     <md-icon slot="end">arrow_forward</md-icon>
                 </md-menu-item>
-                <md-divider role="separator" tabindex="-1"></md-divider>
-                <md-sub-menu hover-close-delay="0">
-                    <md-menu-item slot="item" class="sub-menu-entry">
-                        <div slot="headline" data-i18n="menu_keybox"></div>
-                        <md-icon slot="start" class="ltr-icon">chevron_left</md-icon>
-                        <md-icon slot="start" class="rtl-icon">chevron_right</md-icon>
-                    </md-menu-item>
-                    <md-menu positioning="popover" slot="menu">
-                        <md-menu-item id="aospkb" data-i18n="menu_keybox_aosp"></md-menu-item>
-                        <md-menu-item id="validkb" data-i18n="menu_keybox_valid"></md-menu-item>
-                        <md-menu-item id="devicekb" data-i18n="menu_keybox_unknown"></md-menu-item>
-                        <md-menu-item id="customkb" data-i18n="menu_keybox_custom"></md-menu-item>
-                    </md-menu>
-                </md-sub-menu>
                 <md-menu-item id="boot-hash" data-i18n="menu_set_verified_boot_hash"></md-menu-item>
                 <md-menu-item id="security-patch" data-i18n="menu_set_security_patch"></md-menu-item>
                 <md-menu-item id="help" data-i18n="menu_help"></md-menu-item>
@@ -214,8 +210,7 @@
                 <div id="module_name_line1" data-i18n="about_module_name_line1"></div>
                 <div id="module_name_line2" data-i18n="about_module_name_line2"></div>
                 <div id="module-version"></div>
-                <div id="author"><span id="authored" data-i18n="about_by"></span> KOWX712</div>
-                <div id="enhanced-by">Enhanced by <span class="enhancer-name">Enginex0</span></div>
+                <div id="author"><span id="authored" data-i18n="about_by"></span> <span class="enhancer-name">Enginex0</span></div>
             </div>
             <div slot="content">
                 <div id="disclaimer" data-i18n="about_disclaimer"></div>
@@ -228,19 +223,18 @@
                         <span>GitHub</span>
                         <svg slot="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 1A10.89 10.89 0 0 0 1 11.77 10.79 10.79 0 0 0 8.52 22c.55.1.75-.23.75-.52v-1.83c-3.06.65-3.71-1.44-3.71-1.44a2.86 2.86 0 0 0-1.22-1.58c-1-.66.08-.65.08-.65a2.31 2.31 0 0 1 1.68 1.11 2.37 2.37 0 0 0 3.2.89 2.33 2.33 0 0 1 .7-1.44c-2.44-.27-5-1.19-5-5.32a4.15 4.15 0 0 1 1.11-2.91 3.78 3.78 0 0 1 .11-2.84s.93-.29 3 1.1a10.68 10.68 0 0 1 5.5 0c2.1-1.39 3-1.1 3-1.1a3.78 3.78 0 0 1 .11 2.84A4.15 4.15 0 0 1 19 11.2c0 4.14-2.58 5.05-5 5.32a2.5 2.5 0 0 1 .75 2v2.95c0 .35.2.63.75.52A10.8 10.8 0 0 0 23 11.77 10.89 10.89 0 0 0 12 1"></path></svg>
                     </md-filled-button>
-                    <md-filled-button id="canary">
-                        <span data-i18n="about_canary_update"></span>
-                        <md-icon slot="icon">science</md-icon>
-                    </md-filled-button>
-                    <md-filled-button id="locales">
-                        <span data-i18n="about_translation_update"></span>
-                        <md-icon slot="icon">translate</md-icon>
-                    </md-filled-button>
                 </div>
                 <div class="acknowledgment">
                     <p id="acknowledgment" data-i18n="about_acknowledgment"></p>
+                    <p>KOWX712: Original Tricky Addon</p>
+                    <p>JingMatrix: TEESimulator</p>
+                    <p>XtrLumen/TS-Enhancer-Extreme: VBHash concept</p>
+                    <p>Yurikey: Primary keybox source</p>
+                    <p>MeowDump/Integrity-Box: Keybox source</p>
+                    <p>5ec1cff/TrickyStore: Attestation module</p>
+                    <p>Zero-Mount: WebUI design inspiration</p>
                     <p>j-hc/zygisk-detach: WebUI template</p>
-                    <p>markedjs/marked: Markdown Support</p>
+                    <p>markedjs/marked: Markdown support</p>
                 </div>
             </div>
             <div slot="actions">
@@ -375,7 +369,7 @@
                             <div class="source-icon" style="--icon-color: #4FC3F7;">
                                 <md-icon>cloud_sync</md-icon>
                             </div>
-                            <div class="source-name">Upstream</div>
+                            <div class="source-name">KOW</div>
                             <div class="source-desc">KOWX712 mirror</div>
                             <div class="source-check"><md-icon>check_circle</md-icon></div>
                         </button>
@@ -387,7 +381,23 @@
                             <div class="source-desc">MeowDump</div>
                             <div class="source-check"><md-icon>check_circle</md-icon></div>
                         </button>
-                        <button class="source-card" data-value="custom">
+                        <button class="source-card" id="devicekb" data-value="unknown" data-action="true">
+                            <div class="source-icon" style="--icon-color: #E0E0E0;">
+                                <md-icon>help_outline</md-icon>
+                            </div>
+                            <div class="source-name">Unknown</div>
+                            <div class="source-desc">Device generated</div>
+                            <div class="source-check"><md-icon>check_circle</md-icon></div>
+                        </button>
+                        <button class="source-card" id="aospkb" data-value="aosp" data-action="true">
+                            <div class="source-icon" style="--icon-color: #78909C;">
+                                <md-icon>android</md-icon>
+                            </div>
+                            <div class="source-name">AOSP</div>
+                            <div class="source-desc">Stock keybox</div>
+                            <div class="source-check"><md-icon>check_circle</md-icon></div>
+                        </button>
+                        <button class="source-card" id="customkb" data-value="custom" data-action="true">
                             <div class="source-icon" style="--icon-color: #81C784;">
                                 <md-icon>edit</md-icon>
                             </div>
@@ -398,7 +408,37 @@
                     </div>
                 </div>
 
-                <!-- Security Patch Section -->
+                <div class="setting-section">
+                    <div class="setting-header">Fetch Interval</div>
+                    <div class="interval-grid" id="keybox-interval-grid">
+                        <button class="interval-chip" data-seconds="3600">1h</button>
+                        <button class="interval-chip" data-seconds="21600">6h</button>
+                        <button class="interval-chip" data-seconds="43200">12h</button>
+                        <button class="interval-chip" data-seconds="86400">24h</button>
+                        <button class="interval-chip" data-seconds="259200">3d</button>
+                        <button class="interval-chip" data-seconds="604800">7d</button>
+                    </div>
+                    <div class="interval-custom" id="interval-custom-row">
+                        <input type="number" id="interval-custom-input" min="1" placeholder="Custom" class="interval-input">
+                        <div class="unit-toggle" id="interval-unit-toggle">
+                            <button class="unit-btn" data-mult="60">min</button>
+                            <button class="unit-btn selected" data-mult="3600">hr</button>
+                            <button class="unit-btn" data-mult="86400">day</button>
+                        </div>
+                        <button class="interval-chip interval-set-btn" id="interval-custom-set">Set</button>
+                    </div>
+                </div>
+
+                <div class="setting-section">
+                    <div class="setting-header">Manual Actions</div>
+                    <div class="manual-actions">
+                        <md-filled-button id="fetch-keybox-now">
+                            <md-icon slot="icon">key</md-icon>
+                            Fetch Key
+                        </md-filled-button>
+                    </div>
+                </div>
+
                 <div class="setting-section">
                     <div class="setting-header">Security Patch Auto-Update</div>
                     <div class="setting-row">
@@ -409,16 +449,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <!-- Manual Actions -->
-                <div class="setting-section">
-                    <div class="setting-header">Manual Actions</div>
-                    <div class="manual-actions">
-                        <md-filled-button id="fetch-keybox-now">
-                            <md-icon slot="icon">key</md-icon>
-                            Fetch Key
-                        </md-filled-button>
+                    <div class="manual-actions" style="margin-top: 8px;">
                         <md-filled-button id="set-patch-now">
                             <md-icon slot="icon">security</md-icon>
                             Set Patch
