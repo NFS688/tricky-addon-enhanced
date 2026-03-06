@@ -15,7 +15,7 @@ const REGULAR_MODULES: &[&str] = &[
     "PlayIntegrityFork",
 ];
 
-const AGGRESSIVE_MODULES: &[&str] = &["Yamabukiko"];
+const AGGRESSIVE_MODULES: &[&str] = &["Yamabukiko", "TA_utl"];
 
 const CONFLICT_APPS: &[&str] = &[
     "com.lingqian.appbl",

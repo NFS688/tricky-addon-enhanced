@@ -53,6 +53,14 @@ case "$ABI" in
 esac
 BIN="$MODPATH/bin/$ABI/ta-enhanced"
 
+for legacy_id in TA_utl .TA_utl; do
+    legacy_dir="/data/adb/modules/$legacy_id"
+    if [ -d "$legacy_dir" ] && [ ! -f "$legacy_dir/remove" ]; then
+        touch "$legacy_dir/disable" "$legacy_dir/remove"
+        ui_print "  🗑️  Legacy module $legacy_id tagged for removal"
+    fi
+done
+
 if [ -x "$BIN" ] && "$BIN" version >/dev/null 2>&1; then
     ui_print "  🔍 Checking for module conflicts..."
     if ! "$BIN" conflict check --install 2>/dev/null; then
