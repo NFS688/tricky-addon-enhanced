@@ -103,7 +103,10 @@ pub enum KeyboxAction {
 #[derive(Subcommand)]
 pub enum SecurityPatchAction {
     Set,
-    Update,
+    Update {
+        #[arg(long)]
+        force: bool,
+    },
     Show,
     #[command(name = "set-custom")]
     SetCustom {

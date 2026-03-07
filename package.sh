@@ -196,6 +196,7 @@ zip -r9 "$ZIP_PATH" . \
     -x "webui/tsconfig.json" \
     -x "common/archive/*" \
     -x "bin/archive/*" \
+    -x "webui-mockup/*" \
     -x "bin/*/supervisor" \
     -x "bin/*/keygen" \
     -x "config/*" \

@@ -25,6 +25,7 @@
       .unit-btn{padding:8px 14px;border:0;background:0 0;color:var(--md-sys-color-on-surface,#e0e0e0);font-size:13px;font-family:inherit;cursor:pointer;transition:all .2s}
       .unit-btn.selected{background:rgba(var(--accent-rgb,0,214,143),.2);color:rgb(var(--accent-rgb,0,214,143))}
       .interval-set-btn{flex:0 0 auto;padding:8px 16px}
+      .interval-badge{font-size:11px;font-weight:400;padding:2px 8px;border-radius:10px;background:rgba(var(--accent-rgb,0,214,143),.15);color:rgb(var(--accent-rgb,0,214,143));margin-left:6px;vertical-align:middle}
     </style>
   <link rel="preload" href="./assets/material-symbols-outlined-D4N9P62f.woff2" as="font" type="font/woff2" crossorigin>
   <script type="module" crossorigin src="./assets/index-migrated.min.js"></script>
@@ -412,7 +413,7 @@
                 </div>
 
                 <div class="setting-section">
-                    <div class="setting-header">Fetch Interval</div>
+                    <div class="setting-header">Fetch Interval <span id="current-interval" class="interval-badge"></span></div>
                     <div class="interval-grid" id="keybox-interval-grid">
                         <button class="interval-chip" data-seconds="3600">1h</button>
                         <button class="interval-chip" data-seconds="21600">6h</button>

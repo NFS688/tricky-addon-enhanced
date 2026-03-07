@@ -116,18 +116,20 @@ else
     abort "  ❌ Binary not found at $BIN"
 fi
 
-if [ ! -f "/data/adb/boot_hash" ]; then
-    _vbhash=$(getprop ro.boot.vbmeta.digest 2>/dev/null \
-        | tr -d '[:space:]' | tr '[:upper:]' '[:lower:]' \
-        | grep -oE '^[a-f0-9]{64}$')
-    if [ -n "$_vbhash" ]; then
+_vbhash=$(getprop ro.boot.vbmeta.digest 2>/dev/null \
+    | tr -d '[:space:]' | tr '[:upper:]' '[:lower:]' \
+    | grep -oE '^[a-f0-9]{64}$')
+if [ -n "$_vbhash" ]; then
+    _old_hash=""
+    [ -f "/data/adb/boot_hash" ] && _old_hash=$(cat /data/adb/boot_hash 2>/dev/null)
+    if [ "$_vbhash" != "$_old_hash" ]; then
         echo "$_vbhash" > /data/adb/boot_hash.tmp
         mv -f /data/adb/boot_hash.tmp /data/adb/boot_hash
         chmod 644 /data/adb/boot_hash
         ui_print "  🔐 VBHash captured from bootloader"
+    else
+        ui_print "  🔐 VBHash unchanged"
     fi
-else
-    ui_print "  🔐 Existing VBHash preserved"
 fi
 
 if [ "$AUTOMATION_ENABLED" -eq 1 ]; then
@@ -179,8 +181,7 @@ if [ -f "$SCRIPT_DIR/enhanced.conf" ]; then
 fi
 
 ui_print "  🛡️  Setting security patch dates..."
-"$BIN" security-patch set 2>/dev/null || true
-if "$BIN" security-patch update 2>/dev/null; then
+if "$BIN" security-patch update --force 2>/dev/null; then
     ui_print "  ✅ Security patch configured"
 else
     ui_print "  ⚠️  Security patch failed (will retry on boot)"

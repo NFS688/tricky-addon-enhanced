@@ -47,8 +47,12 @@ pub fn handle_security_patch(action: SecurityPatchAction, cfg: &Config) -> Resul
             println!("security patch dates applied");
             Ok(())
         }
-        SecurityPatchAction::Update => {
-            update(cfg)?;
+        SecurityPatchAction::Update { force } => {
+            if force {
+                update_force()?;
+            } else {
+                update(cfg)?;
+            }
             println!("security patch dates updated");
             Ok(())
         }
@@ -145,7 +149,10 @@ pub fn update(config: &Config) -> Result<()> {
         info!("security patch auto-update is disabled");
         return Ok(());
     }
+    update_force()
+}
 
+pub fn update_force() -> Result<()> {
     let latest = bulletin::fetch_latest_patch()?;
     let dates = PatchDates {
         system: latest.clone(),

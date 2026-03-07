@@ -1,5 +1,16 @@
 # Changelog
 
+## v5.6.0 (2026-03-07)
+
+### Bug Fixes
+- **Security patch not applied on reinstall** — `security-patch set` wrote device ROM dates (e.g. 2025-xx) and `update` silently skipped when `auto_update` was previously disabled; install now uses `--force` flag to always fetch latest bulletin date regardless of config, with built-in fallback table for offline installs
+- **VBMeta hash not refreshed on reinstall** — installer skipped capture when `boot_hash` already existed; now compares live `ro.boot.vbmeta.digest` against stored value and updates if changed
+
+### Enhancements
+- **Keybox interval badge** — Automation settings now shows the current fetch interval as a badge next to the section header, updated in real-time when changed via chips or custom input
+
+---
+
 ## v5.5.0 (2026-03-07)
 
 ### Bug Fixes
