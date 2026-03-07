@@ -36,11 +36,8 @@ add_denylist_to_target() {
     mv "$tmp_file" "$target_file"
 }
 
-# Security Patch (pre-boot, config-gated)
-sp_auto=$(read_config security_patch.auto_update true)
-if [ "$sp_auto" = "true" ]; then
-    "$BIN" security-patch set 2>/dev/null || _log "WARN" "Security patch set failed"
-fi
+# Security patch is handled by the daemon's SecurityPatchTask (with retries + bulletin fetch).
+# Running `set` here would overwrite bulletin-fetched dates with stale device props.
 
 # Property Spoofing (background)
 _log "INFO" "Prop spoofing started"

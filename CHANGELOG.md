@@ -1,14 +1,19 @@
 # Changelog
 
-## v5.3.1 (2026-03-07)
+## v5.4.0 (2026-03-07)
 
 ### Bug Fixes
-- **Security patch toggle resetting** — `hydrateUI()` read `securityPatch.autoUpdate` (camelCase) but the Rust Config struct serializes as `security_patch.auto_update` (snake_case), forcing the toggle off on every WebUI init. Keybox fields worked by coincidence since `keybox`, `enabled`, `source`, `interval` have no underscores
-- **Custom interval input not discoverable** — the blank input for custom keybox fetch interval was invisible on dark backgrounds. Added pulse animation (border + opacity) with accent color so users recognize it as an editable field
+- **Security patch dialog empty on open** — dialog always showed blank fields because auto-mode config (default true) short-circuited file reading; now always reads and displays current values from `security_patch.txt`
+- **Get patch date failing** — fetching latest Pixel bulletin date failed due to exec buffer limits with full HTML response; now pipes through `sed` on shell side (matching upstream), with `busybox wget` fallback
+- **Boot script overwriting bulletin dates** — `service.sh` ran `security-patch set` on boot which overwrote daemon-fetched dates with stale device props; removed in favor of daemon's `SecurityPatchTask`
+- **Security patch validator rejecting valid dates** — save dialog rejected `YYYY-MM-DD` format written by Rust; validator now accepts both `YYYYMM` and `YYYY-MM-DD`
+- **Auto-set not detected in dialog** — dialog checked for legacy flag file instead of Rust config value
+- **Security patch toggle resetting** — `hydrateUI()` used camelCase config keys but Rust serializes snake_case
+- **Custom interval input not discoverable** — added pulse animation so users notice the editable field
 
 ### Install
 - **Legacy module auto-removal** — `TA_utl` and `.TA_utl` are now detected and tagged for removal during install before conflict checks run
-- **Version gate removal** — removed minimum APatch/KSU version checks from `customize.sh`; module installs on any version the manager supports
+- **Version gate removal** — removed minimum APatch/KSU version checks from `customize.sh`
 
 ---
 
