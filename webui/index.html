@@ -17,7 +17,9 @@
       .interval-chip.selected{background:rgba(var(--accent-rgb,0,214,143),.2);border-color:rgb(var(--accent-rgb,0,214,143));color:rgb(var(--accent-rgb,0,214,143))}
       .interval-custom{display:flex;gap:8px;padding:4px 0;align-items:center}
       .interval-input{flex:1;padding:8px 12px;border:1px solid rgba(255,255,255,.12);border-radius:12px;background:0 0;color:var(--md-sys-color-on-surface,#e0e0e0);font-size:13px;font-family:inherit;outline:0;min-width:0}
-      .interval-input:focus{border-color:rgb(var(--accent-rgb,0,214,143))}
+      .interval-input:focus{border-color:rgb(var(--accent-rgb,0,214,143));animation:none}
+      .interval-input:not(:focus){animation:pulse-border 2s ease-in-out infinite}
+      @keyframes pulse-border{0%,100%{border-color:rgba(255,255,255,.12)}50%{border-color:rgba(var(--accent-rgb,0,214,143),.5)}}
       .unit-toggle{display:flex;border:1px solid rgba(255,255,255,.12);border-radius:20px;overflow:hidden}
       .unit-btn{padding:8px 14px;border:0;background:0 0;color:var(--md-sys-color-on-surface,#e0e0e0);font-size:13px;font-family:inherit;cursor:pointer;transition:all .2s}
       .unit-btn.selected{background:rgba(var(--accent-rgb,0,214,143),.2);color:rgb(var(--accent-rgb,0,214,143))}
