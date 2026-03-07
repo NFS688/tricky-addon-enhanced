@@ -74,20 +74,23 @@ pub fn extract_from_property() -> Option<String> {
 }
 
 pub fn extract() -> Result<String> {
-    if let Some(hash) = get_stored() {
-        debug!("vbhash found in persisted file");
+    let stored = get_stored();
+
+    if let Some(hash) = extract_from_property() {
+        if stored.as_deref() != Some(&*hash) {
+            debug!("vbhash changed, updating persisted file");
+            persist(&hash, "property")?;
+        }
         return Ok(hash);
     }
 
-    if let Some(hash) = extract_from_property() {
-        debug!("vbhash extracted from property");
-        persist(&hash, "property")?;
+    if let Some(hash) = stored {
+        debug!("property unavailable, using persisted hash");
         return Ok(hash);
     }
 
     match keystore::extract_from_apk() {
         Ok(hash) => {
-            debug!("vbhash extracted via apk attestation");
             persist(&hash, "apk")?;
             Ok(hash)
         }
