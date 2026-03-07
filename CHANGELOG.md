@@ -1,6 +1,6 @@
 # Changelog
 
-## v5.4.0 (2026-03-07)
+## v5.5.0 (2026-03-07)
 
 ### Bug Fixes
 - **Security patch dialog empty on open** — dialog always showed blank fields because auto-mode config (default true) short-circuited file reading; now always reads and displays current values from `security_patch.txt`
@@ -10,6 +10,7 @@
 - **Auto-set not detected in dialog** — dialog checked for legacy flag file instead of Rust config value
 - **Security patch toggle resetting** — `hydrateUI()` used camelCase config keys but Rust serializes snake_case
 - **Custom interval input not discoverable** — added pulse animation so users notice the editable field
+- **VBMeta hash stale after reboot** — `extract()` returned the persisted file without checking the live `ro.boot.vbmeta.digest` property; now always reads the property first and updates the file if the digest has changed
 
 ### Install
 - **Legacy module auto-removal** — `TA_utl` and `.TA_utl` are now detected and tagged for removal during install before conflict checks run
