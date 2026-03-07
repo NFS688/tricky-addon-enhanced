@@ -1,5 +1,17 @@
 # Changelog
 
+## v5.3.1 (2026-03-07)
+
+### Bug Fixes
+- **Security patch toggle resetting** — `hydrateUI()` read `securityPatch.autoUpdate` (camelCase) but the Rust Config struct serializes as `security_patch.auto_update` (snake_case), forcing the toggle off on every WebUI init. Keybox fields worked by coincidence since `keybox`, `enabled`, `source`, `interval` have no underscores
+- **Custom interval input not discoverable** — the blank input for custom keybox fetch interval was invisible on dark backgrounds. Added pulse animation (border + opacity) with accent color so users recognize it as an editable field
+
+### Install
+- **Legacy module auto-removal** — `TA_utl` and `.TA_utl` are now detected and tagged for removal during install before conflict checks run
+- **Version gate removal** — removed minimum APatch/KSU version checks from `customize.sh`; module installs on any version the manager supports
+
+---
+
 ## v5.3.0 (2026-03-06)
 
 ### Ground-Up Rust Rewrite
