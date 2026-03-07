@@ -71,18 +71,28 @@ if [ -x "$BIN" ] && "$BIN" version >/dev/null 2>&1; then
     ui_print "  ✅ No conflicts found"
 fi
 
+HAS_TARGET=0
+if [ -f "/data/adb/tricky_store/target.txt" ] && [ -s "/data/adb/tricky_store/target.txt" ]; then
+    HAS_TARGET=1
+fi
+
 ui_print " "
 ui_print "  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 ui_print "  🎯 Automation Mode"
 ui_print "  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 ui_print " "
 ui_print "  🔊 Vol+ = Full Automation (recommended)"
-ui_print "  🔉 Vol- = Manual Mode (skip target.txt)"
+ui_print "  🔉 Vol- = Manual Mode (keep existing target.txt)"
 ui_print " "
-ui_print "  ⏱️  Auto-selecting Full Automation in 10s..."
-ui_print " "
-
-choose_automation
+if [ "$HAS_TARGET" -eq 1 ]; then
+    ui_print "  📋 Existing target.txt detected — waiting for your choice..."
+    ui_print " "
+    choose_automation 0
+else
+    ui_print "  ⏱️  Auto-selecting Full Automation in 10s..."
+    ui_print " "
+    choose_automation
+fi
 auto_mode=$?
 
 if [ "$auto_mode" -eq 0 ]; then
@@ -124,6 +134,9 @@ if [ "$AUTOMATION_ENABLED" -eq 1 ]; then
     ui_print "  📋 Building automation configuration..."
     build_exclude_list
     generate_initial_target
+elif [ "$HAS_TARGET" -eq 1 ]; then
+    ui_print "  📋 Existing target.txt preserved"
+    pm list packages -3 2>/dev/null | sed 's/^package://' | sort > "$AUTOMATION_DIR/known_packages.txt"
 else
     generate_minimal_target
 fi

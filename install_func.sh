@@ -42,17 +42,16 @@ initialize() {
     mkdir -p "$AUTOMATION_DIR"
 }
 
-# Volume key detection with timeout
 choose_automation() {
     local vol_tmp="$TMPDIR/vol_key"
-    local seconds=10
+    local seconds="${1:-10}"
     local ge_pid=""
 
     : > "$vol_tmp"
     getevent -qlc 1 > "$vol_tmp" 2>/dev/null &
     ge_pid=$!
 
-    while [ "$seconds" -gt 0 ]; do
+    while [ "$seconds" -gt 0 ] || [ "$1" = "0" ]; do
         sleep 1
         if ! kill -0 "$ge_pid" 2>/dev/null; then
             local key
@@ -71,7 +70,7 @@ choose_automation() {
             getevent -qlc 1 > "$vol_tmp" 2>/dev/null &
             ge_pid=$!
         fi
-        seconds=$((seconds - 1))
+        [ "$1" = "0" ] || seconds=$((seconds - 1))
     done
 
     kill "$ge_pid" 2>/dev/null
