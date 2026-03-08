@@ -216,7 +216,23 @@ pub fn update_prop_description(desc: &str) -> Result<()> {
         Path::new(&prop_path),
         format!("{new_content}{trailing}").as_bytes(),
     )
-    .context("failed to write module.prop")
+    .context("failed to write module.prop")?;
+
+    push_live_description(desc);
+    Ok(())
+}
+
+fn push_live_description(desc: &str) {
+    let ksud = ["/data/adb/ksu/bin/ksud", "/data/adb/ap/bin/ksud"]
+        .iter()
+        .find(|p| Path::new(p).exists())
+        .copied()
+        .unwrap_or("ksud");
+
+    let _ = Command::new(ksud)
+        .args(["module", "config", "set", "override.description", desc])
+        .env("KSU_MODULE", "TA_enhanced")
+        .output();
 }
 
 pub fn scan_xposed() -> Result<Vec<String>> {
