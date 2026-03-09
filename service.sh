@@ -76,8 +76,19 @@ else
     [ -d "$HIDE_DIR" ] && rm -rf "$HIDE_DIR"
 fi
 
-# Preserve module.prop for WebUI version display, then hide from manager UI
+# Ensure system_app file exists for WebUI system app display
+if [ ! -f "$TS_DIR/system_app" ]; then
+    : > "$TS_DIR/system_app"
+    for app in com.google.android.gms com.google.android.gsf com.android.vending \
+               com.oplus.deepthinker com.heytap.speechassist com.coloros.sceneservice; do
+        pm list packages -s 2>/dev/null | grep -q "package:$app" && echo "$app" >> "$TS_DIR/system_app"
+    done
+fi
+
 mkdir -p "/data/adb/tricky_store/ta-enhanced"
+pm list packages -s 2>/dev/null | sed 's/^package://' | sort > "/data/adb/tricky_store/ta-enhanced/system_packages.txt"
+
+# Preserve module.prop for WebUI version display, then hide from manager UI
 cp -f "$MODPATH/module.prop" "/data/adb/tricky_store/ta-enhanced/module.prop" 2>/dev/null || true
 rm -f "$MODPATH/module.prop"
 

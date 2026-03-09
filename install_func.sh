@@ -79,6 +79,24 @@ choose_automation() {
     return 0
 }
 
+# Populate system_app file for WebUI display (matches upstream behavior)
+populate_system_app() {
+    local system_app_file="/data/adb/tricky_store/system_app"
+    [ -f "$system_app_file" ] && return
+
+    local candidates="com.google.android.gms
+com.google.android.gsf
+com.android.vending
+com.oplus.deepthinker
+com.heytap.speechassist
+com.coloros.sceneservice"
+
+    : > "$system_app_file"
+    for app in $candidates; do
+        pm list packages -s 2>/dev/null | grep -q "package:$app" && echo "$app" >> "$system_app_file"
+    done
+}
+
 # System-apps-only target.txt for manual mode
 generate_minimal_target() {
     local system_apps="com.google.android.gms

@@ -59,11 +59,18 @@
                 </div>
                 <md-menu-item id="select-denylist" data-i18n="menu_select_denylist"></md-menu-item>
                 <md-menu-item id="deselect-unnecessary" data-i18n="menu_deselect_unnecessary"></md-menu-item>
-                <md-menu-item id="add-system-app" data-i18n="menu_add_system_app"></md-menu-item>
+                <md-menu-item id="show-system-apps">
+                    <div slot="headline" data-i18n="menu_show_system_apps">Show System Apps</div>
+                    <div slot="end" class="custom-toggle" id="system-apps-toggle">
+                        <div class="toggle-track">
+                            <div class="toggle-thumb"></div>
+                        </div>
+                    </div>
+                </md-menu-item>
                 <md-divider role="separator" tabindex="-1"></md-divider>
                 <md-menu-item id="automation-settings" class="automation-menu-item">
                     <md-icon slot="start" style="color: #FFD700;">auto_awesome</md-icon>
-                    <div slot="headline">Keybox Automation</div>
+                    <div slot="headline" data-i18n="menu_automation">Keybox Automation</div>
                     <md-icon slot="end">arrow_forward</md-icon>
                 </md-menu-item>
                 <md-menu-item id="boot-hash" data-i18n="menu_set_verified_boot_hash"></md-menu-item>
@@ -103,8 +110,8 @@
     <!-- Health Status Banner -->
     <div class="health-banner" id="health-banner">
         <div class="health-dot" id="health-dot"></div>
-        <span class="health-label" id="health-engine-name">Attestation</span>
-        <span class="health-status" id="health-status-text">Checking...</span>
+        <span class="health-label" id="health-engine-name" data-i18n="health_engine_default">Attestation</span>
+        <span class="health-status" id="health-status-text" data-i18n="health_checking">Checking...</span>
     </div>
 
     <!-- Applist Display -->
@@ -318,18 +325,9 @@
             </div>
         </md-dialog>
 
-        <!-- Add System App Dialog -->
-        <md-dialog id="add-system-app-dialog" class="text-field-dialog">
-            <div slot="headline" data-i18n="add_system_app_title"></div>
-            <div slot="content">
-                <md-outlined-text-field id="system-app-input" placeholder="com.example.app" autocapitalize="none"></md-outlined-text-field>
-                <h3 class="current-system-app-list" data-i18n="add_system_app_current_list"></h3>
-                <div class="current-system-app-list-content"></div>
-            </div>
-            <div slot="actions">
-                <md-text-button id="cancel-add-system-app" data-i18n="functional_button_cancel"></md-text-button>
-                <md-filled-button id="add-system-app-button" data-i18n="add_system_app_add"></md-filled-button>
-            </div>
+        <!-- System App Dialog (unused, kept for reference) -->
+        <md-dialog id="add-system-app-dialog" class="text-field-dialog" style="display:none">
+            <div slot="content"></div>
         </md-dialog>
 
         <!-- Uninstall Confirmation Dialog -->
@@ -349,11 +347,10 @@
                 <div class="sheet-handle"></div>
             </div>
             <div slot="content" class="automation-content">
-                <!-- Keybox Section -->
                 <div class="setting-section">
-                    <div class="setting-header">Keybox Auto-Fetch</div>
+                    <div class="setting-header" data-i18n="automation_keybox_header">Keybox Auto-Fetch</div>
                     <div class="setting-row">
-                        <span>Enable</span>
+                        <span data-i18n="automation_enable">Enable</span>
                         <div class="custom-toggle" id="keybox-auto-toggle">
                             <div class="toggle-track">
                                 <div class="toggle-thumb"></div>
@@ -366,7 +363,7 @@
                                 <md-icon>vpn_key</md-icon>
                             </div>
                             <div class="source-name">Yurikey</div>
-                            <div class="source-desc">Primary source</div>
+                            <div class="source-desc" data-i18n="automation_src_primary">Primary source</div>
                             <div class="source-check"><md-icon>check_circle</md-icon></div>
                         </button>
                         <button class="source-card" data-value="upstream">
@@ -374,7 +371,7 @@
                                 <md-icon>cloud_sync</md-icon>
                             </div>
                             <div class="source-name">KOW</div>
-                            <div class="source-desc">KOWX712 mirror</div>
+                            <div class="source-desc" data-i18n="automation_src_mirror">KOWX712 mirror</div>
                             <div class="source-check"><md-icon>check_circle</md-icon></div>
                         </button>
                         <button class="source-card" data-value="integritybox">
@@ -382,7 +379,7 @@
                                 <md-icon>inventory_2</md-icon>
                             </div>
                             <div class="source-name">IntegrityBox</div>
-                            <div class="source-desc">MeowDump</div>
+                            <div class="source-desc" data-i18n="automation_src_meowdump">MeowDump</div>
                             <div class="source-check"><md-icon>check_circle</md-icon></div>
                         </button>
                         <button class="source-card" id="devicekb" data-value="unknown" data-action="true">
@@ -390,7 +387,7 @@
                                 <md-icon>help_outline</md-icon>
                             </div>
                             <div class="source-name">Unknown</div>
-                            <div class="source-desc">Device generated</div>
+                            <div class="source-desc" data-i18n="automation_src_device">Device generated</div>
                             <div class="source-check"><md-icon>check_circle</md-icon></div>
                         </button>
                         <button class="source-card" id="aospkb" data-value="aosp" data-action="true">
@@ -398,7 +395,7 @@
                                 <md-icon>android</md-icon>
                             </div>
                             <div class="source-name">AOSP</div>
-                            <div class="source-desc">Stock keybox</div>
+                            <div class="source-desc" data-i18n="automation_src_stock">Stock keybox</div>
                             <div class="source-check"><md-icon>check_circle</md-icon></div>
                         </button>
                         <button class="source-card" id="customkb" data-value="custom" data-action="true">
@@ -406,14 +403,14 @@
                                 <md-icon>edit</md-icon>
                             </div>
                             <div class="source-name">Custom</div>
-                            <div class="source-desc">Your keybox</div>
+                            <div class="source-desc" data-i18n="automation_src_custom">Your keybox</div>
                             <div class="source-check"><md-icon>check_circle</md-icon></div>
                         </button>
                     </div>
                 </div>
 
                 <div class="setting-section">
-                    <div class="setting-header">Fetch Interval <span id="current-interval" class="interval-badge"></span></div>
+                    <div class="setting-header"><span data-i18n="automation_interval_header">Fetch Interval</span> <span id="current-interval" class="interval-badge"></span></div>
                     <div class="interval-grid" id="keybox-interval-grid">
                         <button class="interval-chip" data-seconds="3600">1h</button>
                         <button class="interval-chip" data-seconds="21600">6h</button>
@@ -423,30 +420,30 @@
                         <button class="interval-chip" data-seconds="604800">7d</button>
                     </div>
                     <div class="interval-custom" id="interval-custom-row">
-                        <input type="number" id="interval-custom-input" min="1" placeholder="Custom" class="interval-input">
+                        <input type="number" id="interval-custom-input" min="1" placeholder="Custom" data-i18n="automation_interval_custom" class="interval-input">
                         <div class="unit-toggle" id="interval-unit-toggle">
                             <button class="unit-btn" data-mult="60">min</button>
                             <button class="unit-btn selected" data-mult="3600">hr</button>
                             <button class="unit-btn" data-mult="86400">day</button>
                         </div>
-                        <button class="interval-chip interval-set-btn" id="interval-custom-set">Set</button>
+                        <button class="interval-chip interval-set-btn" id="interval-custom-set" data-i18n="automation_interval_set">Set</button>
                     </div>
                 </div>
 
                 <div class="setting-section">
-                    <div class="setting-header">Manual Actions</div>
+                    <div class="setting-header" data-i18n="automation_manual_header">Manual Actions</div>
                     <div class="manual-actions">
                         <md-filled-button id="fetch-keybox-now">
                             <md-icon slot="icon">key</md-icon>
-                            Fetch Key
+                            <span data-i18n="automation_fetch_key">Fetch Key</span>
                         </md-filled-button>
                     </div>
                 </div>
 
                 <div class="setting-section">
-                    <div class="setting-header">Security Patch Auto-Update</div>
+                    <div class="setting-header" data-i18n="automation_patch_header">Security Patch Auto-Update</div>
                     <div class="setting-row">
-                        <span>Enable</span>
+                        <span data-i18n="automation_enable">Enable</span>
                         <div class="custom-toggle" id="security-patch-auto-toggle">
                             <div class="toggle-track">
                                 <div class="toggle-thumb"></div>
@@ -456,16 +453,15 @@
                     <div class="manual-actions" style="margin-top: 8px;">
                         <md-filled-button id="set-patch-now">
                             <md-icon slot="icon">security</md-icon>
-                            Set Patch
+                            <span data-i18n="automation_set_patch">Set Patch</span>
                         </md-filled-button>
                     </div>
                 </div>
 
-                <!-- Appearance Section -->
                 <div class="setting-section">
-                    <div class="setting-header">Appearance</div>
+                    <div class="setting-header" data-i18n="automation_appearance_header">Appearance</div>
                     <div class="setting-row">
-                        <span>Randomize Accent on Load</span>
+                        <span data-i18n="automation_randomize_accent">Randomize Accent on Load</span>
                         <div class="custom-toggle" id="accent-randomize-toggle">
                             <div class="toggle-track">
                                 <div class="toggle-thumb"></div>
@@ -476,7 +472,7 @@
                 </div>
             </div>
             <div slot="actions">
-                <md-text-button id="close-automation-settings">Close</md-text-button>
+                <md-text-button id="close-automation-settings" data-i18n="functional_button_close">Close</md-text-button>
             </div>
         </md-dialog>
     </div>

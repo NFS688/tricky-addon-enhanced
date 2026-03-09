@@ -107,6 +107,7 @@ ui_print " "
 ui_print "  📦 Installing..."
 
 initialize
+populate_system_app
 
 if [ -x "$BIN" ]; then
     if ! "$BIN" version >/dev/null 2>&1; then
@@ -145,6 +146,8 @@ fi
 
 TA_DIR="$SCRIPT_DIR/ta-enhanced"
 mkdir -p "$TA_DIR/logs"
+
+pm list packages -s 2>/dev/null | sed 's/^package://' | sort > "$TA_DIR/system_packages.txt"
 
 if [ ! -f "$TA_DIR/config.toml" ]; then
     "$BIN" config init --automation="$AUTOMATION_ENABLED" 2>/dev/null \
