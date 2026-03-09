@@ -89,6 +89,7 @@ pub struct SecurityPatchInfo {
 
 fn read_module_prop(key: &str) -> Option<String> {
     [
+        "/data/adb/tricky_store/ta-enhanced/module.prop",
         "/data/adb/modules/.TA_enhanced/module.prop",
         "/data/adb/modules/TA_enhanced/module.prop",
     ]
@@ -194,7 +195,7 @@ pub fn handle_webui_init(cfg: &Config) -> anyhow::Result<()> {
         module: ModuleInfo {
             id: read_module_prop("id").unwrap_or_else(|| "TA_enhanced".into()),
             name: read_module_prop("name").unwrap_or_else(|| "Tricky Addon Enhanced".into()),
-            version: read_module_prop("version").unwrap_or_else(|| VERSION.into()),
+            version: read_module_prop("version").unwrap_or_else(|| format!("v{VERSION}")),
             version_code: read_module_prop("versionCode").and_then(|v| v.parse().ok()).unwrap_or(0),
             author: read_module_prop("author").unwrap_or_else(|| "KOWX712, Enginex0".into()),
         },

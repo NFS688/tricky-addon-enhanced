@@ -17,7 +17,10 @@ pub const CONFIG_PATH: &str = "/data/adb/tricky_store/ta-enhanced/config.toml";
 
 const TAG_SIGNAL: u64 = 0;
 const TAG_INOTIFY: u64 = 1;
+const TAG_APP_INOTIFY: u64 = 2;
 const TAG_TASK_BASE: u64 = 100;
+
+const APP_DIR: &str = "/data/app";
 
 pub fn handle_daemon(cfg: &Config, manager: Option<&str>) -> anyhow::Result<()> {
     let _ = cfg;
@@ -88,10 +91,28 @@ fn run_daemon(manager: Option<String>) -> anyhow::Result<()> {
     let inotify_fd = create_config_watcher(CONFIG_PATH)?;
     epoll_add(epoll_fd, inotify_fd, TAG_INOTIFY)?;
 
+    let app_inotify_fd = if config.automation.enabled && config.automation.use_inotify {
+        match create_app_watcher(APP_DIR) {
+            Ok(fd) => {
+                epoll_add(epoll_fd, fd, TAG_APP_INOTIFY)?;
+                tracing::info!("watching {APP_DIR} for app installs");
+                Some(fd)
+            }
+            Err(e) => {
+                tracing::warn!("app directory inotify failed, relying on polling: {e}");
+                None
+            }
+        }
+    } else {
+        None
+    };
+
     let mut sched = Scheduler::new(&config, epoll_fd, manager)?;
 
     let mut events = [libc::epoll_event { events: 0, u64: 0 }; 16];
     let mut inotify_debounce: Option<u64> = None;
+    let mut app_debounce: Option<u64> = None;
+    let mut app_retry: Option<u64> = None;
 
     tracing::info!("daemon started (pid={})", std::process::id());
 
@@ -132,6 +153,11 @@ fn run_daemon(manager: Option<String>) -> anyhow::Result<()> {
                     }
                     inotify_debounce = Some(now + 300);
                 }
+                TAG_APP_INOTIFY => {
+                    drain_inotify_discard(app_inotify_fd.unwrap_or(-1));
+                    app_debounce = Some(now + 3000);
+                    app_retry = Some(now + 8000);
+                }
                 t if t >= TAG_TASK_BASE => {
                     let task_idx = (t - TAG_TASK_BASE) as usize;
                     sched.handle_timer(task_idx, &config);
@@ -156,11 +182,32 @@ fn run_daemon(manager: Option<String>) -> anyhow::Result<()> {
                 }
             }
         }
+
+        if let Some(deadline) = app_debounce {
+            if now >= deadline {
+                app_debounce = None;
+                if config.automation.enabled {
+                    tracing::info!("app change detected, running package scan");
+                    sched.run_automation_now(&config);
+                }
+            }
+        }
+
+        if let Some(deadline) = app_retry {
+            if now >= deadline {
+                app_retry = None;
+                if config.automation.enabled {
+                    tracing::info!("app change retry scan");
+                    sched.run_automation_now(&config);
+                }
+            }
+        }
     }
 
     tracing::info!("daemon shutting down");
     sched.close_all();
     unsafe {
+        if let Some(fd) = app_inotify_fd { libc::close(fd); }
         libc::close(inotify_fd);
         libc::close(signal_fd);
         libc::close(epoll_fd);
@@ -217,6 +264,34 @@ fn rewatch_config(inotify_fd: RawFd, config_path: &str) -> anyhow::Result<()> {
         anyhow::bail!("rewatch failed: {}", std::io::Error::last_os_error());
     }
     Ok(())
+}
+
+fn create_app_watcher(dir: &str) -> anyhow::Result<RawFd> {
+    let fd = unsafe { libc::inotify_init1(libc::IN_NONBLOCK | libc::IN_CLOEXEC) };
+    if fd < 0 {
+        anyhow::bail!("inotify_init1 failed: {}", std::io::Error::last_os_error());
+    }
+    let c_path = std::ffi::CString::new(dir)?;
+    let wd = unsafe {
+        libc::inotify_add_watch(
+            fd,
+            c_path.as_ptr(),
+            libc::IN_CREATE | libc::IN_DELETE | libc::IN_MOVED_TO | libc::IN_MOVED_FROM,
+        )
+    };
+    if wd < 0 {
+        unsafe { libc::close(fd); }
+        anyhow::bail!("inotify_add_watch({dir}) failed: {}", std::io::Error::last_os_error());
+    }
+    Ok(fd)
+}
+
+fn drain_inotify_discard(fd: RawFd) {
+    let mut buf = [0u8; 4096];
+    loop {
+        let n = unsafe { libc::read(fd, buf.as_mut_ptr() as *mut libc::c_void, buf.len()) };
+        if n <= 0 { break; }
+    }
 }
 
 fn drain_inotify(fd: RawFd) -> bool {

@@ -76,8 +76,9 @@ else
     [ -d "$HIDE_DIR" ] && rm -rf "$HIDE_DIR"
 fi
 
-# Hide module.prop from manager UI
-# StatusTask writes dynamic description to TrickyStore's module.prop.
+# Preserve module.prop for WebUI version display, then hide from manager UI
+mkdir -p "/data/adb/tricky_store/ta-enhanced"
+cp -f "$MODPATH/module.prop" "/data/adb/tricky_store/ta-enhanced/module.prop" 2>/dev/null || true
 rm -f "$MODPATH/module.prop"
 
 # Symlink Management

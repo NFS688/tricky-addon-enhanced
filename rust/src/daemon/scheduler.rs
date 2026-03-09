@@ -85,6 +85,21 @@ impl Scheduler {
         }
     }
 
+    pub fn run_automation_now(&mut self, config: &Config) {
+        for slot in &mut self.slots {
+            if slot.task.name() != "automation" { continue; }
+            if !slot.task.is_enabled(config) { return; }
+            match slot.task.run(config, self.manager.as_deref()) {
+                Ok(()) => {}
+                Err(TaskBackoff(delay)) => {
+                    tracing::info!("automation: backoff {delay}s");
+                    arm_timerfd_oneshot(slot.timer_fd, delay);
+                }
+            }
+            return;
+        }
+    }
+
     pub fn close_all(&self) {
         for slot in &self.slots {
             unsafe { libc::close(slot.timer_fd); }
