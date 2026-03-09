@@ -86,7 +86,6 @@ if [ ! -f "$TS_DIR/system_app" ]; then
 fi
 
 mkdir -p "/data/adb/tricky_store/ta-enhanced"
-pm list packages -s 2>/dev/null | sed 's/^package://' | sort > "/data/adb/tricky_store/ta-enhanced/system_packages.txt"
 
 # Preserve module.prop for WebUI version display, then hide from manager UI
 cp -f "$MODPATH/module.prop" "/data/adb/tricky_store/ta-enhanced/module.prop" 2>/dev/null || true
@@ -116,6 +115,8 @@ timeout 120 getprop -w sys.boot_completed 2>/dev/null || {
     done
 }
 _log "INFO" "Boot completed"
+
+pm list packages -s 2>/dev/null | sed 's/^package://' | sort > "/data/adb/tricky_store/ta-enhanced/system_packages.txt"
 
 # VBHash Extraction (config-gated)
 vbhash_enabled=$(read_config vbhash.enabled true)

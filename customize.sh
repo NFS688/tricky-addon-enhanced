@@ -139,6 +139,11 @@ if [ "$AUTOMATION_ENABLED" -eq 1 ]; then
     generate_initial_target
 elif [ "$HAS_TARGET" -eq 1 ]; then
     ui_print "  📋 Existing target.txt preserved"
+    for _app in com.google.android.gms com.google.android.gsf com.android.vending \
+                 com.oplus.deepthinker com.heytap.speechassist com.coloros.sceneservice; do
+        pm list packages -s 2>/dev/null | grep -q "package:$_app" || continue
+        grep -qxF "$_app" "$TARGET_FILE" 2>/dev/null || echo "$_app" >> "$TARGET_FILE"
+    done
     pm list packages -3 2>/dev/null | sed 's/^package://' | sort > "$AUTOMATION_DIR/known_packages.txt"
 else
     generate_minimal_target
@@ -147,7 +152,15 @@ fi
 TA_DIR="$SCRIPT_DIR/ta-enhanced"
 mkdir -p "$TA_DIR/logs"
 
-pm list packages -s 2>/dev/null | sed 's/^package://' | sort > "$TA_DIR/system_packages.txt"
+# PM can be sluggish during install
+_try=0
+while [ "$_try" -lt 3 ]; do
+    _pkgs=$(pm list packages -s 2>/dev/null)
+    [ -n "$_pkgs" ] && break
+    _try=$((_try + 1))
+    sleep 1
+done
+[ -n "$_pkgs" ] && echo "$_pkgs" | sed 's/^package://' | sort > "$TA_DIR/system_packages.txt"
 
 if [ ! -f "$TA_DIR/config.toml" ]; then
     "$BIN" config init --automation="$AUTOMATION_ENABLED" 2>/dev/null \
