@@ -1,5 +1,27 @@
 # Changelog
 
+## v5.8.0 (2026-03-09)
+
+### Features
+- **Inotify-based app detection** — daemon watches `/data/app/` for installs and uninstalls via inotify, gated on `automation.use_inotify` config. Two-stage scan at 3s and 8s after directory event handles the PM registration race where the package manager hasn't finished registering the app when the directory first appears
+- **On-demand automation trigger** — scheduler exposes `run_automation_now()` so inotify events bypass the regular 10s polling interval
+
+### Bug Fixes
+- **Module version not shown in WebUI** — `service.sh` deletes `module.prop` to hide from manager UI, but `webui_init.rs` couldn't read it. Now preserves a copy to `/data/adb/tricky_store/ta-enhanced/module.prop` before deletion, added as first lookup path
+- **Version fallback missing `v` prefix** — `CARGO_PKG_VERSION` fallback now formats as `v5.8.0` instead of `5.8.0`
+
+### Performance
+- **WebUI init unblocked** — `webui-init` no longer waits for binary path resolution (`kc()`); path is resolved inline within the shell call, saving one sequential round trip on page load
+
+---
+
+## v5.7.0 (2026-03-08)
+
+### Bug Fixes
+- **KSU theme colors** — use KSU native theme system for Material surface colors instead of hardcoded values
+
+---
+
 ## v5.6.0 (2026-03-07)
 
 ### Bug Fixes
