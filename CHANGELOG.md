@@ -1,5 +1,18 @@
 # Changelog
 
+## v5.23.0 (2026-03-11)
+
+### Features
+- **`ro.boot.product.hardware.sku` support** — fourth region prop added across the full stack (config, install snapshot, boot enforcement, WebUI)
+- **Collapsible region UI** — `ro.boot.hwc` always visible, remaining 3 fields behind a chevron expand to reduce clutter
+- **GitHub Actions CI** — build workflow cross-compiles both ABIs and uploads the module ZIP as artifact on every push
+
+### Improvements
+- **Region i18n** — all 3 region strings translated across 22 locales (was English-only fallback)
+- **Dynamic README badges** — version badge pulls from GitHub releases, build status badge from CI
+
+---
+
 ## v5.22.0 (2026-03-10)
 
 ### Features
