@@ -85,7 +85,10 @@ if [ ! -f "$TS_DIR/system_app" ]; then
     done
 fi
 
-mkdir -p "/data/adb/tricky_store/ta-enhanced"
+mkdir -p "/data/adb/tricky_store/ta-enhanced/bin"
+
+cp -f "$MODPATH/bin/${ABI}/resetprop-rs" "/data/adb/tricky_store/ta-enhanced/bin/resetprop-rs" 2>/dev/null
+chmod 755 "/data/adb/tricky_store/ta-enhanced/bin/resetprop-rs" 2>/dev/null
 
 # Preserve module.prop for WebUI version display, then hide from manager UI
 cp -f "$MODPATH/module.prop" "/data/adb/tricky_store/ta-enhanced/module.prop" 2>/dev/null || true

@@ -23,6 +23,7 @@ fi
 if [ -n "$MODDIR" ] && [ -n "$ABI" ]; then
     BIN="$MODDIR/bin/${ABI}/ta-enhanced"
 fi
+RP="/data/adb/tricky_store/ta-enhanced/bin/resetprop-rs"
 
 # TrickyStore Paths
 TS="/data/adb/modules/tricky_store"
@@ -136,32 +137,13 @@ replace_value_prop() {
     fi
 }
 
-MAGISKBOOT_PATH=""
-find_magiskboot() {
-    [ -n "$MAGISKBOOT_PATH" ] && [ -x "$MAGISKBOOT_PATH" ] && return 0
-    MAGISKBOOT_PATH=$(which magiskboot 2>/dev/null)
-    [ -n "$MAGISKBOOT_PATH" ] && return 0
-    MAGISKBOOT_PATH=$(find /data/adb /data/data/me.bmax.apatch/patch/ -name magiskboot -print -quit 2>/dev/null)
-    [ -n "$MAGISKBOOT_PATH" ] && [ -x "$MAGISKBOOT_PATH" ] && return 0
-    MAGISKBOOT_PATH=""
-    return 1
-}
-
 hexpatch_deleteprop() {
-    find_magiskboot || { _log "WARN" "magiskboot not found, skipping hexpatch"; return 1; }
+    [ -x "$RP" ] || { _log "WARN" "resetprop-rs not found at $RP, skipping hexpatch"; return 1; }
     for search_string in "$@"; do
-        search_hex=$(printf '%s' "$search_string" | xxd -p | tr '[:lower:]' '[:upper:]')
-        # a-z + 0-9 + underscore to mimic real prop name segments (pure hex is a detection signal)
-        replacement=$(cat /dev/urandom | tr -dc 'a-z0-9_' | head -c ${#search_string})
-        replacement_hex=$(printf '%s' "$replacement" | xxd -p | tr '[:lower:]' '[:upper:]')
         getprop | cut -d'[' -f2 | cut -d']' -f1 | grep "$search_string" | while read -r prop_name; do
-            resetprop -Z "$prop_name" 2>/dev/null | cut -d' ' -f2 | cut -d':' -f3 | while read -r base; do
-                find /dev/__properties__/ -name "*${base}*" | while read -r prop_file; do
-                    if "$MAGISKBOOT_PATH" hexpatch "$prop_file" "$search_hex" "$replacement_hex" >/dev/null 2>&1; then
-                        _log "DEBUG" "hexpatch: $prop_name ($search_string -> $replacement)"
-                    fi
-                done
-            done
+            if "$RP" --hexpatch-delete "$prop_name" 2>/dev/null; then
+                _log "DEBUG" "hexpatch: $prop_name"
+            fi
         done
     done
 }
