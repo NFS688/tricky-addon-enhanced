@@ -1,5 +1,17 @@
 # Changelog
 
+## v5.22.0 (2026-03-10)
+
+### Features
+- **Config-driven MIUI region props** — snapshots `ro.boot.hwc`, `ro.boot.hwcountry`, `ro.product.mod_device` at install time instead of blind CN→GLOBAL spoofing. Supports Global/CN/India variants without breaking Xiaomi.eu or stock Indian ROMs
+- **Region WebUI controls** — toggle and text fields inside Keybox Automation settings for per-device override of region props
+- **Boot hash priority chain** — prefers TEESimulator's persisted `boot_hash.bin` when present (cert-chain consistent), falls back to our install-time capture. No gap if TEESimulator is absent or uses upstream without persistence
+
+### Improvements
+- **Uninstall completeness** — cleans up `.verbose`, `devconfig.toml`, `TA_enhanced` module dir, `banner.png` symlink, and banner line from TrickyStore's `module.prop`
+
+---
+
 ## v5.8.0 (2026-03-09)
 
 ### Features

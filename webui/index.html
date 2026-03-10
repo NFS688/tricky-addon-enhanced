@@ -25,6 +25,8 @@
       .unit-btn{padding:8px 14px;border:0;background:0 0;color:var(--md-sys-color-on-surface,#e0e0e0);font-size:13px;font-family:inherit;cursor:pointer;transition:all .2s}
       .unit-btn.selected{background:rgba(var(--accent-rgb,0,214,143),.2);color:rgb(var(--accent-rgb,0,214,143))}
       .interval-set-btn{flex:0 0 auto;padding:8px 16px}
+      #region-fields{display:flex;flex-direction:column;gap:12px;padding:8px 0}
+      #region-fields md-outlined-text-field{width:100%}
       .interval-badge{font-size:11px;font-weight:400;padding:2px 8px;border-radius:10px;background:rgba(var(--accent-rgb,0,214,143),.15);color:rgb(var(--accent-rgb,0,214,143));margin-left:6px;vertical-align:middle}
     </style>
   <link rel="preload" href="./assets/material-symbols-outlined-D4N9P62f.woff2" as="font" type="font/woff2" crossorigin>
@@ -455,6 +457,23 @@
                             <md-icon slot="icon">security</md-icon>
                             <span data-i18n="automation_set_patch">Set Patch</span>
                         </md-filled-button>
+                    </div>
+                </div>
+
+                <div class="setting-section">
+                    <div class="setting-header" data-i18n="automation_region_header">Region Props</div>
+                    <div class="setting-row">
+                        <span data-i18n="automation_enable">Enable</span>
+                        <div class="custom-toggle" id="region-enabled-toggle">
+                            <div class="toggle-track">
+                                <div class="toggle-thumb"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="region-fields">
+                        <md-outlined-text-field id="region-hwc" label="ro.boot.hwc" placeholder="GLOBAL" autocapitalize="none"></md-outlined-text-field>
+                        <md-outlined-text-field id="region-hwcountry" label="ro.boot.hwcountry" placeholder="GLOBAL" autocapitalize="none"></md-outlined-text-field>
+                        <md-outlined-text-field id="region-mod-device" label="ro.product.mod_device" placeholder="munchg" autocapitalize="none"></md-outlined-text-field>
                     </div>
                 </div>
 

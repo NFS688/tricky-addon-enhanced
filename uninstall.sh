@@ -71,6 +71,9 @@ rm -f "$SCRIPT_DIR/security_patch_auto_config"
 rm -f "$SCRIPT_DIR/target_from_denylist"
 rm -f "$SCRIPT_DIR/system_app"
 rm -f "$SCRIPT_DIR/enhanced.conf"
+rm -f "$SCRIPT_DIR/.verbose"
+rm -f "$SCRIPT_DIR/devconfig.toml"
+rm -rf "/data/adb/modules/TA_enhanced"
 
 # Restore TrickyStore description
 if [ -f "$SCRIPT_DIR/.original_description" ] && [ -f "$TS/module.prop" ]; then
@@ -81,10 +84,13 @@ if [ -f "$SCRIPT_DIR/.original_description" ] && [ -f "$TS/module.prop" ]; then
     fi
 fi
 
-# Clean symlinks
 if [ -d "$TS" ]; then
     [ -L "$TS/webroot" ] && rm -f "$TS/webroot"
     [ -L "$TS/action.sh" ] && rm -f "$TS/action.sh"
+    [ -L "$TS/banner.png" ] && rm -f "$TS/banner.png"
+    if [ -f "$TS/module.prop" ]; then
+        sed -i '/^banner=banner\.png$/d' "$TS/module.prop" 2>/dev/null
+    fi
 fi
 
 # Clean status files

@@ -143,6 +143,7 @@
     <string name="automation_fetch_key">Fetch Key</string>
     <string name="automation_patch_header">Security Patch Auto-Update</string>
     <string name="automation_set_patch">Set Patch</string>
+    <string name="automation_region_header">Region Props</string>
     <string name="automation_appearance_header">Appearance</string>
     <string name="automation_randomize_accent">Randomize Accent on Load</string>
     <!-- Mode dialog -->
@@ -154,6 +155,8 @@
     <string name="prompt_keybox_fetch_disabled">Keybox auto-fetch disabled</string>
     <string name="prompt_patch_auto_enabled">Security patch auto-update enabled</string>
     <string name="prompt_patch_auto_disabled">Security patch auto-update disabled</string>
+    <string name="prompt_region_enabled">Region prop enforcement enabled</string>
+    <string name="prompt_region_disabled">Region prop enforcement disabled</string>
     <string name="prompt_config_save_failed">Failed to save config</string>
     <string name="prompt_denylist_failed">Failed to read DenyList</string>
     <string name="prompt_exclude_list_failed">Failed to read exclude list</string>

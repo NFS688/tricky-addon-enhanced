@@ -59,9 +59,16 @@ check_reset_prop "ro.is_ever_orange" "0"
 check_reset_prop "ro.oem_unlock_supported" "0"
 check_reset_prop "ro.secureboot.devicelock" "1"
 
-# MIUI cross-region flash (CN → GLOBAL)
-contains_reset_prop "ro.boot.hwc" "CN" "GLOBAL"
-contains_reset_prop "ro.boot.hwcountry" "CN" "GLOBAL"
+# MIUI region enforcement — restore device-snapshotted values from config
+_region_enabled=$(read_config region.enabled true)
+if [ "$_region_enabled" = "true" ]; then
+    _cfg_hwc=$(read_config region.hwc "")
+    _cfg_hwcountry=$(read_config region.hwcountry "")
+    _cfg_mod_device=$(read_config region.mod_device "")
+    [ -n "$_cfg_hwc" ] && check_reset_prop "ro.boot.hwc" "$_cfg_hwc"
+    [ -n "$_cfg_hwcountry" ] && check_reset_prop "ro.boot.hwcountry" "$_cfg_hwcountry"
+    [ -n "$_cfg_mod_device" ] && check_reset_prop "ro.product.mod_device" "$_cfg_mod_device"
+fi
 
 # Delete qemu property entirely -- some detectors check existence, not value
 if [ -n "$(resetprop ro.kernel.qemu)" ]; then
@@ -82,21 +89,27 @@ contains_reset_prop "vendor.bootmode" "recovery" "unknown"
 contains_reset_prop "vendor.boot.bootmode" "recovery" "unknown"
 contains_reset_prop "vendor.boot.mode" "recovery" "unknown"
 
-# VBMeta digest from persisted boot_hash (written at install by customize.sh)
-if [ -f "/data/adb/boot_hash" ]; then
+# VBMeta digest — prefer TEESimulator's persisted value, fall back to ours
+_hash_src=""
+hash_value=""
+if [ -f "$TS_DIR/boot_hash.bin" ]; then
+    hash_value=$(od -A n -t x1 "$TS_DIR/boot_hash.bin" 2>/dev/null | tr -d ' \n')
+    [ -n "$hash_value" ] && _hash_src="teesim"
+fi
+if [ -z "$hash_value" ] && [ -f "/data/adb/boot_hash" ]; then
     hash_value=$(grep -v '^#' "/data/adb/boot_hash" 2>/dev/null | tr -d '[:space:]' | tr '[:upper:]' '[:lower:]')
-    if echo "$hash_value" | grep -qE '^[a-f0-9]{64}$'; then
-        if resetprop -n ro.boot.vbmeta.digest "$hash_value" 2>/dev/null; then
-            _PROP_SPOOF_COUNT=$((_PROP_SPOOF_COUNT + 1))
-            _log "INFO" "VBMeta digest set from boot_hash: $(printf '%.16s' "$hash_value")..."
-        else
-            _PROP_FAIL_COUNT=$((_PROP_FAIL_COUNT + 1))
-            _log "ERROR" "Failed to set vbmeta.digest from boot_hash"
-        fi
+    [ -n "$hash_value" ] && _hash_src="boot_hash"
+fi
+if echo "$hash_value" | grep -qE '^[a-f0-9]{64}$'; then
+    if resetprop -n ro.boot.vbmeta.digest "$hash_value" 2>/dev/null; then
+        _PROP_SPOOF_COUNT=$((_PROP_SPOOF_COUNT + 1))
+        _log "INFO" "VBMeta digest set from $_hash_src: $(printf '%.16s' "$hash_value")..."
     else
-        _log "WARN" "boot_hash invalid (not 64-char hex), removing"
-        rm -f /data/adb/boot_hash
+        _PROP_FAIL_COUNT=$((_PROP_FAIL_COUNT + 1))
+        _log "ERROR" "Failed to set vbmeta.digest from $_hash_src"
     fi
+elif [ -n "$hash_value" ]; then
+    _log "WARN" "boot_hash invalid from $_hash_src (not 64-char hex)"
 fi
 
 # VBMeta metadata props -- ensure they exist even if kernel didn't set them

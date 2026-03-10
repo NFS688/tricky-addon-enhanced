@@ -20,6 +20,7 @@ pub struct Config {
     pub conflict: ConflictConfig,
     pub props: PropsConfig,
     pub propclean: PropCleanConfig,
+    pub region: RegionConfig,
     pub logging: LoggingConfig,
     pub ui: UiConfig,
 }
@@ -37,6 +38,7 @@ impl Default for Config {
             conflict: ConflictConfig::default(),
             props: PropsConfig::default(),
             propclean: PropCleanConfig::default(),
+            region: RegionConfig::default(),
             logging: LoggingConfig::default(),
             ui: UiConfig::default(),
         }
@@ -216,6 +218,26 @@ impl Default for PropCleanConfig {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(default)]
+pub struct RegionConfig {
+    pub enabled: bool,
+    pub hwc: String,
+    pub hwcountry: String,
+    pub mod_device: String,
+}
+
+impl Default for RegionConfig {
+    fn default() -> Self {
+        Self {
+            enabled: true,
+            hwc: String::new(),
+            hwcountry: String::new(),
+            mod_device: String::new(),
+        }
+    }
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(default)]
 pub struct LoggingConfig {
     pub level: String,
     pub max_size_mb: u32,
@@ -280,6 +302,7 @@ const ALL_KEYS: &[&str] = &[
     "conflict.enabled", "conflict.auto_remove",
     "props.enabled",
     "propclean.enabled", "propclean.interval",
+    "region.enabled", "region.hwc", "region.hwcountry", "region.mod_device",
     "logging.level", "logging.max_size_mb", "logging.max_files", "logging.log_dir",
     "ui.language",
 ];
@@ -366,6 +389,10 @@ impl Config {
             "props.enabled" => Some(self.props.enabled.to_string()),
             "propclean.enabled" => Some(self.propclean.enabled.to_string()),
             "propclean.interval" => Some(self.propclean.interval.to_string()),
+            "region.enabled" => Some(self.region.enabled.to_string()),
+            "region.hwc" => Some(self.region.hwc.clone()),
+            "region.hwcountry" => Some(self.region.hwcountry.clone()),
+            "region.mod_device" => Some(self.region.mod_device.clone()),
             "logging.level" => Some(self.logging.level.clone()),
             "logging.max_size_mb" => Some(self.logging.max_size_mb.to_string()),
             "logging.max_files" => Some(self.logging.max_files.to_string()),
@@ -412,6 +439,10 @@ impl Config {
             "props.enabled" => self.props.enabled = parse_bool(value)?,
             "propclean.enabled" => self.propclean.enabled = parse_bool(value)?,
             "propclean.interval" => self.propclean.interval = value.parse()?,
+            "region.enabled" => self.region.enabled = parse_bool(value)?,
+            "region.hwc" => self.region.hwc = value.to_string(),
+            "region.hwcountry" => self.region.hwcountry = value.to_string(),
+            "region.mod_device" => self.region.mod_device = value.to_string(),
             "logging.level" => self.logging.level = value.to_string(),
             "logging.max_size_mb" => self.logging.max_size_mb = value.parse()?,
             "logging.max_files" => self.logging.max_files = value.parse()?,

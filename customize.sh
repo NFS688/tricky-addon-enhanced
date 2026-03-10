@@ -176,6 +176,18 @@ else
     ui_print "  ⚙️  Configuration preserved (automation=$AUTOMATION_ENABLED)"
 fi
 
+# Snapshot device region props (only on fresh install — don't overwrite user overrides)
+_cur_hwc=$("$BIN" config get region.hwc 2>/dev/null)
+if [ -z "$_cur_hwc" ]; then
+    _hwc=$(getprop ro.boot.hwc 2>/dev/null)
+    _hwcountry=$(getprop ro.boot.hwcountry 2>/dev/null)
+    _mod_device=$(getprop ro.product.mod_device 2>/dev/null)
+    [ -n "$_hwc" ] && "$BIN" config set region.hwc "$_hwc" 2>/dev/null
+    [ -n "$_hwcountry" ] && "$BIN" config set region.hwcountry "$_hwcountry" 2>/dev/null
+    [ -n "$_mod_device" ] && "$BIN" config set region.mod_device "$_mod_device" 2>/dev/null
+    ui_print "  🌐 Region: hwc=${_hwc:-n/a} hwcountry=${_hwcountry:-n/a} mod_device=${_mod_device:-n/a}"
+fi
+
 if [ -f "$SCRIPT_DIR/enhanced.conf" ]; then
     "$BIN" config migrate 2>/dev/null \
         || ui_print "  ⚠️  Legacy config migration failed"
