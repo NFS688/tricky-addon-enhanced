@@ -940,7 +940,7 @@ dependencies = [
 
 [[package]]
 name = "ta-enhanced"
-version = "5.17.0"
+version = "5.19.0"
 dependencies = [
  "anyhow",
  "base64",
