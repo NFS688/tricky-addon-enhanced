@@ -128,7 +128,7 @@ for abi in "${!ABI_TARGET[@]}"; do
         mkdir -p "$dst_dir"
         cp "$src" "$dst_dir/ta-enhanced"
 
-        if [ -n "$STRIP" ] && [ -x "$STRIP" ]; then
+        if [ "$PROFILE" = "release" ] && [ -n "$STRIP" ] && [ -x "$STRIP" ]; then
             "$STRIP" "$dst_dir/ta-enhanced"
         fi
 

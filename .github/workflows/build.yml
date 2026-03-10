@@ -41,14 +41,28 @@ jobs:
         with:
           ndk-version: r27c
 
-      - name: Build and package
+      - name: Build release and package
         env:
           ANDROID_NDK_HOME: ${{ steps.ndk.outputs.ndk-path }}
         run: bash package.sh --no-bump
 
-      - name: Upload artifact
+      - name: Upload release ZIP
         uses: actions/upload-artifact@v4
         with:
-          name: TA_enhanced-${{ github.sha }}
+          name: TA_enhanced-release-${{ github.sha }}
           path: release/*.zip
+          retention-days: 30
+
+      - name: Build debug binaries
+        env:
+          ANDROID_NDK_HOME: ${{ steps.ndk.outputs.ndk-path }}
+        run: bash rust/build.sh debug
+
+      - name: Upload debug binaries
+        uses: actions/upload-artifact@v4
+        with:
+          name: TA_enhanced-debug-${{ github.sha }}
+          path: |
+            bin/arm64-v8a/ta-enhanced
+            bin/armeabi-v7a/ta-enhanced
           retention-days: 30
