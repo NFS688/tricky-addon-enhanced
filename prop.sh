@@ -1,6 +1,6 @@
 #!/bin/sh
-# prop.sh - Sole authority for ALL property spoofing (Tricky Addon Enhanced)
-# Runs early boot (before sys.boot_completed). No other script calls resetprop.
+# prop.sh - Early boot property spoofing (Tricky Addon Enhanced)
+# Runs pre-boot via resetprop. Post-boot cleanup in propclean.sh (hexpatch + normalization).
 
 MODPATH="${0%/*}"
 MODDIR="$MODPATH"
@@ -9,39 +9,6 @@ MODDIR="$MODPATH"
 _PROP_SPOOF_COUNT=0
 _PROP_FAIL_COUNT=0
 
-# Uses resetprop to read (sees already-spoofed values from prior boot)
-check_reset_prop() {
-    NAME=$1
-    EXPECTED=$2
-    VALUE=$(resetprop "$NAME")
-    if [ "$VALUE" = "$EXPECTED" ]; then
-        return 0
-    fi
-    if resetprop -n "$NAME" "$EXPECTED" 2>/dev/null; then
-        _PROP_SPOOF_COUNT=$((_PROP_SPOOF_COUNT + 1))
-    else
-        _PROP_FAIL_COUNT=$((_PROP_FAIL_COUNT + 1))
-        _log "ERROR" "Failed to spoof: $NAME"
-    fi
-}
-
-contains_reset_prop() {
-    NAME=$1
-    CONTAINS=$2
-    NEWVAL=$3
-    case "$(resetprop "$NAME")" in
-        *"$CONTAINS"*)
-            if resetprop -n "$NAME" "$NEWVAL" 2>/dev/null; then
-                _PROP_SPOOF_COUNT=$((_PROP_SPOOF_COUNT + 1))
-            else
-                _PROP_FAIL_COUNT=$((_PROP_FAIL_COUNT + 1))
-                _log "ERROR" "Failed to spoof (contains): $NAME"
-            fi
-            ;;
-    esac
-}
-
-# Uses getprop to read (sees real kernel/init values, not spoofed)
 ensure_prop() {
     NAME=$1
     NEWVAL=$2
@@ -87,8 +54,14 @@ check_reset_prop "ro.secureboot.lockstate" "locked"
 check_reset_prop "ro.boot.realmebootstate" "green"
 check_reset_prop "ro.boot.realme.lockstate" "1"
 
-# Additional props
 check_reset_prop "ro.crypto.state" "encrypted"
+check_reset_prop "ro.is_ever_orange" "0"
+check_reset_prop "ro.oem_unlock_supported" "0"
+check_reset_prop "ro.secureboot.devicelock" "1"
+
+# MIUI cross-region flash (CN → GLOBAL)
+contains_reset_prop "ro.boot.hwc" "CN" "GLOBAL"
+contains_reset_prop "ro.boot.hwcountry" "CN" "GLOBAL"
 
 # Delete qemu property entirely -- some detectors check existence, not value
 if [ -n "$(resetprop ro.kernel.qemu)" ]; then
@@ -104,7 +77,10 @@ fi
 # Hide recovery boot mode
 contains_reset_prop "ro.bootmode" "recovery" "unknown"
 contains_reset_prop "ro.boot.bootmode" "recovery" "unknown"
+contains_reset_prop "ro.boot.mode" "recovery" "unknown"
+contains_reset_prop "vendor.bootmode" "recovery" "unknown"
 contains_reset_prop "vendor.boot.bootmode" "recovery" "unknown"
+contains_reset_prop "vendor.boot.mode" "recovery" "unknown"
 
 # VBMeta digest from persisted boot_hash (written at install by customize.sh)
 if [ -f "/data/adb/boot_hash" ]; then

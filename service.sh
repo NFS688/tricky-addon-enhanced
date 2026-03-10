@@ -116,6 +116,9 @@ timeout 120 getprop -w sys.boot_completed 2>/dev/null || {
 }
 _log "INFO" "Boot completed"
 
+_log "INFO" "Running property cleanup"
+sh "$MODPATH/propclean.sh" &
+
 pm list packages -s 2>/dev/null | sed 's/^package://' | sort > "/data/adb/tricky_store/ta-enhanced/system_packages.txt"
 
 # VBHash Extraction (config-gated)

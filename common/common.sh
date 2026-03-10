@@ -90,3 +90,77 @@ detect_language() {
     TA_LANG="$lang_code"
     export TA_LANG
 }
+
+# Property spoofing primitives (shared by prop.sh and propclean.sh)
+# Callers set _PROP_SPOOF_COUNT and _PROP_FAIL_COUNT before use
+
+check_reset_prop() {
+    local name="$1" expected="$2"
+    local val
+    val=$(resetprop "$name")
+    [ "$val" = "$expected" ] && return 0
+    if resetprop -n "$name" "$expected" 2>/dev/null; then
+        _PROP_SPOOF_COUNT=$((_PROP_SPOOF_COUNT + 1))
+    else
+        _PROP_FAIL_COUNT=$((_PROP_FAIL_COUNT + 1))
+        _log "ERROR" "Failed to spoof: $name"
+    fi
+}
+
+contains_reset_prop() {
+    local name="$1" contains="$2" newval="$3"
+    case "$(resetprop "$name")" in
+        *"$contains"*)
+            if resetprop -n "$name" "$newval" 2>/dev/null; then
+                _PROP_SPOOF_COUNT=$((_PROP_SPOOF_COUNT + 1))
+            else
+                _PROP_FAIL_COUNT=$((_PROP_FAIL_COUNT + 1))
+                _log "ERROR" "Failed to spoof (contains): $name"
+            fi
+            ;;
+    esac
+}
+
+replace_value_prop() {
+    local name="$1" search="$2" replace="$3"
+    local val new_val
+    val=$(resetprop "$name")
+    [ -z "$val" ] && return
+    new_val=$(printf '%s' "$val" | sed "s|${search}|${replace}|g")
+    [ "$val" = "$new_val" ] && return
+    if resetprop -n "$name" "$new_val" 2>/dev/null; then
+        _PROP_SPOOF_COUNT=$((_PROP_SPOOF_COUNT + 1))
+    else
+        _PROP_FAIL_COUNT=$((_PROP_FAIL_COUNT + 1))
+        _log "ERROR" "Failed to replace in: $name"
+    fi
+}
+
+MAGISKBOOT_PATH=""
+find_magiskboot() {
+    [ -n "$MAGISKBOOT_PATH" ] && [ -x "$MAGISKBOOT_PATH" ] && return 0
+    MAGISKBOOT_PATH=$(which magiskboot 2>/dev/null)
+    [ -n "$MAGISKBOOT_PATH" ] && return 0
+    MAGISKBOOT_PATH=$(find /data/adb /data/data/me.bmax.apatch/patch/ -name magiskboot -print -quit 2>/dev/null)
+    [ -n "$MAGISKBOOT_PATH" ] && [ -x "$MAGISKBOOT_PATH" ] && return 0
+    MAGISKBOOT_PATH=""
+    return 1
+}
+
+hexpatch_deleteprop() {
+    find_magiskboot || { _log "WARN" "magiskboot not found, skipping hexpatch"; return 1; }
+    for search_string in "$@"; do
+        search_hex=$(printf '%s' "$search_string" | xxd -p | tr '[:lower:]' '[:upper:]')
+        replacement=$(cat /dev/urandom | tr -dc '0-9a-f' | head -c ${#search_string})
+        replacement_hex=$(printf '%s' "$replacement" | xxd -p | tr '[:lower:]' '[:upper:]')
+        getprop | cut -d'[' -f2 | cut -d']' -f1 | grep "$search_string" | while read -r prop_name; do
+            resetprop -Z "$prop_name" 2>/dev/null | cut -d' ' -f2 | cut -d':' -f3 | while read -r base; do
+                find /dev/__properties__/ -name "*${base}*" | while read -r prop_file; do
+                    if "$MAGISKBOOT_PATH" hexpatch "$prop_file" "$search_hex" "$replacement_hex" >/dev/null 2>&1; then
+                        _log "DEBUG" "hexpatch: $prop_name ($search_string -> $replacement)"
+                    fi
+                done
+            done
+        done
+    done
+}

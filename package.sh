@@ -93,6 +93,7 @@ REQUIRED_FILES=(
     service.sh
     uninstall.sh
     prop.sh
+    propclean.sh
     install_func.sh
     module.prop
     update.json

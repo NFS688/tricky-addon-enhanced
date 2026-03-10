@@ -19,6 +19,7 @@ pub struct Config {
     pub vbhash: VbhashConfig,
     pub conflict: ConflictConfig,
     pub props: PropsConfig,
+    pub propclean: PropCleanConfig,
     pub logging: LoggingConfig,
     pub ui: UiConfig,
 }
@@ -35,6 +36,7 @@ impl Default for Config {
             vbhash: VbhashConfig::default(),
             conflict: ConflictConfig::default(),
             props: PropsConfig::default(),
+            propclean: PropCleanConfig::default(),
             logging: LoggingConfig::default(),
             ui: UiConfig::default(),
         }
@@ -201,6 +203,19 @@ impl Default for PropsConfig {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(default)]
+pub struct PropCleanConfig {
+    pub enabled: bool,
+    pub interval: u32,
+}
+
+impl Default for PropCleanConfig {
+    fn default() -> Self {
+        Self { enabled: true, interval: 3600 }
+    }
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(default)]
 pub struct LoggingConfig {
     pub level: String,
     pub max_size_mb: u32,
@@ -264,6 +279,7 @@ const ALL_KEYS: &[&str] = &[
     "vbhash.enabled",
     "conflict.enabled", "conflict.auto_remove",
     "props.enabled",
+    "propclean.enabled", "propclean.interval",
     "logging.level", "logging.max_size_mb", "logging.max_files", "logging.log_dir",
     "ui.language",
 ];
@@ -348,6 +364,8 @@ impl Config {
             "conflict.enabled" => Some(self.conflict.enabled.to_string()),
             "conflict.auto_remove" => Some(self.conflict.auto_remove.to_string()),
             "props.enabled" => Some(self.props.enabled.to_string()),
+            "propclean.enabled" => Some(self.propclean.enabled.to_string()),
+            "propclean.interval" => Some(self.propclean.interval.to_string()),
             "logging.level" => Some(self.logging.level.clone()),
             "logging.max_size_mb" => Some(self.logging.max_size_mb.to_string()),
             "logging.max_files" => Some(self.logging.max_files.to_string()),
@@ -392,6 +410,8 @@ impl Config {
             "conflict.enabled" => self.conflict.enabled = parse_bool(value)?,
             "conflict.auto_remove" => self.conflict.auto_remove = parse_bool(value)?,
             "props.enabled" => self.props.enabled = parse_bool(value)?,
+            "propclean.enabled" => self.propclean.enabled = parse_bool(value)?,
+            "propclean.interval" => self.propclean.interval = value.parse()?,
             "logging.level" => self.logging.level = value.to_string(),
             "logging.max_size_mb" => self.logging.max_size_mb = value.parse()?,
             "logging.max_files" => self.logging.max_files = value.parse()?,
@@ -425,6 +445,7 @@ impl Config {
         clamp_min!(self.automation.interval, 5, "automation.interval");
         clamp_min!(self.health.interval, 5, "health.interval");
         clamp_min!(self.status.interval, 10, "status.interval");
+        clamp_min!(self.propclean.interval, 300, "propclean.interval");
 
         self.keybox.boot_retries = self.keybox.boot_retries.clamp(1, 30);
         self.keybox.retry_delay = self.keybox.retry_delay.clamp(1, 30);
