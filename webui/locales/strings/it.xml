@@ -113,4 +113,45 @@
     <string name="confirmation_uninstall_title">Confermi disinstallazione?</string>
     <string name="confirmation_uninstall_message">Sei sicuro di voler disinstallare Tricky Addon</string>
     <!-- Mode dialog -->
+    <string name="menu_show_system_apps">Mostra app di sistema</string>
+    <!-- Health Banner -->
+    <string name="health_engine_default">Attestazione</string>
+    <string name="health_checking">Verifica...</string>
+    <!-- Automation Settings -->
+    <string name="menu_automation">Automazione Keybox</string>
+    <string name="automation_keybox_header">Recupero automatico Keybox</string>
+    <string name="automation_enable">Attiva</string>
+    <string name="automation_src_primary">Fonte principale</string>
+    <string name="automation_src_mirror">Mirror KOWX712</string>
+    <string name="automation_src_meowdump">MeowDump</string>
+    <string name="automation_src_device">Generato dal dispositivo</string>
+    <string name="automation_src_stock">Keybox di fabbrica</string>
+    <string name="automation_src_custom">Il tuo keybox</string>
+    <string name="automation_interval_header">Intervallo di recupero</string>
+    <string name="automation_interval_custom">Personalizzato</string>
+    <string name="automation_interval_set">Imposta</string>
+    <string name="automation_manual_header">Azioni manuali</string>
+    <string name="automation_fetch_key">Recupera chiave</string>
+    <string name="automation_patch_header">Aggiornamento automatico patch di sicurezza</string>
+    <string name="automation_set_patch">Imposta patch</string>
+    <string name="automation_appearance_header">Aspetto</string>
+    <string name="automation_randomize_accent">Colore d'accento casuale al caricamento</string>
+    <!-- Mode dialog -->
+    <string name="mode_dialog_title">Modalità</string>
+    <string name="mode_auto">Auto</string>
+    <string name="mode_certificate_generating">Generazione certificato (!)</string>
+    <string name="mode_leaf_hack">Leaf Hack (?)</string>
+    <string name="prompt_keybox_fetch_enabled">Recupero automatico keybox attivato</string>
+    <string name="prompt_keybox_fetch_disabled">Recupero automatico keybox disattivato</string>
+    <string name="prompt_patch_auto_enabled">Aggiornamento automatico patch di sicurezza attivato</string>
+    <string name="prompt_patch_auto_disabled">Aggiornamento automatico patch di sicurezza disattivato</string>
+    <string name="prompt_config_save_failed">Salvataggio configurazione fallito</string>
+    <string name="prompt_denylist_failed">Lettura DenyList fallita</string>
+    <string name="prompt_exclude_list_failed">Lettura lista esclusione fallita</string>
+    <string name="prompt_unnecessary_failed">Recupero app non necessarie fallito</string>
+    <string name="prompt_open_link_failed">Impossibile aprire il link</string>
+    <string name="prompt_redirecting">Reindirizzamento</string>
+    <string name="health_active">Attivo</string>
+    <string name="health_not_running">Non avviato</string>
+    <string name="health_unknown">Sconosciuto</string>
 </resources>

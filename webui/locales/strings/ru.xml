@@ -123,4 +123,41 @@
     <string name="mode_dialog_title">Режим</string>
     <string name="mode_auto">Авто</string>
     <string name="mode_certificate_generating">Создать сертификат (!)</string>
+    <string name="menu_show_system_apps">Показать системные приложения</string>
+    <!-- Health Banner -->
+    <string name="health_engine_default">Аттестация</string>
+    <string name="health_checking">Проверка...</string>
+    <!-- Automation Settings -->
+    <string name="menu_automation">Автоматизация Keybox</string>
+    <string name="automation_keybox_header">Автозагрузка Keybox</string>
+    <string name="automation_enable">Включить</string>
+    <string name="automation_src_primary">Основной источник</string>
+    <string name="automation_src_mirror">Зеркало KOWX712</string>
+    <string name="automation_src_meowdump">MeowDump</string>
+    <string name="automation_src_device">Сгенерировано устройством</string>
+    <string name="automation_src_stock">Стоковый keybox</string>
+    <string name="automation_src_custom">Ваш keybox</string>
+    <string name="automation_interval_header">Интервал загрузки</string>
+    <string name="automation_interval_custom">Пользовательский</string>
+    <string name="automation_interval_set">Установить</string>
+    <string name="automation_manual_header">Ручные действия</string>
+    <string name="automation_fetch_key">Загрузить ключ</string>
+    <string name="automation_patch_header">Автообновление патча безопасности</string>
+    <string name="automation_set_patch">Установить патч</string>
+    <string name="automation_appearance_header">Оформление</string>
+    <string name="automation_randomize_accent">Случайный акцентный цвет при загрузке</string>
+    <string name="mode_leaf_hack">Leaf Hack (?)</string>
+    <string name="prompt_keybox_fetch_enabled">Автозагрузка keybox включена</string>
+    <string name="prompt_keybox_fetch_disabled">Автозагрузка keybox отключена</string>
+    <string name="prompt_patch_auto_enabled">Автообновление патча безопасности включено</string>
+    <string name="prompt_patch_auto_disabled">Автообновление патча безопасности отключено</string>
+    <string name="prompt_config_save_failed">Не удалось сохранить настройки</string>
+    <string name="prompt_denylist_failed">Не удалось прочитать DenyList</string>
+    <string name="prompt_exclude_list_failed">Не удалось прочитать список исключений</string>
+    <string name="prompt_unnecessary_failed">Не удалось получить список ненужных приложений</string>
+    <string name="prompt_open_link_failed">Не удалось открыть ссылку</string>
+    <string name="prompt_redirecting">Перенаправление</string>
+    <string name="health_active">Активен</string>
+    <string name="health_not_running">Не запущен</string>
+    <string name="health_unknown">Неизвестно</string>
 </resources>

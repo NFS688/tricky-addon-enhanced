@@ -150,4 +150,17 @@
     <string name="mode_auto">Auto</string>
     <string name="mode_certificate_generating">Cert Generating (!)</string>
     <string name="mode_leaf_hack">Leaf Hack (?)</string>
+    <string name="prompt_keybox_fetch_enabled">Keybox auto-fetch enabled</string>
+    <string name="prompt_keybox_fetch_disabled">Keybox auto-fetch disabled</string>
+    <string name="prompt_patch_auto_enabled">Security patch auto-update enabled</string>
+    <string name="prompt_patch_auto_disabled">Security patch auto-update disabled</string>
+    <string name="prompt_config_save_failed">Failed to save config</string>
+    <string name="prompt_denylist_failed">Failed to read DenyList</string>
+    <string name="prompt_exclude_list_failed">Failed to read exclude list</string>
+    <string name="prompt_unnecessary_failed">Failed to get unnecessary apps</string>
+    <string name="prompt_open_link_failed">Failed to open link</string>
+    <string name="prompt_redirecting">Redirecting</string>
+    <string name="health_active">Active</string>
+    <string name="health_not_running">Not Running</string>
+    <string name="health_unknown">Unknown</string>
 </resources>

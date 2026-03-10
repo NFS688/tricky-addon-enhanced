@@ -126,4 +126,40 @@
     <string name="mode_auto">Auto</string>
     <string name="mode_certificate_generating">Geração de Certificados (!)</string>
     <string name="mode_leaf_hack">Hack Leaf (?)</string>
+    <string name="menu_show_system_apps">Mostrar apps do sistema</string>
+    <!-- Health Banner -->
+    <string name="health_engine_default">Atestação</string>
+    <string name="health_checking">Verificando...</string>
+    <!-- Automation Settings -->
+    <string name="menu_automation">Automação do Keybox</string>
+    <string name="automation_keybox_header">Busca automática do Keybox</string>
+    <string name="automation_enable">Ativar</string>
+    <string name="automation_src_primary">Fonte principal</string>
+    <string name="automation_src_mirror">Espelho KOWX712</string>
+    <string name="automation_src_meowdump">MeowDump</string>
+    <string name="automation_src_device">Gerado pelo dispositivo</string>
+    <string name="automation_src_stock">Keybox original</string>
+    <string name="automation_src_custom">Seu keybox</string>
+    <string name="automation_interval_header">Intervalo de busca</string>
+    <string name="automation_interval_custom">Personalizado</string>
+    <string name="automation_interval_set">Definir</string>
+    <string name="automation_manual_header">Ações manuais</string>
+    <string name="automation_fetch_key">Buscar chave</string>
+    <string name="automation_patch_header">Atualização automática do patch de segurança</string>
+    <string name="automation_set_patch">Definir patch</string>
+    <string name="automation_appearance_header">Aparência</string>
+    <string name="automation_randomize_accent">Cor de destaque aleatória ao carregar</string>
+    <string name="prompt_keybox_fetch_enabled">Busca automática de keybox ativada</string>
+    <string name="prompt_keybox_fetch_disabled">Busca automática de keybox desativada</string>
+    <string name="prompt_patch_auto_enabled">Atualização automática do patch de segurança ativada</string>
+    <string name="prompt_patch_auto_disabled">Atualização automática do patch de segurança desativada</string>
+    <string name="prompt_config_save_failed">Falha ao salvar configuração</string>
+    <string name="prompt_denylist_failed">Falha ao ler DenyList</string>
+    <string name="prompt_exclude_list_failed">Falha ao ler lista de exclusão</string>
+    <string name="prompt_unnecessary_failed">Falha ao obter apps desnecessários</string>
+    <string name="prompt_open_link_failed">Falha ao abrir link</string>
+    <string name="prompt_redirecting">Redirecionando</string>
+    <string name="health_active">Ativo</string>
+    <string name="health_not_running">Parado</string>
+    <string name="health_unknown">Desconhecido</string>
 </resources>

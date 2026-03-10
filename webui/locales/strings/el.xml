@@ -108,4 +108,45 @@
     <string name="confirmation_uninstall_title">Επιβεβαίωση Απεγκατάστασης;</string>
     <string name="confirmation_uninstall_message">Είσαι σίγουρος ότι θέλεις να απεγκαταστήσεις το Tricky Addon;</string>
     <!-- Mode dialog -->
+    <string name="menu_show_system_apps">Εμφάνιση εφαρμογών συστήματος</string>
+    <!-- Health Banner -->
+    <string name="health_engine_default">Πιστοποίηση</string>
+    <string name="health_checking">Έλεγχος...</string>
+    <!-- Automation Settings -->
+    <string name="menu_automation">Αυτοματισμός Keybox</string>
+    <string name="automation_keybox_header">Αυτόματη λήψη Keybox</string>
+    <string name="automation_enable">Ενεργοποίηση</string>
+    <string name="automation_src_primary">Κύρια πηγή</string>
+    <string name="automation_src_mirror">Καθρέφτης KOWX712</string>
+    <string name="automation_src_meowdump">MeowDump</string>
+    <string name="automation_src_device">Δημιουργία από συσκευή</string>
+    <string name="automation_src_stock">Εργοστασιακό keybox</string>
+    <string name="automation_src_custom">Το keybox σας</string>
+    <string name="automation_interval_header">Διάστημα λήψης</string>
+    <string name="automation_interval_custom">Προσαρμοσμένο</string>
+    <string name="automation_interval_set">Ορισμός</string>
+    <string name="automation_manual_header">Χειροκίνητες ενέργειες</string>
+    <string name="automation_fetch_key">Λήψη κλειδιού</string>
+    <string name="automation_patch_header">Αυτόματη ενημέρωση ενημέρωσης ασφαλείας</string>
+    <string name="automation_set_patch">Ορισμός ενημέρωσης</string>
+    <string name="automation_appearance_header">Εμφάνιση</string>
+    <string name="automation_randomize_accent">Τυχαίο χρώμα τονισμού κατά τη φόρτωση</string>
+    <!-- Mode dialog -->
+    <string name="mode_dialog_title">Λειτουργία</string>
+    <string name="mode_auto">Αυτόματο</string>
+    <string name="mode_certificate_generating">Δημιουργία πιστοποιητικού (!)</string>
+    <string name="mode_leaf_hack">Leaf Hack (?)</string>
+    <string name="prompt_keybox_fetch_enabled">Αυτόματη λήψη keybox ενεργοποιήθηκε</string>
+    <string name="prompt_keybox_fetch_disabled">Αυτόματη λήψη keybox απενεργοποιήθηκε</string>
+    <string name="prompt_patch_auto_enabled">Αυτόματη ενημέρωση ασφαλείας ενεργοποιήθηκε</string>
+    <string name="prompt_patch_auto_disabled">Αυτόματη ενημέρωση ασφαλείας απενεργοποιήθηκε</string>
+    <string name="prompt_config_save_failed">Αποτυχία αποθήκευσης ρυθμίσεων</string>
+    <string name="prompt_denylist_failed">Αποτυχία ανάγνωσης DenyList</string>
+    <string name="prompt_exclude_list_failed">Αποτυχία ανάγνωσης λίστας εξαιρέσεων</string>
+    <string name="prompt_unnecessary_failed">Αποτυχία λήψης περιττών εφαρμογών</string>
+    <string name="prompt_open_link_failed">Αποτυχία ανοίγματος συνδέσμου</string>
+    <string name="prompt_redirecting">Ανακατεύθυνση</string>
+    <string name="health_active">Ενεργό</string>
+    <string name="health_not_running">Σταματημένο</string>
+    <string name="health_unknown">Άγνωστο</string>
 </resources>

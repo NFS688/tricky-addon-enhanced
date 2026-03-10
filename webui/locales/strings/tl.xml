@@ -108,4 +108,45 @@
     <string name="confirmation_uninstall_title">Kumpirmahin ang Pag-uninstall?</string>
     <string name="confirmation_uninstall_message">Sigurado ka bang gusto mong i-uninstall ang Tricky Addon</string>
     <!-- Mode dialog -->
+    <string name="menu_show_system_apps">Ipakita ang System Apps</string>
+    <!-- Health Banner -->
+    <string name="health_engine_default">Attestation</string>
+    <string name="health_checking">Sinusuri...</string>
+    <!-- Automation Settings -->
+    <string name="menu_automation">Keybox Automation</string>
+    <string name="automation_keybox_header">Auto-Fetch ng Keybox</string>
+    <string name="automation_enable">I-enable</string>
+    <string name="automation_src_primary">Pangunahing pinagmulan</string>
+    <string name="automation_src_mirror">KOWX712 mirror</string>
+    <string name="automation_src_meowdump">MeowDump</string>
+    <string name="automation_src_device">Ginawa ng device</string>
+    <string name="automation_src_stock">Stock keybox</string>
+    <string name="automation_src_custom">Iyong keybox</string>
+    <string name="automation_interval_header">Pagitan ng Pag-fetch</string>
+    <string name="automation_interval_custom">Custom</string>
+    <string name="automation_interval_set">I-set</string>
+    <string name="automation_manual_header">Manu-manong Aksyon</string>
+    <string name="automation_fetch_key">Kunin ang Key</string>
+    <string name="automation_patch_header">Auto-Update ng Security Patch</string>
+    <string name="automation_set_patch">I-set ang Patch</string>
+    <string name="automation_appearance_header">Hitsura</string>
+    <string name="automation_randomize_accent">Random na accent color sa pag-load</string>
+    <!-- Mode dialog -->
+    <string name="mode_dialog_title">Mode</string>
+    <string name="mode_auto">Auto</string>
+    <string name="mode_certificate_generating">Cert Generating (!)</string>
+    <string name="mode_leaf_hack">Leaf Hack (?)</string>
+    <string name="prompt_keybox_fetch_enabled">Auto-fetch ng keybox na-enable</string>
+    <string name="prompt_keybox_fetch_disabled">Auto-fetch ng keybox na-disable</string>
+    <string name="prompt_patch_auto_enabled">Auto-update ng security patch na-enable</string>
+    <string name="prompt_patch_auto_disabled">Auto-update ng security patch na-disable</string>
+    <string name="prompt_config_save_failed">Hindi na-save ang config</string>
+    <string name="prompt_denylist_failed">Hindi nabasa ang DenyList</string>
+    <string name="prompt_exclude_list_failed">Hindi nabasa ang exclude list</string>
+    <string name="prompt_unnecessary_failed">Hindi nakuha ang mga hindi kailangang app</string>
+    <string name="prompt_open_link_failed">Hindi nabuksan ang link</string>
+    <string name="prompt_redirecting">Nire-redirect</string>
+    <string name="health_active">Aktibo</string>
+    <string name="health_not_running">Hindi tumatakbo</string>
+    <string name="health_unknown">Hindi alam</string>
 </resources>

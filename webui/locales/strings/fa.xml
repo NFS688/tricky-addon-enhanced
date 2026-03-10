@@ -108,4 +108,45 @@
     <string name="confirmation_uninstall_title">تأیید حذف؟</string>
     <string name="confirmation_uninstall_message">آیا مطمئن هستید که می‌خواهید Tricky Addon را حذف کنید</string>
     <!-- Mode dialog -->
+    <string name="menu_show_system_apps">نمایش برنامه‌های سیستمی</string>
+    <!-- Health Banner -->
+    <string name="health_engine_default">احراز هویت</string>
+    <string name="health_checking">در حال بررسی...</string>
+    <!-- Automation Settings -->
+    <string name="menu_automation">خودکارسازی Keybox</string>
+    <string name="automation_keybox_header">دریافت خودکار Keybox</string>
+    <string name="automation_enable">فعال‌سازی</string>
+    <string name="automation_src_primary">منبع اصلی</string>
+    <string name="automation_src_mirror">آینه KOWX712</string>
+    <string name="automation_src_meowdump">MeowDump</string>
+    <string name="automation_src_device">تولید شده توسط دستگاه</string>
+    <string name="automation_src_stock">Keybox اصلی</string>
+    <string name="automation_src_custom">Keybox شما</string>
+    <string name="automation_interval_header">فاصله دریافت</string>
+    <string name="automation_interval_custom">سفارشی</string>
+    <string name="automation_interval_set">تنظیم</string>
+    <string name="automation_manual_header">عملیات دستی</string>
+    <string name="automation_fetch_key">دریافت کلید</string>
+    <string name="automation_patch_header">به‌روزرسانی خودکار وصله امنیتی</string>
+    <string name="automation_set_patch">تنظیم وصله</string>
+    <string name="automation_appearance_header">ظاهر</string>
+    <string name="automation_randomize_accent">رنگ تأکیدی تصادفی هنگام بارگذاری</string>
+    <!-- Mode dialog -->
+    <string name="mode_dialog_title">حالت</string>
+    <string name="mode_auto">خودکار</string>
+    <string name="mode_certificate_generating">تولید گواهی (!)</string>
+    <string name="mode_leaf_hack">Leaf Hack (?)</string>
+    <string name="prompt_keybox_fetch_enabled">دریافت خودکار keybox فعال شد</string>
+    <string name="prompt_keybox_fetch_disabled">دریافت خودکار keybox غیرفعال شد</string>
+    <string name="prompt_patch_auto_enabled">به‌روزرسانی خودکار وصله امنیتی فعال شد</string>
+    <string name="prompt_patch_auto_disabled">به‌روزرسانی خودکار وصله امنیتی غیرفعال شد</string>
+    <string name="prompt_config_save_failed">ذخیره تنظیمات ناموفق بود</string>
+    <string name="prompt_denylist_failed">خواندن DenyList ناموفق بود</string>
+    <string name="prompt_exclude_list_failed">خواندن لیست استثنا ناموفق بود</string>
+    <string name="prompt_unnecessary_failed">دریافت برنامه‌های غیرضروری ناموفق بود</string>
+    <string name="prompt_open_link_failed">باز کردن لینک ناموفق بود</string>
+    <string name="prompt_redirecting">در حال هدایت</string>
+    <string name="health_active">فعال</string>
+    <string name="health_not_running">متوقف</string>
+    <string name="health_unknown">نامشخص</string>
 </resources>

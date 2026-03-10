@@ -108,4 +108,45 @@
     <string name="confirmation_uninstall_title">Silinməni Təsdiqləyirsiniz?</string>
     <string name="confirmation_uninstall_message">Tricky Addon-u silmək istədiyinizə əminsinizmi?</string>
     <!-- Mode dialog -->
+    <string name="menu_show_system_apps">Sistem tətbiqlərini göstər</string>
+    <!-- Health Banner -->
+    <string name="health_engine_default">Attestasiya</string>
+    <string name="health_checking">Yoxlanılır...</string>
+    <!-- Automation Settings -->
+    <string name="menu_automation">Keybox Avtomatlaşdırma</string>
+    <string name="automation_keybox_header">Keybox Avtomatik Yükləmə</string>
+    <string name="automation_enable">Aktiv et</string>
+    <string name="automation_src_primary">Əsas mənbə</string>
+    <string name="automation_src_mirror">KOWX712 güzgü</string>
+    <string name="automation_src_meowdump">MeowDump</string>
+    <string name="automation_src_device">Cihaz tərəfindən yaradılmış</string>
+    <string name="automation_src_stock">Orijinal keybox</string>
+    <string name="automation_src_custom">Sizin keybox</string>
+    <string name="automation_interval_header">Yükləmə aralığı</string>
+    <string name="automation_interval_custom">Xüsusi</string>
+    <string name="automation_interval_set">Təyin et</string>
+    <string name="automation_manual_header">Əl ilə əməliyyatlar</string>
+    <string name="automation_fetch_key">Açar yüklə</string>
+    <string name="automation_patch_header">Təhlükəsizlik yaması avtomatik yeniləmə</string>
+    <string name="automation_set_patch">Yamanı təyin et</string>
+    <string name="automation_appearance_header">Görünüş</string>
+    <string name="automation_randomize_accent">Yükləmədə təsadüfi vurğu rəngi</string>
+    <!-- Mode dialog -->
+    <string name="mode_dialog_title">Rejim</string>
+    <string name="mode_auto">Avtomatik</string>
+    <string name="mode_certificate_generating">Sertifikat yaradılır (!)</string>
+    <string name="mode_leaf_hack">Leaf Hack (?)</string>
+    <string name="prompt_keybox_fetch_enabled">Keybox avtomatik yükləmə aktivdir</string>
+    <string name="prompt_keybox_fetch_disabled">Keybox avtomatik yükləmə deaktivdir</string>
+    <string name="prompt_patch_auto_enabled">Təhlükəsizlik yaması avtomatik yeniləmə aktivdir</string>
+    <string name="prompt_patch_auto_disabled">Təhlükəsizlik yaması avtomatik yeniləmə deaktivdir</string>
+    <string name="prompt_config_save_failed">Konfiqurasiya saxlanıla bilmədi</string>
+    <string name="prompt_denylist_failed">DenyList oxuna bilmədi</string>
+    <string name="prompt_exclude_list_failed">İstisna siyahısı oxuna bilmədi</string>
+    <string name="prompt_unnecessary_failed">Lazımsız tətbiqlər alına bilmədi</string>
+    <string name="prompt_open_link_failed">Link açıla bilmədi</string>
+    <string name="prompt_redirecting">Yönləndirilir</string>
+    <string name="health_active">Aktiv</string>
+    <string name="health_not_running">İşləmir</string>
+    <string name="health_unknown">Naməlum</string>
 </resources>

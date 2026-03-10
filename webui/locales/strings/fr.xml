@@ -129,4 +129,40 @@
     <string name="mode_auto">Automatique</string>
     <string name="mode_certificate_generating">Génération de certificats (!)</string>
     <string name="mode_leaf_hack">Leaf Hack (?)</string>
+    <string name="menu_show_system_apps">Afficher les applications système</string>
+    <!-- Health Banner -->
+    <string name="health_engine_default">Attestation</string>
+    <string name="health_checking">Vérification...</string>
+    <!-- Automation Settings -->
+    <string name="menu_automation">Automatisation Keybox</string>
+    <string name="automation_keybox_header">Récupération auto du Keybox</string>
+    <string name="automation_enable">Activer</string>
+    <string name="automation_src_primary">Source principale</string>
+    <string name="automation_src_mirror">Miroir KOWX712</string>
+    <string name="automation_src_meowdump">MeowDump</string>
+    <string name="automation_src_device">Généré par l'appareil</string>
+    <string name="automation_src_stock">Keybox d'origine</string>
+    <string name="automation_src_custom">Votre keybox</string>
+    <string name="automation_interval_header">Intervalle de récupération</string>
+    <string name="automation_interval_custom">Personnalisé</string>
+    <string name="automation_interval_set">Définir</string>
+    <string name="automation_manual_header">Actions manuelles</string>
+    <string name="automation_fetch_key">Récupérer la clé</string>
+    <string name="automation_patch_header">Mise à jour auto du correctif de sécurité</string>
+    <string name="automation_set_patch">Définir le correctif</string>
+    <string name="automation_appearance_header">Apparence</string>
+    <string name="automation_randomize_accent">Couleur d'accentuation aléatoire au chargement</string>
+    <string name="prompt_keybox_fetch_enabled">Récupération auto du keybox activée</string>
+    <string name="prompt_keybox_fetch_disabled">Récupération auto du keybox désactivée</string>
+    <string name="prompt_patch_auto_enabled">Mise à jour auto du correctif de sécurité activée</string>
+    <string name="prompt_patch_auto_disabled">Mise à jour auto du correctif de sécurité désactivée</string>
+    <string name="prompt_config_save_failed">Échec de la sauvegarde</string>
+    <string name="prompt_denylist_failed">Échec de la lecture du DenyList</string>
+    <string name="prompt_exclude_list_failed">Échec de la lecture de la liste d'exclusion</string>
+    <string name="prompt_unnecessary_failed">Échec de la récupération des applis inutiles</string>
+    <string name="prompt_open_link_failed">Impossible d'ouvrir le lien</string>
+    <string name="prompt_redirecting">Redirection</string>
+    <string name="health_active">Actif</string>
+    <string name="health_not_running">Arrêté</string>
+    <string name="health_unknown">Inconnu</string>
 </resources>

@@ -114,4 +114,45 @@
     <string name="confirmation_uninstall_title">Kaldırma İşlemi Onaylansın mı?</string>
     <string name="confirmation_uninstall_message">Tricky Addon&apos;u kaldırmak istediğinizden emin misiniz</string>
     <!-- Mode dialog -->
+    <string name="menu_show_system_apps">Sistem Uygulamalarını Göster</string>
+    <!-- Health Banner -->
+    <string name="health_engine_default">Doğrulama</string>
+    <string name="health_checking">Kontrol ediliyor...</string>
+    <!-- Automation Settings -->
+    <string name="menu_automation">Keybox Otomasyonu</string>
+    <string name="automation_keybox_header">Keybox Otomatik Getirme</string>
+    <string name="automation_enable">Etkinleştir</string>
+    <string name="automation_src_primary">Ana kaynak</string>
+    <string name="automation_src_mirror">KOWX712 ayna</string>
+    <string name="automation_src_meowdump">MeowDump</string>
+    <string name="automation_src_device">Cihaz tarafından oluşturulan</string>
+    <string name="automation_src_stock">Stok keybox</string>
+    <string name="automation_src_custom">Kendi keybox'ınız</string>
+    <string name="automation_interval_header">Getirme Aralığı</string>
+    <string name="automation_interval_custom">Özel</string>
+    <string name="automation_interval_set">Ayarla</string>
+    <string name="automation_manual_header">Manuel İşlemler</string>
+    <string name="automation_fetch_key">Anahtar Getir</string>
+    <string name="automation_patch_header">Güvenlik Yaması Otomatik Güncelleme</string>
+    <string name="automation_set_patch">Yama Ayarla</string>
+    <string name="automation_appearance_header">Görünüm</string>
+    <string name="automation_randomize_accent">Yüklemede rastgele vurgu rengi</string>
+    <!-- Mode dialog -->
+    <string name="mode_dialog_title">Mod</string>
+    <string name="mode_auto">Otomatik</string>
+    <string name="mode_certificate_generating">Sertifika Oluşturma (!)</string>
+    <string name="mode_leaf_hack">Leaf Hack (?)</string>
+    <string name="prompt_keybox_fetch_enabled">Keybox otomatik getirme etkinleştirildi</string>
+    <string name="prompt_keybox_fetch_disabled">Keybox otomatik getirme devre dışı bırakıldı</string>
+    <string name="prompt_patch_auto_enabled">Güvenlik yaması otomatik güncelleme etkinleştirildi</string>
+    <string name="prompt_patch_auto_disabled">Güvenlik yaması otomatik güncelleme devre dışı bırakıldı</string>
+    <string name="prompt_config_save_failed">Yapılandırma kaydedilemedi</string>
+    <string name="prompt_denylist_failed">DenyList okunamadı</string>
+    <string name="prompt_exclude_list_failed">Hariç tutma listesi okunamadı</string>
+    <string name="prompt_unnecessary_failed">Gereksiz uygulamalar alınamadı</string>
+    <string name="prompt_open_link_failed">Bağlantı açılamadı</string>
+    <string name="prompt_redirecting">Yönlendiriliyor</string>
+    <string name="health_active">Aktif</string>
+    <string name="health_not_running">Çalışmıyor</string>
+    <string name="health_unknown">Bilinmiyor</string>
 </resources>

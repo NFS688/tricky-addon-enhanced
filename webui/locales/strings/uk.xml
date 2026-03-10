@@ -128,4 +128,40 @@
     <string name="mode_auto">Авто</string>
     <string name="mode_certificate_generating">Генерація сертифікату (!)</string>
     <string name="mode_leaf_hack">Leaf Hack (?)</string>
+    <string name="menu_show_system_apps">Показати системні додатки</string>
+    <!-- Health Banner -->
+    <string name="health_engine_default">Атестація</string>
+    <string name="health_checking">Перевірка...</string>
+    <!-- Automation Settings -->
+    <string name="menu_automation">Автоматизація Keybox</string>
+    <string name="automation_keybox_header">Автозавантаження Keybox</string>
+    <string name="automation_enable">Увімкнути</string>
+    <string name="automation_src_primary">Основне джерело</string>
+    <string name="automation_src_mirror">Дзеркало KOWX712</string>
+    <string name="automation_src_meowdump">MeowDump</string>
+    <string name="automation_src_device">Згенеровано пристроєм</string>
+    <string name="automation_src_stock">Стандартний keybox</string>
+    <string name="automation_src_custom">Ваш keybox</string>
+    <string name="automation_interval_header">Інтервал завантаження</string>
+    <string name="automation_interval_custom">Користувацький</string>
+    <string name="automation_interval_set">Встановити</string>
+    <string name="automation_manual_header">Ручні дії</string>
+    <string name="automation_fetch_key">Завантажити ключ</string>
+    <string name="automation_patch_header">Автооновлення патча безпеки</string>
+    <string name="automation_set_patch">Встановити патч</string>
+    <string name="automation_appearance_header">Зовнішній вигляд</string>
+    <string name="automation_randomize_accent">Випадковий акцентний колір при завантаженні</string>
+    <string name="prompt_keybox_fetch_enabled">Автозавантаження keybox увімкнено</string>
+    <string name="prompt_keybox_fetch_disabled">Автозавантаження keybox вимкнено</string>
+    <string name="prompt_patch_auto_enabled">Автооновлення патча безпеки увімкнено</string>
+    <string name="prompt_patch_auto_disabled">Автооновлення патча безпеки вимкнено</string>
+    <string name="prompt_config_save_failed">Не вдалося зберегти налаштування</string>
+    <string name="prompt_denylist_failed">Не вдалося прочитати DenyList</string>
+    <string name="prompt_exclude_list_failed">Не вдалося прочитати список винятків</string>
+    <string name="prompt_unnecessary_failed">Не вдалося отримати непотрібні додатки</string>
+    <string name="prompt_open_link_failed">Не вдалося відкрити посилання</string>
+    <string name="prompt_redirecting">Перенаправлення</string>
+    <string name="health_active">Активний</string>
+    <string name="health_not_running">Не запущено</string>
+    <string name="health_unknown">Невідомо</string>
 </resources>

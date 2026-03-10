@@ -129,4 +129,40 @@
     <string name="mode_auto">自動</string>
     <string name="mode_certificate_generating">生成證書鏈（！）</string>
     <string name="mode_leaf_hack">修改證書鏈（？）</string>
+    <string name="menu_show_system_apps">顯示系統應用</string>
+    <!-- Health Banner -->
+    <string name="health_engine_default">認證</string>
+    <string name="health_checking">檢查中...</string>
+    <!-- Automation Settings -->
+    <string name="menu_automation">金鑰自動化</string>
+    <string name="automation_keybox_header">金鑰自動取得</string>
+    <string name="automation_enable">啟用</string>
+    <string name="automation_src_primary">主要來源</string>
+    <string name="automation_src_mirror">KOWX712 鏡像</string>
+    <string name="automation_src_meowdump">MeowDump</string>
+    <string name="automation_src_device">裝置產生</string>
+    <string name="automation_src_stock">原廠金鑰</string>
+    <string name="automation_src_custom">自訂金鑰</string>
+    <string name="automation_interval_header">取得間隔</string>
+    <string name="automation_interval_custom">自訂</string>
+    <string name="automation_interval_set">設定</string>
+    <string name="automation_manual_header">手動操作</string>
+    <string name="automation_fetch_key">取得金鑰</string>
+    <string name="automation_patch_header">安全修補程式自動更新</string>
+    <string name="automation_set_patch">設定修補程式</string>
+    <string name="automation_appearance_header">外觀</string>
+    <string name="automation_randomize_accent">載入時隨機主題色</string>
+    <string name="prompt_keybox_fetch_enabled">金鑰自動取得已啟用</string>
+    <string name="prompt_keybox_fetch_disabled">金鑰自動取得已停用</string>
+    <string name="prompt_patch_auto_enabled">安全修補程式自動更新已啟用</string>
+    <string name="prompt_patch_auto_disabled">安全修補程式自動更新已停用</string>
+    <string name="prompt_config_save_failed">儲存設定失敗</string>
+    <string name="prompt_denylist_failed">讀取排除清單失敗</string>
+    <string name="prompt_exclude_list_failed">讀取排除清單失敗</string>
+    <string name="prompt_unnecessary_failed">取得非必要應用程式失敗</string>
+    <string name="prompt_open_link_failed">開啟連結失敗</string>
+    <string name="prompt_redirecting">正在跳轉</string>
+    <string name="health_active">運作中</string>
+    <string name="health_not_running">未運作</string>
+    <string name="health_unknown">未知</string>
 </resources>

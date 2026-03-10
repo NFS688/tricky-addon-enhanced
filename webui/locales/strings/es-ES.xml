@@ -129,4 +129,40 @@
     <string name="mode_auto">Auto</string>
     <string name="mode_certificate_generating">Generación de Certificado (!)</string>
     <string name="mode_leaf_hack">Leaf Hack (?)</string>
+    <string name="menu_show_system_apps">Mostrar aplicaciones del sistema</string>
+    <!-- Health Banner -->
+    <string name="health_engine_default">Atestación</string>
+    <string name="health_checking">Comprobando...</string>
+    <!-- Automation Settings -->
+    <string name="menu_automation">Automatización de Keybox</string>
+    <string name="automation_keybox_header">Obtención automática de Keybox</string>
+    <string name="automation_enable">Activar</string>
+    <string name="automation_src_primary">Fuente principal</string>
+    <string name="automation_src_mirror">Espejo KOWX712</string>
+    <string name="automation_src_meowdump">MeowDump</string>
+    <string name="automation_src_device">Generado por el dispositivo</string>
+    <string name="automation_src_stock">Keybox de fábrica</string>
+    <string name="automation_src_custom">Tu keybox</string>
+    <string name="automation_interval_header">Intervalo de obtención</string>
+    <string name="automation_interval_custom">Personalizado</string>
+    <string name="automation_interval_set">Establecer</string>
+    <string name="automation_manual_header">Acciones manuales</string>
+    <string name="automation_fetch_key">Obtener clave</string>
+    <string name="automation_patch_header">Actualización automática del parche de seguridad</string>
+    <string name="automation_set_patch">Establecer parche</string>
+    <string name="automation_appearance_header">Apariencia</string>
+    <string name="automation_randomize_accent">Color de acento aleatorio al cargar</string>
+    <string name="prompt_keybox_fetch_enabled">Obtención automática de keybox activada</string>
+    <string name="prompt_keybox_fetch_disabled">Obtención automática de keybox desactivada</string>
+    <string name="prompt_patch_auto_enabled">Actualización automática del parche de seguridad activada</string>
+    <string name="prompt_patch_auto_disabled">Actualización automática del parche de seguridad desactivada</string>
+    <string name="prompt_config_save_failed">Error al guardar la configuración</string>
+    <string name="prompt_denylist_failed">Error al leer el DenyList</string>
+    <string name="prompt_exclude_list_failed">Error al leer la lista de exclusión</string>
+    <string name="prompt_unnecessary_failed">Error al obtener aplicaciones innecesarias</string>
+    <string name="prompt_open_link_failed">Error al abrir el enlace</string>
+    <string name="prompt_redirecting">Redirigiendo</string>
+    <string name="health_active">Activo</string>
+    <string name="health_not_running">Detenido</string>
+    <string name="health_unknown">Desconocido</string>
 </resources>

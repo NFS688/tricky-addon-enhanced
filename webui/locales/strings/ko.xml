@@ -114,4 +114,45 @@
     <string name="confirmation_uninstall_title">삭제 확인</string>
     <string name="confirmation_uninstall_message">정말 Tricky Addon을 삭제할까요?</string>
     <!-- Mode dialog -->
+    <string name="menu_show_system_apps">시스템 앱 표시</string>
+    <!-- Health Banner -->
+    <string name="health_engine_default">인증</string>
+    <string name="health_checking">확인 중...</string>
+    <!-- Automation Settings -->
+    <string name="menu_automation">키박스 자동화</string>
+    <string name="automation_keybox_header">키박스 자동 가져오기</string>
+    <string name="automation_enable">활성화</string>
+    <string name="automation_src_primary">기본 소스</string>
+    <string name="automation_src_mirror">KOWX712 미러</string>
+    <string name="automation_src_meowdump">MeowDump</string>
+    <string name="automation_src_device">기기 생성</string>
+    <string name="automation_src_stock">기본 키박스</string>
+    <string name="automation_src_custom">사용자 키박스</string>
+    <string name="automation_interval_header">가져오기 간격</string>
+    <string name="automation_interval_custom">사용자 지정</string>
+    <string name="automation_interval_set">설정</string>
+    <string name="automation_manual_header">수동 작업</string>
+    <string name="automation_fetch_key">키 가져오기</string>
+    <string name="automation_patch_header">보안 패치 자동 업데이트</string>
+    <string name="automation_set_patch">패치 설정</string>
+    <string name="automation_appearance_header">외관</string>
+    <string name="automation_randomize_accent">로드 시 강조색 랜덤화</string>
+    <!-- Mode dialog -->
+    <string name="mode_dialog_title">모드</string>
+    <string name="mode_auto">자동</string>
+    <string name="mode_certificate_generating">인증서 생성 (!)</string>
+    <string name="mode_leaf_hack">리프 핵 (?)</string>
+    <string name="prompt_keybox_fetch_enabled">키박스 자동 가져오기 활성화됨</string>
+    <string name="prompt_keybox_fetch_disabled">키박스 자동 가져오기 비활성화됨</string>
+    <string name="prompt_patch_auto_enabled">보안 패치 자동 업데이트 활성화됨</string>
+    <string name="prompt_patch_auto_disabled">보안 패치 자동 업데이트 비활성화됨</string>
+    <string name="prompt_config_save_failed">설정 저장 실패</string>
+    <string name="prompt_denylist_failed">DenyList 읽기 실패</string>
+    <string name="prompt_exclude_list_failed">제외 목록 읽기 실패</string>
+    <string name="prompt_unnecessary_failed">불필요한 앱 가져오기 실패</string>
+    <string name="prompt_open_link_failed">링크 열기 실패</string>
+    <string name="prompt_redirecting">리디렉션 중</string>
+    <string name="health_active">활성</string>
+    <string name="health_not_running">미실행</string>
+    <string name="health_unknown">알 수 없음</string>
 </resources>

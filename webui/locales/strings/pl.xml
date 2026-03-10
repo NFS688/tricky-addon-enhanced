@@ -129,4 +129,40 @@
     <string name="mode_auto">Automatyczny</string>
     <string name="mode_certificate_generating">Generowanie certyfikatów (!)</string>
     <string name="mode_leaf_hack">Obejście sposobem (?)</string>
+    <string name="menu_show_system_apps">Pokaż aplikacje systemowe</string>
+    <!-- Health Banner -->
+    <string name="health_engine_default">Atestacja</string>
+    <string name="health_checking">Sprawdzanie...</string>
+    <!-- Automation Settings -->
+    <string name="menu_automation">Automatyzacja Keybox</string>
+    <string name="automation_keybox_header">Automatyczne pobieranie Keybox</string>
+    <string name="automation_enable">Włącz</string>
+    <string name="automation_src_primary">Źródło główne</string>
+    <string name="automation_src_mirror">Lustro KOWX712</string>
+    <string name="automation_src_meowdump">MeowDump</string>
+    <string name="automation_src_device">Wygenerowany przez urządzenie</string>
+    <string name="automation_src_stock">Fabryczny keybox</string>
+    <string name="automation_src_custom">Twój keybox</string>
+    <string name="automation_interval_header">Interwał pobierania</string>
+    <string name="automation_interval_custom">Niestandardowy</string>
+    <string name="automation_interval_set">Ustaw</string>
+    <string name="automation_manual_header">Ręczne akcje</string>
+    <string name="automation_fetch_key">Pobierz klucz</string>
+    <string name="automation_patch_header">Automatyczna aktualizacja łatki bezpieczeństwa</string>
+    <string name="automation_set_patch">Ustaw łatkę</string>
+    <string name="automation_appearance_header">Wygląd</string>
+    <string name="automation_randomize_accent">Losowy kolor akcentu przy ładowaniu</string>
+    <string name="prompt_keybox_fetch_enabled">Automatyczne pobieranie keybox włączone</string>
+    <string name="prompt_keybox_fetch_disabled">Automatyczne pobieranie keybox wyłączone</string>
+    <string name="prompt_patch_auto_enabled">Automatyczna aktualizacja łatki bezpieczeństwa włączona</string>
+    <string name="prompt_patch_auto_disabled">Automatyczna aktualizacja łatki bezpieczeństwa wyłączona</string>
+    <string name="prompt_config_save_failed">Nie udało się zapisać konfiguracji</string>
+    <string name="prompt_denylist_failed">Nie udało się odczytać DenyList</string>
+    <string name="prompt_exclude_list_failed">Nie udało się odczytać listy wykluczeń</string>
+    <string name="prompt_unnecessary_failed">Nie udało się pobrać zbędnych aplikacji</string>
+    <string name="prompt_open_link_failed">Nie udało się otworzyć linku</string>
+    <string name="prompt_redirecting">Przekierowanie</string>
+    <string name="health_active">Aktywny</string>
+    <string name="health_not_running">Nie uruchomiony</string>
+    <string name="health_unknown">Nieznany</string>
 </resources>

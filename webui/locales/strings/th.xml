@@ -122,4 +122,41 @@
     <string name="mode_dialog_title">โหมด</string>
     <string name="mode_auto">อัตโนมัติ</string>
     <string name="mode_certificate_generating">การสร้างใบรับรอง (!)</string>
+    <string name="menu_show_system_apps">แสดงแอประบบ</string>
+    <!-- Health Banner -->
+    <string name="health_engine_default">การรับรอง</string>
+    <string name="health_checking">กำลังตรวจสอบ...</string>
+    <!-- Automation Settings -->
+    <string name="menu_automation">Keybox อัตโนมัติ</string>
+    <string name="automation_keybox_header">ดึง Keybox อัตโนมัติ</string>
+    <string name="automation_enable">เปิดใช้งาน</string>
+    <string name="automation_src_primary">แหล่งหลัก</string>
+    <string name="automation_src_mirror">KOWX712 มิเรอร์</string>
+    <string name="automation_src_meowdump">MeowDump</string>
+    <string name="automation_src_device">สร้างจากอุปกรณ์</string>
+    <string name="automation_src_stock">Keybox ดั้งเดิม</string>
+    <string name="automation_src_custom">Keybox ของคุณ</string>
+    <string name="automation_interval_header">ช่วงเวลาดึงข้อมูล</string>
+    <string name="automation_interval_custom">กำหนดเอง</string>
+    <string name="automation_interval_set">ตั้งค่า</string>
+    <string name="automation_manual_header">การดำเนินการด้วยตนเอง</string>
+    <string name="automation_fetch_key">ดึงคีย์</string>
+    <string name="automation_patch_header">อัปเดตแพตช์ความปลอดภัยอัตโนมัติ</string>
+    <string name="automation_set_patch">ตั้งค่าแพตช์</string>
+    <string name="automation_appearance_header">ลักษณะที่ปรากฏ</string>
+    <string name="automation_randomize_accent">สีเน้นแบบสุ่มเมื่อโหลด</string>
+    <string name="mode_leaf_hack">Leaf Hack (?)</string>
+    <string name="prompt_keybox_fetch_enabled">เปิดใช้งานดึง Keybox อัตโนมัติ</string>
+    <string name="prompt_keybox_fetch_disabled">ปิดใช้งานดึง Keybox อัตโนมัติ</string>
+    <string name="prompt_patch_auto_enabled">เปิดใช้งานอัปเดตแพตช์ความปลอดภัยอัตโนมัติ</string>
+    <string name="prompt_patch_auto_disabled">ปิดใช้งานอัปเดตแพตช์ความปลอดภัยอัตโนมัติ</string>
+    <string name="prompt_config_save_failed">บันทึกการตั้งค่าล้มเหลว</string>
+    <string name="prompt_denylist_failed">อ่าน DenyList ล้มเหลว</string>
+    <string name="prompt_exclude_list_failed">อ่านรายการยกเว้นล้มเหลว</string>
+    <string name="prompt_unnecessary_failed">ดึงแอปที่ไม่จำเป็นล้มเหลว</string>
+    <string name="prompt_open_link_failed">เปิดลิงก์ล้มเหลว</string>
+    <string name="prompt_redirecting">กำลังเปลี่ยนเส้นทาง</string>
+    <string name="health_active">ทำงานอยู่</string>
+    <string name="health_not_running">ไม่ทำงาน</string>
+    <string name="health_unknown">ไม่ทราบ</string>
 </resources>

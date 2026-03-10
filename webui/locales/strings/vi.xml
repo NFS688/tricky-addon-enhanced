@@ -129,4 +129,40 @@
     <string name="mode_auto">Tự động</string>
     <string name="mode_certificate_generating">Cert Generating (!)</string>
     <string name="mode_leaf_hack">Leaf Hack (?)</string>
+    <string name="menu_show_system_apps">Hiện ứng dụng hệ thống</string>
+    <!-- Health Banner -->
+    <string name="health_engine_default">Chứng thực</string>
+    <string name="health_checking">Đang kiểm tra...</string>
+    <!-- Automation Settings -->
+    <string name="menu_automation">Tự động hóa Keybox</string>
+    <string name="automation_keybox_header">Tự động lấy Keybox</string>
+    <string name="automation_enable">Bật</string>
+    <string name="automation_src_primary">Nguồn chính</string>
+    <string name="automation_src_mirror">Mirror KOWX712</string>
+    <string name="automation_src_meowdump">MeowDump</string>
+    <string name="automation_src_device">Tạo từ thiết bị</string>
+    <string name="automation_src_stock">Keybox gốc</string>
+    <string name="automation_src_custom">Keybox của bạn</string>
+    <string name="automation_interval_header">Khoảng thời gian lấy</string>
+    <string name="automation_interval_custom">Tùy chỉnh</string>
+    <string name="automation_interval_set">Đặt</string>
+    <string name="automation_manual_header">Thao tác thủ công</string>
+    <string name="automation_fetch_key">Lấy khóa</string>
+    <string name="automation_patch_header">Tự động cập nhật bản vá bảo mật</string>
+    <string name="automation_set_patch">Đặt bản vá</string>
+    <string name="automation_appearance_header">Giao diện</string>
+    <string name="automation_randomize_accent">Màu nhấn ngẫu nhiên khi tải</string>
+    <string name="prompt_keybox_fetch_enabled">Tự động lấy keybox đã bật</string>
+    <string name="prompt_keybox_fetch_disabled">Tự động lấy keybox đã tắt</string>
+    <string name="prompt_patch_auto_enabled">Tự động cập nhật bản vá bảo mật đã bật</string>
+    <string name="prompt_patch_auto_disabled">Tự động cập nhật bản vá bảo mật đã tắt</string>
+    <string name="prompt_config_save_failed">Lưu cấu hình thất bại</string>
+    <string name="prompt_denylist_failed">Đọc DenyList thất bại</string>
+    <string name="prompt_exclude_list_failed">Đọc danh sách loại trừ thất bại</string>
+    <string name="prompt_unnecessary_failed">Lấy ứng dụng không cần thiết thất bại</string>
+    <string name="prompt_open_link_failed">Mở liên kết thất bại</string>
+    <string name="prompt_redirecting">Đang chuyển hướng</string>
+    <string name="health_active">Hoạt động</string>
+    <string name="health_not_running">Không chạy</string>
+    <string name="health_unknown">Không xác định</string>
 </resources>

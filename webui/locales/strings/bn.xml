@@ -108,4 +108,45 @@
     <string name="confirmation_uninstall_title">আনইনস্টল নিশ্চিত করুন?</string>
     <string name="confirmation_uninstall_message">আপনি কি নিশ্চিত যে আপনি Tricky Addon আনইনস্টল করতে চান</string>
     <!-- Mode dialog -->
+    <string name="menu_show_system_apps">সিস্টেম অ্যাপ দেখান</string>
+    <!-- Health Banner -->
+    <string name="health_engine_default">প্রমাণীকরণ</string>
+    <string name="health_checking">পরীক্ষা করা হচ্ছে...</string>
+    <!-- Automation Settings -->
+    <string name="menu_automation">Keybox স্বয়ংক্রিয়করণ</string>
+    <string name="automation_keybox_header">Keybox স্বয়ংক্রিয় সংগ্রহ</string>
+    <string name="automation_enable">সক্রিয় করুন</string>
+    <string name="automation_src_primary">প্রাথমিক উৎস</string>
+    <string name="automation_src_mirror">KOWX712 মিরর</string>
+    <string name="automation_src_meowdump">MeowDump</string>
+    <string name="automation_src_device">ডিভাইস তৈরি</string>
+    <string name="automation_src_stock">স্টক keybox</string>
+    <string name="automation_src_custom">আপনার keybox</string>
+    <string name="automation_interval_header">সংগ্রহের বিরতি</string>
+    <string name="automation_interval_custom">কাস্টম</string>
+    <string name="automation_interval_set">সেট করুন</string>
+    <string name="automation_manual_header">ম্যানুয়াল কার্যক্রম</string>
+    <string name="automation_fetch_key">কী সংগ্রহ করুন</string>
+    <string name="automation_patch_header">নিরাপত্তা প্যাচ স্বয়ংক্রিয় আপডেট</string>
+    <string name="automation_set_patch">প্যাচ সেট করুন</string>
+    <string name="automation_appearance_header">চেহারা</string>
+    <string name="automation_randomize_accent">লোডে এলোমেলো অ্যাকসেন্ট রঙ</string>
+    <!-- Mode dialog -->
+    <string name="mode_dialog_title">মোড</string>
+    <string name="mode_auto">স্বয়ংক্রিয়</string>
+    <string name="mode_certificate_generating">সার্টিফিকেট তৈরি (!)</string>
+    <string name="mode_leaf_hack">Leaf Hack (?)</string>
+    <string name="prompt_keybox_fetch_enabled">Keybox স্বয়ংক্রিয় সংগ্রহ সক্রিয়</string>
+    <string name="prompt_keybox_fetch_disabled">Keybox স্বয়ংক্রিয় সংগ্রহ নিষ্ক্রিয়</string>
+    <string name="prompt_patch_auto_enabled">নিরাপত্তা প্যাচ স্বয়ংক্রিয় আপডেট সক্রিয়</string>
+    <string name="prompt_patch_auto_disabled">নিরাপত্তা প্যাচ স্বয়ংক্রিয় আপডেট নিষ্ক্রিয়</string>
+    <string name="prompt_config_save_failed">কনফিগারেশন সংরক্ষণ ব্যর্থ</string>
+    <string name="prompt_denylist_failed">DenyList পড়তে ব্যর্থ</string>
+    <string name="prompt_exclude_list_failed">বাদ তালিকা পড়তে ব্যর্থ</string>
+    <string name="prompt_unnecessary_failed">অপ্রয়োজনীয় অ্যাপ পেতে ব্যর্থ</string>
+    <string name="prompt_open_link_failed">লিঙ্ক খুলতে ব্যর্থ</string>
+    <string name="prompt_redirecting">পুনঃনির্দেশ করা হচ্ছে</string>
+    <string name="health_active">সক্রিয়</string>
+    <string name="health_not_running">চলছে না</string>
+    <string name="health_unknown">অজানা</string>
 </resources>

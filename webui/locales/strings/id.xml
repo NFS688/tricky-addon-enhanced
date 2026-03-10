@@ -114,4 +114,45 @@
     <string name="confirmation_uninstall_title">Konfirmasi Hapus?</string>
     <string name="confirmation_uninstall_message">Apakah Anda yakin ingin menghapus Tricky Addon</string>
     <!-- Mode dialog -->
+    <string name="menu_show_system_apps">Tampilkan Aplikasi Sistem</string>
+    <!-- Health Banner -->
+    <string name="health_engine_default">Attestasi</string>
+    <string name="health_checking">Memeriksa...</string>
+    <!-- Automation Settings -->
+    <string name="menu_automation">Otomatisasi Keybox</string>
+    <string name="automation_keybox_header">Ambil Keybox Otomatis</string>
+    <string name="automation_enable">Aktifkan</string>
+    <string name="automation_src_primary">Sumber utama</string>
+    <string name="automation_src_mirror">Mirror KOWX712</string>
+    <string name="automation_src_meowdump">MeowDump</string>
+    <string name="automation_src_device">Dibuat perangkat</string>
+    <string name="automation_src_stock">Keybox bawaan</string>
+    <string name="automation_src_custom">Keybox Anda</string>
+    <string name="automation_interval_header">Interval Pengambilan</string>
+    <string name="automation_interval_custom">Kustom</string>
+    <string name="automation_interval_set">Atur</string>
+    <string name="automation_manual_header">Tindakan Manual</string>
+    <string name="automation_fetch_key">Ambil Kunci</string>
+    <string name="automation_patch_header">Pembaruan Otomatis Patch Keamanan</string>
+    <string name="automation_set_patch">Atur Patch</string>
+    <string name="automation_appearance_header">Tampilan</string>
+    <string name="automation_randomize_accent">Warna aksen acak saat memuat</string>
+    <!-- Mode dialog -->
+    <string name="mode_dialog_title">Mode</string>
+    <string name="mode_auto">Otomatis</string>
+    <string name="mode_certificate_generating">Pembuatan Sertifikat (!)</string>
+    <string name="mode_leaf_hack">Leaf Hack (?)</string>
+    <string name="prompt_keybox_fetch_enabled">Pengambilan otomatis keybox diaktifkan</string>
+    <string name="prompt_keybox_fetch_disabled">Pengambilan otomatis keybox dinonaktifkan</string>
+    <string name="prompt_patch_auto_enabled">Pembaruan otomatis patch keamanan diaktifkan</string>
+    <string name="prompt_patch_auto_disabled">Pembaruan otomatis patch keamanan dinonaktifkan</string>
+    <string name="prompt_config_save_failed">Gagal menyimpan konfigurasi</string>
+    <string name="prompt_denylist_failed">Gagal membaca DenyList</string>
+    <string name="prompt_exclude_list_failed">Gagal membaca daftar pengecualian</string>
+    <string name="prompt_unnecessary_failed">Gagal mendapatkan aplikasi tidak diperlukan</string>
+    <string name="prompt_open_link_failed">Gagal membuka tautan</string>
+    <string name="prompt_redirecting">Mengalihkan</string>
+    <string name="health_active">Aktif</string>
+    <string name="health_not_running">Tidak berjalan</string>
+    <string name="health_unknown">Tidak diketahui</string>
 </resources>
