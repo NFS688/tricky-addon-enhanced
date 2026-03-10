@@ -1,0 +1,54 @@
+name: Build Module ZIP
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'rust/**'
+      - 'webui/**'
+      - 'common/**'
+      - '*.sh'
+      - 'module.prop'
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-linux-android,armv7-linux-androideabi
+
+      - name: Cache Rust dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            rust/target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('rust/Cargo.lock') }}
+          restore-keys: ${{ runner.os }}-cargo-
+
+      - name: Setup Android NDK
+        uses: nttld/setup-ndk@v1
+        id: ndk
+        with:
+          ndk-version: r27c
+
+      - name: Build and package
+        env:
+          ANDROID_NDK_HOME: ${{ steps.ndk.outputs.ndk-path }}
+        run: bash package.sh --no-bump
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: TA_enhanced-${{ github.sha }}
+          path: release/*.zip
+          retention-days: 30
