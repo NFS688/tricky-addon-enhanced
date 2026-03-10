@@ -32,6 +32,7 @@
     <!-- Functional Button -->
     <string name="functional_button_save">保存</string>
     <string name="functional_button_uninstall_webui">WebUI をアンインストール</string>
+    <string name="functional_button_close">閉じる</string>
     <string name="functional_button_cancel">キャンセル</string>
     <string name="functional_button_confirm">確認</string>
     <!-- Loading -->
@@ -44,8 +45,16 @@
     <string name="menu_deselect_unnecessary">不要な選択を解除</string>
     <string name="menu_add_system_app">システムアプリを追加</string>
     <string name="menu_set_verified_boot_hash">確認付きブートハッシュを設定</string>
+    <string name="menu_keybox">Keybox</string>
+    <string name="menu_keybox_aosp">AOSP</string>
+    <string name="menu_keybox_unknown">不明</string>
+    <string name="menu_keybox_valid">有効</string>
+    <string name="menu_keybox_custom">カスタム</string>
+    <string name="menu_set_verified_boot_hash">確認付きブートハッシュを設定</string>
     <string name="menu_set_security_patch">セキュリティパッチを設定</string>
     <string name="menu_set_devconfig">DevConfig を設定</string>
+    <string name="menu_help">ヘルプ</string>
+    <string name="menu_language">言語</string>
     <string name="menu_about">このアドオンについて</string>
     <!-- Boot Hash -->
     <string name="boot_hash_title">ブートハッシュ</string>
@@ -67,7 +76,7 @@
     <string name="prompt_no_valid">有効な Keybox がありません。</string>
     <string name="prompt_boot_hash_set">確認付きブートハッシュの更新に成功しました。</string>
     <string name="prompt_boot_hash_set_error">確認付きブートハッシュの更新に失敗しました。</string>
-    <string name="prompt_boot_hash_invalid">Invalid boot hash format</string>
+    <string name="prompt_boot_hash_invalid">ブートハッシュの形式が無効です</string>
     <string name="prompt_saved_target">設定を target.txt に保存しました。</string>
     <string name="prompt_save_error">設定の保存に失敗しました。</string>
     <string name="prompt_uninstall_prompt">WebUI を再起動後に削除されます。</string>
@@ -83,6 +92,8 @@
     <string name="prompt_install_fail">インストールに失敗しました。手動で更新してください。</string>
     <string name="prompt_rebooting">再起動中...</string>
     <string name="prompt_reboot_fail">再起動に失敗しました。手動で再起動してください。</string>
+    <string name="prompt_translation_updated">翻訳パッケージの更新に成功しました</string>
+    <string name="prompt_translation_update_failed">翻訳パッケージの更新に失敗しました</string>
     <string name="prompt_custom_key_set">カスタム Keybox の設定に成功しました</string>
     <string name="prompt_custom_key_set_error">カスタム Keybox の設定に失敗しました</string>
     <string name="prompt_no_file_selected">ファイルが選択されていません</string>

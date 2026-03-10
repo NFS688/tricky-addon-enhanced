@@ -76,7 +76,7 @@
     <string name="prompt_no_valid">未找到有效密钥。</string>
     <string name="prompt_boot_hash_set">哈希值重置成功</string>
     <string name="prompt_boot_hash_set_error">哈希值重置失败</string>
-    <string name="prompt_boot_hash_invalid">Invalid boot hash format</string>
+    <string name="prompt_boot_hash_invalid">启动哈希格式无效</string>
     <string name="prompt_saved_target">成功保存配置</string>
     <string name="prompt_save_error">保存配置失败</string>
     <string name="prompt_uninstall_prompt">WebUI 将在重启后被移除</string>

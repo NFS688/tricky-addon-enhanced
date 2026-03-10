@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="system_default">System Default</string>
+    <string name="system_default">Padrão do sistema</string>
     <string name="more_language">Mais</string>
     <!-- Header -->
     <string name="header_title">Tricky Addon</string>
@@ -24,7 +24,7 @@
     <!-- Update -->
     <string name="update_update_available">Uma nova versão está Disponível</string>
     <string name="update_redirect_to_release">Toque para baixar a versão mais recente</string>
-    <string name="update_changelog">Changelog</string>
+    <string name="update_changelog">Registro de alterações</string>
     <string name="update_install">Instalar</string>
     <string name="update_reboot">Reiniciar</string>
     <!-- Search -->
@@ -48,7 +48,7 @@
     <string name="menu_keybox_aosp">AOSP</string>
     <string name="menu_keybox_unknown">Desconhecido</string>
     <string name="menu_keybox_valid">Válido</string>
-    <string name="menu_keybox_custom">Custom</string>
+    <string name="menu_keybox_custom">Personalizado</string>
     <string name="menu_set_verified_boot_hash">Definir Hash de Boot Verificado</string>
     <string name="menu_set_security_patch">Definir Patch de segurança</string>
     <string name="menu_set_devconfig">Definir DevConfig</string>
@@ -75,7 +75,7 @@
     <string name="prompt_no_valid">Nenhuma Keybox válida encontrada.</string>
     <string name="prompt_boot_hash_set">Hash de Boot Verificado salvo com sucesso</string>
     <string name="prompt_boot_hash_set_error">Falha ao atualizar Hash de Boot Verificado</string>
-    <string name="prompt_boot_hash_invalid">Invalid boot hash format</string>
+    <string name="prompt_boot_hash_invalid">Formato de hash de inicialização inválido</string>
     <string name="prompt_saved_target">Config salvo para Target.txt</string>
     <string name="prompt_save_error">Falha ao salvar a configuração</string>
     <string name="prompt_uninstall_prompt">WebUI será removido após a reinicialização</string>
@@ -91,6 +91,8 @@
     <string name="prompt_install_fail">Falha ao instalar, atualize manualmente</string>
     <string name="prompt_rebooting">Reiniciando...</string>
     <string name="prompt_reboot_fail">Falha ao reiniciar, reinicie manualmente</string>
+    <string name="prompt_translation_updated">Pacote de tradução atualizado com sucesso</string>
+    <string name="prompt_translation_update_failed">Falha ao atualizar pacote de tradução</string>
     <string name="prompt_custom_key_set">keybox custom definida com sucesso</string>
     <string name="prompt_custom_key_set_error">Falha ao definir keybox customizada</string>
     <string name="prompt_no_file_selected">Nenhum arquivo selecionado</string>

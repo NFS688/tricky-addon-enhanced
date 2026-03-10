@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="system_default">System Default</string>
+    <string name="system_default">За замовчуванням</string>
     <string name="more_language">Більше</string>
     <!-- Header -->
     <string name="header_title">Tricky Addon</string>
@@ -45,6 +45,7 @@
     <string name="menu_deselect_unnecessary">Прибрати необов&apos;язкові</string>
     <string name="menu_add_system_app">Додати системний застосунок</string>
     <string name="menu_keybox">Ключ</string>
+    <string name="menu_keybox_aosp">AOSP</string>
     <string name="menu_keybox_unknown">Невідомий</string>
     <string name="menu_keybox_valid">Валідний</string>
     <string name="menu_keybox_custom">Користувацький</string>
@@ -75,7 +76,7 @@
     <string name="prompt_no_valid">Не знайдено жодного дійсного ключа.</string>
     <string name="prompt_boot_hash_set">Перевірений хеш завантаження успішно збережено</string>
     <string name="prompt_boot_hash_set_error">Не вдалося оновити перевірений хеш завантаження</string>
-    <string name="prompt_boot_hash_invalid">Invalid boot hash format</string>
+    <string name="prompt_boot_hash_invalid">Невірний формат хешу завантаження</string>
     <string name="prompt_saved_target">Конфігурацію збережено до файлу target.txt</string>
     <string name="prompt_save_error">Не вдалося зберегти конфігурацію</string>
     <string name="prompt_uninstall_prompt">WebUI буде видалено після перезавантаження</string>

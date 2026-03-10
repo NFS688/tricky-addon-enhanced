@@ -76,7 +76,7 @@
     <string name="prompt_no_valid">لم يتم العثور على keybox صالح.</string>
     <string name="prompt_boot_hash_set">تم حفظ تجزئة التمهيد الموثوق بنجاح</string>
     <string name="prompt_boot_hash_set_error">فشل في تحديث تجزئة التمهيد الموثوق</string>
-    <string name="prompt_boot_hash_invalid">Invalid boot hash format</string>
+    <string name="prompt_boot_hash_invalid">تنسيق تجزئة الإقلاع غير صالح</string>
     <string name="prompt_saved_target">تم حفظ التكوين إلى target.txt</string>
     <string name="prompt_save_error">فشل في حفظ التكوين</string>
     <string name="prompt_uninstall_prompt">سيتم إزالة WebUI بعد إعادة التشغيل</string>

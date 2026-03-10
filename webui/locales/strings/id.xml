@@ -32,6 +32,7 @@
     <!-- Functional Button -->
     <string name="functional_button_save">Simpan</string>
     <string name="functional_button_uninstall_webui">Copot Pemasangan WebUI</string>
+    <string name="functional_button_close">Tutup</string>
     <string name="functional_button_cancel">Batal</string>
     <string name="functional_button_confirm">Konfirmasi</string>
     <!-- Loading -->
@@ -43,9 +44,16 @@
     <string name="menu_select_denylist">Pilih dari Denylist</string>
     <string name="menu_deselect_unnecessary">Batalkan Pilihan yang Tidak Perlu</string>
     <string name="menu_add_system_app">Tambahkan Aplikasi Sistem</string>
+    <string name="menu_keybox">Keybox</string>
+    <string name="menu_keybox_aosp">AOSP</string>
+    <string name="menu_keybox_unknown">Tidak Dikenal</string>
+    <string name="menu_keybox_valid">Valid</string>
+    <string name="menu_keybox_custom">Kustom</string>
     <string name="menu_set_verified_boot_hash">Atur Verified Boot Hash</string>
     <string name="menu_set_security_patch">Atur Patch Keamanan</string>
     <string name="menu_set_devconfig">Atur Konfigurasi Pengembang</string>
+    <string name="menu_help">Bantuan</string>
+    <string name="menu_language">Bahasa</string>
     <string name="menu_about">Tentang</string>
     <!-- Boot Hash -->
     <string name="boot_hash_title">Verified Boot Hash</string>
@@ -67,7 +75,7 @@
     <string name="prompt_no_valid">Tidak ada keybox valid.</string>
     <string name="prompt_boot_hash_set">Verified Boot Hash berhasil disimpan</string>
     <string name="prompt_boot_hash_set_error">Gagal memperbarui Verified Boot Hash</string>
-    <string name="prompt_boot_hash_invalid">Invalid boot hash format</string>
+    <string name="prompt_boot_hash_invalid">Format hash boot tidak valid</string>
     <string name="prompt_saved_target">Konfigurasi disimpan ke target.txt</string>
     <string name="prompt_save_error">Gagal menyimpan konfigurasi</string>
     <string name="prompt_uninstall_prompt">WebUI akan dicopot setelah perangkat dimulai ulang</string>
@@ -83,6 +91,8 @@
     <string name="prompt_install_fail">Gagal memasang, silakan perbarui secara manual</string>
     <string name="prompt_rebooting">Memulai ulang...</string>
     <string name="prompt_reboot_fail">Gagal memulai ulang, silakan lakukan secara manual</string>
+    <string name="prompt_translation_updated">Paket terjemahan berhasil diperbarui</string>
+    <string name="prompt_translation_update_failed">Gagal memperbarui paket terjemahan</string>
     <string name="prompt_custom_key_set">Keybox kustom berhasil digunakan</string>
     <string name="prompt_custom_key_set_error">Gagal menggunakan keybox kustom</string>
     <string name="prompt_no_file_selected">Tidak ada file yang dipilih</string>

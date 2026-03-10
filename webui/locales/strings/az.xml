@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="system_default">Sistem Varsayılanı</string>
+    <string name="more_language">Əlavə</string>
     <!-- Header -->
     <string name="header_title">Tricky Addon</string>
     <!-- Help Menu-->
@@ -31,6 +32,7 @@
     <!-- Functional Button -->
     <string name="functional_button_save">Yadda saxla</string>
     <string name="functional_button_uninstall_webui">WebUI-ni sil</string>
+    <string name="functional_button_close">Bağla</string>
     <string name="functional_button_cancel">İmtina et</string>
     <string name="functional_button_confirm">Təsdiqlə</string>
     <!-- Loading -->
@@ -43,7 +45,16 @@
     <string name="menu_deselect_unnecessary">Lazımsızları seçmə</string>
     <string name="menu_add_system_app">Sistem Tətbiqi Əlavə et</string>
     <string name="menu_set_verified_boot_hash">Təsdiqlənmiş Boot Hash təyin et</string>
+    <string name="menu_keybox">Keybox</string>
+    <string name="menu_keybox_aosp">AOSP</string>
+    <string name="menu_keybox_unknown">Naməlum</string>
+    <string name="menu_keybox_valid">Etibarlı</string>
+    <string name="menu_keybox_custom">Xüsusi</string>
+    <string name="menu_set_verified_boot_hash">Təsdiqlənmiş Boot Hash təyin et</string>
     <string name="menu_set_security_patch">Təhlükəsizlik Təkmilləşdirməsini təyin et</string>
+    <string name="menu_set_devconfig">DevConfig təyin et</string>
+    <string name="menu_help">Kömək</string>
+    <string name="menu_language">Dil</string>
     <string name="menu_about">Haqqında</string>
     <!-- Boot Hash -->
     <string name="boot_hash_title">Boot Hash</string>
@@ -64,12 +75,14 @@
     <string name="prompt_no_valid">Etibarlı keybox tapılmadı.</string>
     <string name="prompt_boot_hash_set">Təsdiqlənmiş Boot Hash uğurla yadda saxlanıldı</string>
     <string name="prompt_boot_hash_set_error">Təsdiqlənmiş Boot Hash yenilənə bilmədi</string>
-    <string name="prompt_boot_hash_invalid">Invalid boot hash format</string>
+    <string name="prompt_boot_hash_invalid">Yükləmə heş formatı yanlışdır</string>
     <string name="prompt_saved_target">Konfiqurasiya target.txt-yə yadda saxlanıldı</string>
     <string name="prompt_save_error">Konfiqurasiyanı yadda saxlamaq mümkün olmadı</string>
     <string name="prompt_uninstall_prompt">WebUI yenidən başladıqdan sonra silinəcək</string>
     <string name="prompt_uninstall_failed">WebUI-ni silmək mümkün olmadı</string>
+    <string name="prompt_checking_update">Yeniləmə yoxlanılır...</string>
     <string name="prompt_new_update">Yeni bir yeniləmə mövcuddur!</string>
+    <string name="prompt_no_update">Hazırda yeniləmə mövcud deyil</string>
     <string name="prompt_downloading">Yeni yeniləməni yükləyir...</string>
     <string name="prompt_downloaded">Yükləmə tamamlandı</string>
     <string name="prompt_download_fail">Yeniləməni yükləmək mümkün olmadı</string>
@@ -78,6 +91,8 @@
     <string name="prompt_install_fail">Quraşdırmaq mümkün olmadı, zəhmət olmasa əl ilə yeniləyin</string>
     <string name="prompt_rebooting">Yenidən başladılır...</string>
     <string name="prompt_reboot_fail">Yenidən başlatmaq mümkün olmadı, zəhmət olmasa əl ilə yenidən başlayın</string>
+    <string name="prompt_translation_updated">Tərcümə paketi uğurla yeniləndi</string>
+    <string name="prompt_translation_update_failed">Tərcümə paketini yeniləmək mümkün olmadı</string>
     <string name="prompt_custom_key_set">Özəl keybox uğurla təyin olundu</string>
     <string name="prompt_custom_key_set_error">Özəl keybox təyin oluna bilmədi</string>
     <string name="prompt_no_file_selected">Fayl seçilməyib</string>
@@ -91,6 +106,7 @@
     <string name="security_patch_fetching">Yığılır...</string>
     <string name="security_patch_fetched">Tamam</string>
     <string name="security_patch_get_failed">Təhlükəsizlik təkmilləşdirməsinin tarixini almaq mümkün olmadı</string>
+    <string name="security_patch_unable_to_connect">source.android.com ilə əlaqə qurmaq mümkün olmadı</string>
     <string name="security_patch_auto_success">Avtomatik konfiqurasiya uğurla aktivləşdirildi</string>
     <string name="security_patch_auto_failed">Avtomatik konfiqurasiyanı aktivləşdirmək mümkün olmadı</string>
     <string name="security_patch_save_success">Təhlükəsizlik təkmilləşdirməsi uğurla yadda saxlanıldı</string>

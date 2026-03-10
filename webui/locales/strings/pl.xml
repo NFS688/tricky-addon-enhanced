@@ -76,7 +76,7 @@
     <string name="prompt_no_valid">Nie znaleziono ważnego klucza.</string>
     <string name="prompt_boot_hash_set">Zweryfikowany skrót rozruchowy zapisany pomyślnie</string>
     <string name="prompt_boot_hash_set_error">Nie udało się zaktualizować zweryfikowanego skrótu rozruchowego</string>
-    <string name="prompt_boot_hash_invalid">Invalid boot hash format</string>
+    <string name="prompt_boot_hash_invalid">Nieprawidłowy format skrótu rozruchowego</string>
     <string name="prompt_saved_target">Konfiguracja zapisana do pliku target.txt</string>
     <string name="prompt_save_error">Nie udało się zapisać konfiguracji</string>
     <string name="prompt_uninstall_prompt">WebUI zostanie odinstalowany po ponownym uruchomieniu</string>

@@ -76,7 +76,7 @@
     <string name="prompt_no_valid">No se encontró un keybox válido.</string>
     <string name="prompt_boot_hash_set">Boot Hash verificado guardado correctamente</string>
     <string name="prompt_boot_hash_set_error">Error al actualizar el Boot Hash verificado</string>
-    <string name="prompt_boot_hash_invalid">Invalid boot hash format</string>
+    <string name="prompt_boot_hash_invalid">Formato de hash de arranque no válido</string>
     <string name="prompt_saved_target">Configuración guardada en target.txt</string>
     <string name="prompt_save_error">Error al guardar la configuración</string>
     <string name="prompt_uninstall_prompt">El WebUI se eliminará después de reiniciar</string>

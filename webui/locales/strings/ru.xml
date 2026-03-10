@@ -44,6 +44,8 @@
     <string name="menu_select_denylist">Выбрать из DenyList</string>
     <string name="menu_deselect_unnecessary">Отменить выбор ненужных</string>
     <string name="menu_add_system_app">Добавить системное приложение</string>
+    <string name="menu_keybox">Keybox</string>
+    <string name="menu_keybox_aosp">AOSP</string>
     <string name="menu_keybox_unknown">Неизвестно</string>
     <string name="menu_keybox_valid">Действительный</string>
     <string name="menu_keybox_custom">По выбору</string>
@@ -73,7 +75,7 @@
     <string name="prompt_no_valid">Не найден действующий keybox.</string>
     <string name="prompt_boot_hash_set">Verified Boot Hash успешно сохранен</string>
     <string name="prompt_boot_hash_set_error">Не удалось обновить Verified Boot Hash</string>
-    <string name="prompt_boot_hash_invalid">Invalid boot hash format</string>
+    <string name="prompt_boot_hash_invalid">Неверный формат хеша загрузки</string>
     <string name="prompt_saved_target">Конфигурация сохранена в target.txt</string>
     <string name="prompt_save_error">Не удалось сохранить конфигурацию</string>
     <string name="prompt_uninstall_prompt">WebUI будет удален после перезагрузки</string>
@@ -89,6 +91,8 @@
     <string name="prompt_install_fail">Не удалось установить, обновите вручную</string>
     <string name="prompt_rebooting">Перезагрузка...</string>
     <string name="prompt_reboot_fail">Не удалось перезагрузить, перезагрузите вручную</string>
+    <string name="prompt_translation_updated">Пакет переводов успешно обновлён</string>
+    <string name="prompt_translation_update_failed">Не удалось обновить пакет переводов</string>
     <string name="prompt_custom_key_set">Пользовательский keybox успешно установлен</string>
     <string name="prompt_custom_key_set_error">Не удалось установить пользовательский keybox</string>
     <string name="prompt_no_file_selected">Файл не выбран</string>

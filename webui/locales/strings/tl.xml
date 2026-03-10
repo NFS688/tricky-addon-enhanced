@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="system_default">Default ng Sistema</string>
+    <string name="more_language">Higit Pa</string>
     <!-- Header -->
     <string name="header_title">Tricky Addon</string>
     <!-- Help Menu-->
@@ -31,6 +32,7 @@
     <!-- Functional Button -->
     <string name="functional_button_save">I-save</string>
     <string name="functional_button_uninstall_webui">I-uninstall ang WebUI</string>
+    <string name="functional_button_close">Isara</string>
     <string name="functional_button_cancel">Kanselahin</string>
     <string name="functional_button_confirm">Kumpirmahin</string>
     <!-- Loading -->
@@ -43,7 +45,16 @@
     <string name="menu_deselect_unnecessary">Huwag Pumili ng Hindi Kinakailangan</string>
     <string name="menu_add_system_app">Magdagdag ng System App</string>
     <string name="menu_set_verified_boot_hash">I-set ang Verified Boot Hash</string>
+    <string name="menu_keybox">Keybox</string>
+    <string name="menu_keybox_aosp">AOSP</string>
+    <string name="menu_keybox_unknown">Hindi Kilala</string>
+    <string name="menu_keybox_valid">Valid</string>
+    <string name="menu_keybox_custom">Pasadya</string>
+    <string name="menu_set_verified_boot_hash">I-set ang Verified Boot Hash</string>
     <string name="menu_set_security_patch">I-set ang Security Patch</string>
+    <string name="menu_set_devconfig">I-set ang DevConfig</string>
+    <string name="menu_help">Tulong</string>
+    <string name="menu_language">Wika</string>
     <string name="menu_about">Tungkol</string>
     <!-- Boot Hash -->
     <string name="boot_hash_title">Boot Hash</string>
@@ -64,12 +75,14 @@
     <string name="prompt_no_valid">Walang valid na keybox na natagpuan.</string>
     <string name="prompt_boot_hash_set">Matagumpay na na-save ang Verified Boot Hash</string>
     <string name="prompt_boot_hash_set_error">Nabigong i-update ang Verified Boot Hash</string>
-    <string name="prompt_boot_hash_invalid">Invalid boot hash format</string>
+    <string name="prompt_boot_hash_invalid">Hindi wastong format ng boot hash</string>
     <string name="prompt_saved_target">Na-save ang configuration sa target.txt</string>
     <string name="prompt_save_error">Nabigong i-save ang config</string>
     <string name="prompt_uninstall_prompt">Mawawala ang WebUI pagkatapos ng reboot</string>
     <string name="prompt_uninstall_failed">Nabigong i-uninstall ang WebUI</string>
+    <string name="prompt_checking_update">Sinusuri ang mga update...</string>
     <string name="prompt_new_update">May bagong update na available!</string>
+    <string name="prompt_no_update">Walang available na update sa ngayon</string>
     <string name="prompt_downloading">Nagda-download ng bagong update...</string>
     <string name="prompt_downloaded">Natapos ang pag-download</string>
     <string name="prompt_download_fail">Nabigo ang pag-download ng update</string>
@@ -78,28 +91,31 @@
     <string name="prompt_install_fail">Nabigo ang pag-install, pakisubukang mag-update nang manu-mano</string>
     <string name="prompt_rebooting">Nag-re-reboot...</string>
     <string name="prompt_reboot_fail">Nabigo ang pag-reboot, pakisubukang mag-reboot nang manu-mano</string>
+    <string name="prompt_translation_updated">Matagumpay na na-update ang pakete ng pagsasalin</string>
+    <string name="prompt_translation_update_failed">Nabigong i-update ang pakete ng pagsasalin</string>
     <string name="prompt_custom_key_set">Matagumpay na na-set ang Custom Keybox</string>
     <string name="prompt_custom_key_set_error">Nabigong i-set ang Custom Keybox</string>
     <string name="prompt_no_file_selected">Walang napiling file</string>
     <string name="prompt_system_app_not_found">Walang natagpuan na system app</string>
     <string name="prompt_system_app_error">Nabigong dagdag ang system app</string>
     <!-- Security Patch -->
-    <string name="security_patch_title">Security Patch</string>
-    <string name="security_patch_advanced_mode">Advanced</string>
+    <string name="security_patch_title">Patch ng Seguridad</string>
+    <string name="security_patch_advanced_mode">Advanced na</string>
     <string name="security_patch_get_date">Kunin ang Petsa ng Security Patch</string>
     <string name="security_patch_auto">Auto</string>
     <string name="security_patch_fetching">Kumukuha...</string>
     <string name="security_patch_fetched">Tapos na</string>
     <string name="security_patch_get_failed">Hindi makuha ang petsa ng security patch</string>
+    <string name="security_patch_unable_to_connect">Hindi makakonekta sa source.android.com</string>
     <string name="security_patch_auto_success">Matagumpay na na-enable ang auto config</string>
     <string name="security_patch_auto_failed">Nabigong i-enable ang auto config</string>
     <string name="security_patch_save_success">Matagumpay na na-save ang security patch</string>
     <string name="security_patch_save_failed">Nabigong i-save ang security patch</string>
     <string name="security_patch_value_empty">Naka-disable ang configuration ng security patch</string>
-    <string name="security_patch_invalid_all">Invalid format</string>
-    <string name="security_patch_invalid_boot">Invalid boot format</string>
-    <string name="security_patch_invalid_system">Invalid system format</string>
-    <string name="security_patch_invalid_vendor">Invalid vendor format</string>
+    <string name="security_patch_invalid_all">Hindi wastong format</string>
+    <string name="security_patch_invalid_boot">Hindi wastong format ng boot</string>
+    <string name="security_patch_invalid_system">Hindi wastong format ng system</string>
+    <string name="security_patch_invalid_vendor">Hindi wastong format ng vendor</string>
     <!-- Add System App -->
     <string name="add_system_app_title">Magdagdag ng System App</string>
     <string name="add_system_app_add">Idagdag</string>
@@ -110,20 +126,20 @@
     <!-- Mode dialog -->
     <string name="menu_show_system_apps">Ipakita ang System Apps</string>
     <!-- Health Banner -->
-    <string name="health_engine_default">Attestation</string>
+    <string name="health_engine_default">Pagpapatunay</string>
     <string name="health_checking">Sinusuri...</string>
     <!-- Automation Settings -->
     <string name="menu_automation">Keybox Automation</string>
     <string name="automation_keybox_header">Auto-Fetch ng Keybox</string>
     <string name="automation_enable">I-enable</string>
     <string name="automation_src_primary">Pangunahing pinagmulan</string>
-    <string name="automation_src_mirror">KOWX712 mirror</string>
+    <string name="automation_src_mirror">Salamin ng KOWX712</string>
     <string name="automation_src_meowdump">MeowDump</string>
     <string name="automation_src_device">Ginawa ng device</string>
-    <string name="automation_src_stock">Stock keybox</string>
+    <string name="automation_src_stock">Stock na keybox</string>
     <string name="automation_src_custom">Iyong keybox</string>
     <string name="automation_interval_header">Pagitan ng Pag-fetch</string>
-    <string name="automation_interval_custom">Custom</string>
+    <string name="automation_interval_custom">Pasadya</string>
     <string name="automation_interval_set">I-set</string>
     <string name="automation_manual_header">Manu-manong Aksyon</string>
     <string name="automation_fetch_key">Kunin ang Key</string>
