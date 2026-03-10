@@ -7,6 +7,7 @@ use crate::cli::HealthAction;
 use crate::platform::fs::atomic_write;
 
 const TS_MODULE: &str = "/data/adb/modules/tricky_store";
+const TS_MODULE_HIDDEN: &str = "/data/adb/modules/.tricky_store";
 const HEALTH_STATE: &str = "/data/adb/tricky_store/.health_state";
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
@@ -83,18 +84,45 @@ pub fn handle_health(action: HealthAction, cfg: &Config) -> anyhow::Result<()> {
 }
 
 pub fn detect_engine() -> String {
-    let service_sh = Path::new(TS_MODULE).join("service.sh");
-    if let Ok(content) = std::fs::read_to_string(&service_sh) {
-        for line in content.lines() {
-            if let Some(pos) = line.find("--nice-name") {
-                let rest = &line[pos..];
-                if let Some(name) = rest.split_whitespace().nth(1) {
+    for dir in [TS_MODULE, TS_MODULE_HIDDEN] {
+        let prop = Path::new(dir).join("module.prop");
+        if let Ok(content) = std::fs::read_to_string(&prop) {
+            if let Some(name) = content.lines().find_map(|l| l.strip_prefix("name=")) {
+                let name = name.trim();
+                if !name.is_empty() {
                     return name.to_string();
                 }
             }
         }
     }
-    "TEESimulator".to_string()
+    "Attestation Engine".to_string()
+}
+
+pub fn is_engine_enabled() -> bool {
+    for dir in [TS_MODULE, TS_MODULE_HIDDEN] {
+        let p = Path::new(dir);
+        if p.is_dir() {
+            return !p.join("disable").exists();
+        }
+    }
+    false
+}
+
+fn detect_nice_name() -> Option<String> {
+    for dir in [TS_MODULE, TS_MODULE_HIDDEN] {
+        let service_sh = Path::new(dir).join("service.sh");
+        if let Ok(content) = std::fs::read_to_string(&service_sh) {
+            for line in content.lines() {
+                if let Some(pos) = line.find("--nice-name") {
+                    let rest = &line[pos..];
+                    if let Some(name) = rest.split_whitespace().nth(1) {
+                        return Some(name.to_string());
+                    }
+                }
+            }
+        }
+    }
+    None
 }
 
 pub fn write_state(state: &HealthState) -> anyhow::Result<()> {
@@ -110,8 +138,9 @@ pub fn read_state() -> anyhow::Result<HealthState> {
 
 pub fn tee_status() -> anyhow::Result<HealthState> {
     let engine = detect_engine();
-    let pid = find_engine_pid(&engine);
-    let status = if pid.is_some() { EngineStatus::Running } else { EngineStatus::Unknown };
+    let enabled = is_engine_enabled();
+    let pid = detect_nice_name().and_then(|n| find_engine_pid(&n));
+    let status = if enabled { EngineStatus::Running } else { EngineStatus::Unknown };
 
     let mut state = read_state().unwrap_or_default();
     state.engine = engine;
@@ -122,14 +151,27 @@ pub fn tee_status() -> anyhow::Result<HealthState> {
 }
 
 pub fn check_once(state: &mut HealthState, cfg: &Config) -> anyhow::Result<bool> {
-    if !Path::new(TS_MODULE).is_dir() {
+    if !Path::new(TS_MODULE).is_dir() && !Path::new(TS_MODULE_HIDDEN).is_dir() {
         return Ok(true);
     }
 
     let now_ts = now();
     state.last_check = now_ts;
+    state.engine = detect_engine();
 
-    let pid = find_engine_pid(&state.engine);
+    let nice_name = detect_nice_name();
+
+    // Without nice-name (closed-source TrickyStore), just check module enabled status
+    if nice_name.is_none() {
+        let enabled = is_engine_enabled();
+        state.status = if enabled { EngineStatus::Running } else { EngineStatus::Unknown };
+        state.pid = None;
+        write_state(state)?;
+        return Ok(enabled);
+    }
+
+    let process_name = nice_name.unwrap();
+    let pid = find_engine_pid(&process_name);
 
     match state.circuit {
         CircuitState::Open => {
@@ -197,7 +239,7 @@ pub fn check_once(state: &mut HealthState, cfg: &Config) -> anyhow::Result<bool>
     state.last_restart = now_ts;
     tracing::info!("engine dead, restart #{}", state.restarts);
 
-    if let Err(e) = restart_engine(&state.engine) {
+    if let Err(e) = restart_engine(&process_name) {
         tracing::error!("restart failed: {e}");
         state.status = EngineStatus::Failed;
     }
@@ -209,11 +251,12 @@ pub fn check_once(state: &mut HealthState, cfg: &Config) -> anyhow::Result<bool>
 pub fn restart_engine(engine_name: &str) -> anyhow::Result<()> {
     let _ = Command::new("killall").arg(engine_name).output();
 
-    let service_sh = Path::new(TS_MODULE).join("service.sh");
-    if service_sh.exists() {
-        let out = Command::new("sh")
-            .arg(&service_sh)
-            .output()?;
+    let service_sh = [TS_MODULE, TS_MODULE_HIDDEN].iter()
+        .map(|d| Path::new(d).join("service.sh"))
+        .find(|p| p.exists());
+
+    if let Some(sh) = service_sh {
+        let out = Command::new("sh").arg(&sh).output()?;
         if !out.status.success() {
             let stderr = String::from_utf8_lossy(&out.stderr);
             anyhow::bail!("service.sh failed: {stderr}");

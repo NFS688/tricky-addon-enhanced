@@ -162,7 +162,7 @@ fn build_conflicts(cfg: &Config) -> ConflictReport {
 
 pub fn handle_webui_init(cfg: &Config) -> anyhow::Result<()> {
     let engine = crate::health::detect_engine();
-    let engine_running = crate::health::find_engine_pid(&engine).is_some();
+    let engine_running = crate::health::is_engine_enabled();
     let total = count_target_entries();
     let (system, boot, vendor) = read_patch_dates();
     let (kb_valid, kb_errors) = check_keybox();
