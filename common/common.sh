@@ -151,7 +151,8 @@ hexpatch_deleteprop() {
     find_magiskboot || { _log "WARN" "magiskboot not found, skipping hexpatch"; return 1; }
     for search_string in "$@"; do
         search_hex=$(printf '%s' "$search_string" | xxd -p | tr '[:lower:]' '[:upper:]')
-        replacement=$(cat /dev/urandom | tr -dc '0-9a-f' | head -c ${#search_string})
+        # a-z + 0-9 + underscore to mimic real prop name segments (pure hex is a detection signal)
+        replacement=$(cat /dev/urandom | tr -dc 'a-z0-9_' | head -c ${#search_string})
         replacement_hex=$(printf '%s' "$replacement" | xxd -p | tr '[:lower:]' '[:upper:]')
         getprop | cut -d'[' -f2 | cut -d']' -f1 | grep "$search_string" | while read -r prop_name; do
             resetprop -Z "$prop_name" 2>/dev/null | cut -d' ' -f2 | cut -d':' -f3 | while read -r base; do
