@@ -145,6 +145,9 @@
     <string name="automation_fetch_key">Ambil Kunci</string>
     <string name="automation_patch_header">Pembaruan Otomatis Patch Keamanan</string>
     <string name="automation_set_patch">Atur Patch</string>
+    <string name="automation_region_header">Region Props</string>
+    <string name="prompt_region_enabled">Penerapan region prop diaktifkan</string>
+    <string name="prompt_region_disabled">Penerapan region prop dinonaktifkan</string>
     <string name="automation_appearance_header">Tampilan</string>
     <string name="automation_randomize_accent">Warna aksen acak saat memuat</string>
     <!-- Mode dialog -->

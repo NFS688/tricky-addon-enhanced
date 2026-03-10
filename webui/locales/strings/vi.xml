@@ -150,6 +150,9 @@
     <string name="automation_fetch_key">Lấy khóa</string>
     <string name="automation_patch_header">Tự động cập nhật bản vá bảo mật</string>
     <string name="automation_set_patch">Đặt bản vá</string>
+    <string name="automation_region_header">Props vùng</string>
+    <string name="prompt_region_enabled">Đã bật áp dụng region prop</string>
+    <string name="prompt_region_disabled">Đã tắt áp dụng region prop</string>
     <string name="automation_appearance_header">Giao diện</string>
     <string name="automation_randomize_accent">Màu nhấn ngẫu nhiên khi tải</string>
     <string name="prompt_keybox_fetch_enabled">Tự động lấy keybox đã bật</string>

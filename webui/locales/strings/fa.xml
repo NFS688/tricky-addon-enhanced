@@ -146,6 +146,9 @@
     <string name="automation_fetch_key">دریافت کلید</string>
     <string name="automation_patch_header">به‌روزرسانی خودکار وصله امنیتی</string>
     <string name="automation_set_patch">تنظیم وصله</string>
+    <string name="automation_region_header">ویژگی‌های منطقه</string>
+    <string name="prompt_region_enabled">اعمال ویژگی‌های منطقه فعال شد</string>
+    <string name="prompt_region_disabled">اعمال ویژگی‌های منطقه غیرفعال شد</string>
     <string name="automation_appearance_header">ظاهر</string>
     <string name="automation_randomize_accent">رنگ تأکیدی تصادفی هنگام بارگذاری</string>
     <!-- Mode dialog -->

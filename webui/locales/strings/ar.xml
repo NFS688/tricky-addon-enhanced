@@ -150,6 +150,9 @@
     <string name="automation_fetch_key">جلب المفتاح</string>
     <string name="automation_patch_header">تحديث تلقائي لتصحيح الأمان</string>
     <string name="automation_set_patch">تعيين التصحيح</string>
+    <string name="automation_region_header">خصائص المنطقة</string>
+    <string name="prompt_region_enabled">تم تفعيل فرض خصائص المنطقة</string>
+    <string name="prompt_region_disabled">تم تعطيل فرض خصائص المنطقة</string>
     <string name="automation_appearance_header">المظهر</string>
     <string name="automation_randomize_accent">لون عشوائي عند التحميل</string>
     <string name="prompt_keybox_fetch_enabled">تم تفعيل جلب Keybox التلقائي</string>

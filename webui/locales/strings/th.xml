@@ -149,6 +149,9 @@
     <string name="automation_fetch_key">ดึงคีย์</string>
     <string name="automation_patch_header">อัปเดตแพตช์ความปลอดภัยอัตโนมัติ</string>
     <string name="automation_set_patch">ตั้งค่าแพตช์</string>
+    <string name="automation_region_header">Region Props</string>
+    <string name="prompt_region_enabled">เปิดใช้งานการบังคับ region prop แล้ว</string>
+    <string name="prompt_region_disabled">ปิดใช้งานการบังคับ region prop แล้ว</string>
     <string name="automation_appearance_header">ลักษณะที่ปรากฏ</string>
     <string name="automation_randomize_accent">สีเน้นแบบสุ่มเมื่อโหลด</string>
     <string name="mode_leaf_hack">Leaf Hack (?)</string>

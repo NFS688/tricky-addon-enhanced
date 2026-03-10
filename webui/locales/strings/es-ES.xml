@@ -150,6 +150,9 @@
     <string name="automation_fetch_key">Obtener clave</string>
     <string name="automation_patch_header">Actualización automática del parche de seguridad</string>
     <string name="automation_set_patch">Establecer parche</string>
+    <string name="automation_region_header">Props de región</string>
+    <string name="prompt_region_enabled">Aplicación de props de región activada</string>
+    <string name="prompt_region_disabled">Aplicación de props de región desactivada</string>
     <string name="automation_appearance_header">Apariencia</string>
     <string name="automation_randomize_accent">Color de acento aleatorio al cargar</string>
     <string name="prompt_keybox_fetch_enabled">Obtención automática de keybox activada</string>

@@ -149,6 +149,9 @@
     <string name="automation_fetch_key">Buscar chave</string>
     <string name="automation_patch_header">Atualização automática do patch de segurança</string>
     <string name="automation_set_patch">Definir patch</string>
+    <string name="automation_region_header">Props de região</string>
+    <string name="prompt_region_enabled">Aplicação de props de região ativada</string>
+    <string name="prompt_region_disabled">Aplicação de props de região desativada</string>
     <string name="automation_appearance_header">Aparência</string>
     <string name="automation_randomize_accent">Cor de destaque aleatória ao carregar</string>
     <string name="prompt_keybox_fetch_enabled">Busca automática de keybox ativada</string>

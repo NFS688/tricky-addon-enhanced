@@ -148,6 +148,9 @@
     <string name="automation_fetch_key">Загрузить ключ</string>
     <string name="automation_patch_header">Автообновление патча безопасности</string>
     <string name="automation_set_patch">Установить патч</string>
+    <string name="automation_region_header">Региональные свойства</string>
+    <string name="prompt_region_enabled">Принудительное применение региональных свойств включено</string>
+    <string name="prompt_region_disabled">Принудительное применение региональных свойств отключено</string>
     <string name="automation_appearance_header">Оформление</string>
     <string name="automation_randomize_accent">Случайный акцентный цвет при загрузке</string>
     <string name="mode_leaf_hack">Leaf Hack (?)</string>

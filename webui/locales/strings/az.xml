@@ -145,6 +145,9 @@
     <string name="automation_fetch_key">Açar yüklə</string>
     <string name="automation_patch_header">Təhlükəsizlik yaması avtomatik yeniləmə</string>
     <string name="automation_set_patch">Yamanı təyin et</string>
+    <string name="automation_region_header">Region Xüsusiyyətləri</string>
+    <string name="prompt_region_enabled">Region prop tətbiqi aktivləşdirildi</string>
+    <string name="prompt_region_disabled">Region prop tətbiqi deaktivləşdirildi</string>
     <string name="automation_appearance_header">Görünüş</string>
     <string name="automation_randomize_accent">Yükləmədə təsadüfi vurğu rəngi</string>
     <!-- Mode dialog -->

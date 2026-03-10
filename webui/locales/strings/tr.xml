@@ -145,6 +145,9 @@
     <string name="automation_fetch_key">Anahtar Getir</string>
     <string name="automation_patch_header">Güvenlik Yaması Otomatik Güncelleme</string>
     <string name="automation_set_patch">Yama Ayarla</string>
+    <string name="automation_region_header">Bölge Özellikleri</string>
+    <string name="prompt_region_enabled">Bölge prop uygulaması etkinleştirildi</string>
+    <string name="prompt_region_disabled">Bölge prop uygulaması devre dışı bırakıldı</string>
     <string name="automation_appearance_header">Görünüm</string>
     <string name="automation_randomize_accent">Yüklemede rastgele vurgu rengi</string>
     <!-- Mode dialog -->

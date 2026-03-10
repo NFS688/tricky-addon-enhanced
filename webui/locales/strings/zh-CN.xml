@@ -150,6 +150,9 @@
     <string name="automation_fetch_key">获取密钥</string>
     <string name="automation_patch_header">安全补丁自动更新</string>
     <string name="automation_set_patch">设置补丁</string>
+    <string name="automation_region_header">区域属性</string>
+    <string name="prompt_region_enabled">区域属性强制已启用</string>
+    <string name="prompt_region_disabled">区域属性强制已禁用</string>
     <string name="automation_appearance_header">外观</string>
     <string name="automation_randomize_accent">加载时随机主题色</string>
     <string name="prompt_keybox_fetch_enabled">密钥自动获取已启用</string>

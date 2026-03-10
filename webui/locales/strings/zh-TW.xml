@@ -150,6 +150,9 @@
     <string name="automation_fetch_key">取得金鑰</string>
     <string name="automation_patch_header">安全修補程式自動更新</string>
     <string name="automation_set_patch">設定修補程式</string>
+    <string name="automation_region_header">區域屬性</string>
+    <string name="prompt_region_enabled">區域屬性強制已啟用</string>
+    <string name="prompt_region_disabled">區域屬性強制已停用</string>
     <string name="automation_appearance_header">外觀</string>
     <string name="automation_randomize_accent">載入時隨機主題色</string>
     <string name="prompt_keybox_fetch_enabled">金鑰自動取得已啟用</string>

@@ -146,6 +146,9 @@
     <string name="automation_fetch_key">キー取得</string>
     <string name="automation_patch_header">セキュリティパッチ自動更新</string>
     <string name="automation_set_patch">パッチ設定</string>
+    <string name="automation_region_header">リージョンプロパティ</string>
+    <string name="prompt_region_enabled">リージョンpropの適用が有効になりました</string>
+    <string name="prompt_region_disabled">リージョンpropの適用が無効になりました</string>
     <string name="automation_appearance_header">外観</string>
     <string name="automation_randomize_accent">読み込み時にアクセントカラーをランダム化</string>
     <!-- Mode dialog -->

@@ -146,6 +146,9 @@
     <string name="automation_fetch_key">Schlüssel abrufen</string>
     <string name="automation_patch_header">Sicherheitspatch automatisch aktualisieren</string>
     <string name="automation_set_patch">Patch festlegen</string>
+    <string name="automation_region_header">Region-Props</string>
+    <string name="prompt_region_enabled">Region-Prop-Erzwingung aktiviert</string>
+    <string name="prompt_region_disabled">Region-Prop-Erzwingung deaktiviert</string>
     <string name="automation_appearance_header">Darstellung</string>
     <string name="automation_randomize_accent">Akzentfarbe beim Laden zufällig wählen</string>
     <!-- Mode dialog -->

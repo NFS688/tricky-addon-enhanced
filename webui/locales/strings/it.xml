@@ -146,6 +146,9 @@
     <string name="automation_fetch_key">Recupera chiave</string>
     <string name="automation_patch_header">Aggiornamento automatico patch di sicurezza</string>
     <string name="automation_set_patch">Imposta patch</string>
+    <string name="automation_region_header">Props regionali</string>
+    <string name="prompt_region_enabled">Applicazione props regionali attivata</string>
+    <string name="prompt_region_disabled">Applicazione props regionali disattivata</string>
     <string name="automation_appearance_header">Aspetto</string>
     <string name="automation_randomize_accent">Colore d'accento casuale al caricamento</string>
     <!-- Mode dialog -->
