@@ -182,10 +182,12 @@ if [ -z "$_cur_hwc" ]; then
     _hwc=$(getprop ro.boot.hwc 2>/dev/null)
     _hwcountry=$(getprop ro.boot.hwcountry 2>/dev/null)
     _mod_device=$(getprop ro.product.mod_device 2>/dev/null)
+    _hw_sku=$(getprop ro.boot.product.hardware.sku 2>/dev/null)
     [ -n "$_hwc" ] && "$BIN" config set region.hwc "$_hwc" 2>/dev/null
     [ -n "$_hwcountry" ] && "$BIN" config set region.hwcountry "$_hwcountry" 2>/dev/null
     [ -n "$_mod_device" ] && "$BIN" config set region.mod_device "$_mod_device" 2>/dev/null
-    ui_print "  🌐 Region: hwc=${_hwc:-n/a} hwcountry=${_hwcountry:-n/a} mod_device=${_mod_device:-n/a}"
+    [ -n "$_hw_sku" ] && "$BIN" config set region.hardware_sku "$_hw_sku" 2>/dev/null
+    ui_print "  🌐 Region: hwc=${_hwc:-n/a} mod_device=${_mod_device:-n/a} sku=${_hw_sku:-n/a}"
 fi
 
 if [ -f "$SCRIPT_DIR/enhanced.conf" ]; then

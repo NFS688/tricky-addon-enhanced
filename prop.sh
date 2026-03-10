@@ -65,9 +65,11 @@ if [ "$_region_enabled" = "true" ]; then
     _cfg_hwc=$(read_config region.hwc "")
     _cfg_hwcountry=$(read_config region.hwcountry "")
     _cfg_mod_device=$(read_config region.mod_device "")
+    _cfg_hw_sku=$(read_config region.hardware_sku "")
     [ -n "$_cfg_hwc" ] && check_reset_prop "ro.boot.hwc" "$_cfg_hwc"
     [ -n "$_cfg_hwcountry" ] && check_reset_prop "ro.boot.hwcountry" "$_cfg_hwcountry"
     [ -n "$_cfg_mod_device" ] && check_reset_prop "ro.product.mod_device" "$_cfg_mod_device"
+    [ -n "$_cfg_hw_sku" ] && check_reset_prop "ro.boot.product.hardware.sku" "$_cfg_hw_sku"
 fi
 
 # Delete qemu property entirely -- some detectors check existence, not value

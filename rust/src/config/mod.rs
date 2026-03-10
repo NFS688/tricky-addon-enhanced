@@ -223,6 +223,7 @@ pub struct RegionConfig {
     pub hwc: String,
     pub hwcountry: String,
     pub mod_device: String,
+    pub hardware_sku: String,
 }
 
 impl Default for RegionConfig {
@@ -232,6 +233,7 @@ impl Default for RegionConfig {
             hwc: String::new(),
             hwcountry: String::new(),
             mod_device: String::new(),
+            hardware_sku: String::new(),
         }
     }
 }
@@ -302,7 +304,7 @@ const ALL_KEYS: &[&str] = &[
     "conflict.enabled", "conflict.auto_remove",
     "props.enabled",
     "propclean.enabled", "propclean.interval",
-    "region.enabled", "region.hwc", "region.hwcountry", "region.mod_device",
+    "region.enabled", "region.hwc", "region.hwcountry", "region.mod_device", "region.hardware_sku",
     "logging.level", "logging.max_size_mb", "logging.max_files", "logging.log_dir",
     "ui.language",
 ];
@@ -393,6 +395,7 @@ impl Config {
             "region.hwc" => Some(self.region.hwc.clone()),
             "region.hwcountry" => Some(self.region.hwcountry.clone()),
             "region.mod_device" => Some(self.region.mod_device.clone()),
+            "region.hardware_sku" => Some(self.region.hardware_sku.clone()),
             "logging.level" => Some(self.logging.level.clone()),
             "logging.max_size_mb" => Some(self.logging.max_size_mb.to_string()),
             "logging.max_files" => Some(self.logging.max_files.to_string()),
@@ -443,6 +446,7 @@ impl Config {
             "region.hwc" => self.region.hwc = value.to_string(),
             "region.hwcountry" => self.region.hwcountry = value.to_string(),
             "region.mod_device" => self.region.mod_device = value.to_string(),
+            "region.hardware_sku" => self.region.hardware_sku = value.to_string(),
             "logging.level" => self.logging.level = value.to_string(),
             "logging.max_size_mb" => self.logging.max_size_mb = value.parse()?,
             "logging.max_files" => self.logging.max_files = value.parse()?,

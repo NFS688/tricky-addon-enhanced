@@ -27,6 +27,15 @@
       .interval-set-btn{flex:0 0 auto;padding:8px 16px}
       #region-fields{display:flex;flex-direction:column;gap:12px;padding:8px 0}
       #region-fields md-outlined-text-field{width:100%}
+      .region-expand{display:flex;align-items:center;justify-content:space-between;cursor:pointer;padding:8px 0;-webkit-tap-highlight-color:transparent}
+      .region-expand:active{opacity:.7}
+      .region-expand-label{font-size:12px;color:var(--md-sys-color-on-surface-variant,#999)}
+      .region-expand-meta{display:flex;align-items:center;gap:6px}
+      .region-expand-count{font-size:11px;font-weight:600;padding:2px 8px;border-radius:10px;background:rgba(var(--accent-rgb,0,214,143),.15);color:rgb(var(--accent-rgb,0,214,143))}
+      .region-chevron{width:16px;height:16px;transition:transform .2s ease;color:rgb(var(--accent-rgb,0,214,143))}
+      .region-chevron.open{transform:rotate(180deg)}
+      #region-extra{display:flex;flex-direction:column;gap:12px;overflow:hidden;max-height:0;opacity:0;transition:max-height .2s ease,opacity .15s ease}
+      #region-extra.expanded{max-height:300px;opacity:1;padding-top:4px}
       .interval-badge{font-size:11px;font-weight:400;padding:2px 8px;border-radius:10px;background:rgba(var(--accent-rgb,0,214,143),.15);color:rgb(var(--accent-rgb,0,214,143));margin-left:6px;vertical-align:middle}
     </style>
   <link rel="preload" href="./assets/material-symbols-outlined-D4N9P62f.woff2" as="font" type="font/woff2" crossorigin>
@@ -465,15 +474,22 @@
                     <div class="setting-row">
                         <span data-i18n="automation_enable">Enable</span>
                         <div class="custom-toggle" id="region-enabled-toggle">
-                            <div class="toggle-track">
-                                <div class="toggle-thumb"></div>
-                            </div>
+                            <div class="toggle-track"><div class="toggle-thumb"></div></div>
                         </div>
                     </div>
                     <div id="region-fields">
                         <md-outlined-text-field id="region-hwc" label="ro.boot.hwc" placeholder="GLOBAL" autocapitalize="none"></md-outlined-text-field>
-                        <md-outlined-text-field id="region-hwcountry" label="ro.boot.hwcountry" placeholder="GLOBAL" autocapitalize="none"></md-outlined-text-field>
-                        <md-outlined-text-field id="region-mod-device" label="ro.product.mod_device" placeholder="munchg" autocapitalize="none"></md-outlined-text-field>
+                        <div class="region-expand" id="region-expand-btn">
+                            <span class="region-expand-label" id="region-expand-label">3 more</span>
+                            <div class="region-expand-meta">
+                                <svg class="region-chevron" id="region-chevron" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M7 10l5 5 5-5z"/></svg>
+                            </div>
+                        </div>
+                        <div id="region-extra">
+                            <md-outlined-text-field id="region-hwcountry" label="ro.boot.hwcountry" placeholder="GLOBAL" autocapitalize="none"></md-outlined-text-field>
+                            <md-outlined-text-field id="region-mod-device" label="ro.product.mod_device" placeholder="munchg" autocapitalize="none"></md-outlined-text-field>
+                            <md-outlined-text-field id="region-hw-sku" label="ro.boot.product.hardware.sku" placeholder="nfc" autocapitalize="none"></md-outlined-text-field>
+                        </div>
                     </div>
                 </div>
 
