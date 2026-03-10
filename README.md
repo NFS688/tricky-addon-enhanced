@@ -3,7 +3,8 @@
   <p align="center"><b>Automated TrickyStore & TEESimulator Management</b></p>
   <p align="center">Flash once. Forget forever.</p>
   <p align="center">
-    <img src="https://img.shields.io/badge/version-v5.3.0-orange?style=for-the-badge" alt="Version">
+    <img src="https://img.shields.io/github/v/release/Enginex0/tricky-addon-enhanced?style=for-the-badge&color=orange" alt="Version">
+    <img src="https://img.shields.io/github/actions/workflow/status/Enginex0/tricky-addon-enhanced/build.yml?style=for-the-badge&label=build" alt="Build">
     <img src="https://img.shields.io/badge/License-GPLv3-blue?style=for-the-badge" alt="License">
     <img src="https://img.shields.io/badge/Rust-native-B7410E?style=for-the-badge&logo=rust" alt="Rust">
     <img src="https://img.shields.io/badge/Telegram-community-blue?style=for-the-badge&logo=telegram" alt="Telegram">
@@ -137,6 +138,32 @@ A single native daemon manages all background tasks — if anything dies, it res
 During install, press **Vol−** for manual target mode (GMS/GSF only) or **Vol+** / wait 10s for full automation.
 
 The module automatically captures VBHash, builds the exclude list, generates `target.txt`, fetches a valid keybox, sets security patch dates, and starts the daemon. Nothing else to do.
+
+---
+
+## 🔨 Building from Source
+
+Requires Rust toolchain and Android NDK.
+
+```bash
+git clone https://github.com/Enginex0/tricky-addon-enhanced.git
+cd tricky-addon-enhanced
+bash package.sh --no-bump
+```
+
+The ZIP lands in `release/`. CI also builds on every push — grab artifacts from the [Actions tab](https://github.com/Enginex0/tricky-addon-enhanced/actions/workflows/build.yml).
+
+<details>
+<summary><b>Build options</b></summary>
+
+| Flag | Effect |
+|---|---|
+| *(none)* | Bump version, cross-compile, package |
+| `--no-bump` | Build without incrementing version |
+| `--no-build` | Package only (skip Rust compile) |
+| `--clean` | Remove old ZIPs before packaging |
+
+</details>
 
 ---
 
