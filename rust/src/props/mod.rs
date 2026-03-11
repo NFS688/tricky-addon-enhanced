@@ -30,15 +30,12 @@ const BOOT_PROPS: &[(&str, &str)] = &[
     ("ro.boot.realme.lockstate", "1"),
     ("ro.crypto.state", "encrypted"),
     ("ro.is_ever_orange", "0"),
-    ("ro.bootimage.build.tags", "release-keys"),
-    ("ro.boot.verifiedbooterror", ""),
-    ("ro.boot.veritymode.managed", "yes"),
 ];
 
 const VBMETA_PROPS: &[(&str, &str)] = &[
     ("ro.boot.vbmeta.device_state", "locked"),
     ("ro.boot.vbmeta.invalidate_on_error", "yes"),
-    ("ro.boot.vbmeta.avb_version", "1.3"),
+    ("ro.boot.vbmeta.avb_version", "1.0"),
     ("ro.boot.vbmeta.hash_alg", "sha256"),
 ];
 
@@ -151,10 +148,13 @@ fn zeromount_active() -> bool {
 }
 
 fn check_reset_prop(sys: &PropSystem, name: &str, expected: &str) -> Result<bool> {
-    if let Some(current) = getprop(sys, name) {
-        if current == expected {
-            return Ok(false);
-        }
+    let current = match getprop(sys, name) {
+        Some(v) if v.is_empty() => return Ok(false),
+        Some(v) => v,
+        None => return Ok(false),
+    };
+    if current == expected {
+        return Ok(false);
     }
     set(sys, name, expected)?;
     debug!("spoofed {name} = {expected}");

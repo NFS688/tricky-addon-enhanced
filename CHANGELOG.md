@@ -1,5 +1,15 @@
 # Changelog
 
+## v5.24.0 (2026-03-11)
+
+### Bug Fixes
+- **Bootloader detection by TrustAttestor** — `check_reset_prop` was creating props on devices where they don't naturally exist (e.g. Realme/OnePlus-specific props on Xiaomi), giving attestor apps a clear tampering signal. Now skips non-existent props instead of blindly injecting them, matching stock behavior
+- **AVB version mismatch** — `ro.boot.vbmeta.avb_version` was set to `1.3` (non-standard) instead of `1.0`, creating a detectable inconsistency with the actual AVB stack
+- **Extra props in Rust backend** — removed `ro.bootimage.build.tags`, `ro.boot.verifiedbooterror`, and `ro.boot.veritymode.managed` from the Rust prop list since they don't exist on most devices and would be created unnecessarily
+- **Unconditional prop injection** — `ro.oem_unlock_supported` and `ro.secureboot.devicelock` were set outside the ZeroMount guard, now properly gated
+
+---
+
 ## v5.23.0 (2026-03-11)
 
 ### Features

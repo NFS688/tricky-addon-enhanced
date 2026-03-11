@@ -99,6 +99,7 @@ check_reset_prop() {
     local name="$1" expected="$2"
     local val
     val=$(resetprop "$name")
+    [ -z "$val" ] && return 0
     [ "$val" = "$expected" ] && return 0
     if resetprop -n "$name" "$expected" 2>/dev/null; then
         _PROP_SPOOF_COUNT=$((_PROP_SPOOF_COUNT + 1))

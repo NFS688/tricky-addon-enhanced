@@ -61,10 +61,10 @@ if [ "$_ZEROMOUNT_ACTIVE" != "true" ]; then
 
     check_reset_prop "ro.crypto.state" "encrypted"
     check_reset_prop "ro.is_ever_orange" "0"
-fi
 
-check_reset_prop "ro.oem_unlock_supported" "0"
-check_reset_prop "ro.secureboot.devicelock" "1"
+    check_reset_prop "ro.oem_unlock_supported" "0"
+    check_reset_prop "ro.secureboot.devicelock" "1"
+fi
 
 # MIUI region enforcement — restore device-snapshotted values from config
 _region_enabled=$(read_config region.enabled true)
@@ -126,7 +126,7 @@ if [ "$_ZEROMOUNT_ACTIVE" != "true" ]; then
 
     ensure_prop "ro.boot.vbmeta.device_state" "locked"
     ensure_prop "ro.boot.vbmeta.invalidate_on_error" "yes"
-    ensure_prop "ro.boot.vbmeta.avb_version" "1.3"
+    ensure_prop "ro.boot.vbmeta.avb_version" "1.0"
     ensure_prop "ro.boot.vbmeta.hash_alg" "sha256"
 
     slot_suffix=$(getprop ro.boot.slot_suffix 2>/dev/null)
