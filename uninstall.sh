@@ -76,8 +76,9 @@ rm -f "$SCRIPT_DIR/devconfig.toml"
 rm -rf "/data/adb/modules/TA_enhanced"
 
 # Restore TrickyStore description
-if [ -f "$SCRIPT_DIR/.original_description" ] && [ -f "$TS/module.prop" ]; then
-    orig=$(cat "$SCRIPT_DIR/.original_description" 2>/dev/null)
+DESC_BAK="$TA_DIR/description.bak"
+if [ -f "$DESC_BAK" ] && [ -f "$TS/module.prop" ]; then
+    orig=$(cat "$DESC_BAK" 2>/dev/null)
     if [ -n "$orig" ]; then
         sed -i "s|^description=.*|description=${orig}|" "$TS/module.prop" 2>/dev/null
         _uninstall_log "Restored original description"
@@ -95,7 +96,7 @@ fi
 
 # Clean status files
 rm -f "$SCRIPT_DIR/.health_state"
-rm -f "$SCRIPT_DIR/.original_description"
+rm -f "$TA_DIR/description.bak"
 rm -f "$SCRIPT_DIR/.status_installed"
 rm -f "$SCRIPT_DIR/.status_targets"
 

@@ -156,6 +156,10 @@ pub fn uninstall() -> Result<()> {
     let mod_dir = find_module_dir()
         .ok_or_else(|| anyhow::anyhow!("module directory not found"))?;
 
+    if let Err(e) = crate::status::restore_original_description() {
+        debug!("could not restore description: {e}");
+    }
+
     let remove_flag = Path::new(&mod_dir).join("remove");
     std::fs::write(&remove_flag, "")
         .context("failed to write remove flag")?;
