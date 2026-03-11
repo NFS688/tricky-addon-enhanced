@@ -195,16 +195,22 @@ jobs:
             -x "webui/material-symbols-outlined.woff2" \
             -x "*.md"
 
+      - name: Separate ZIPs
+        run: |
+          mkdir -p release/rel release/dbg
+          mv release/*-debug.zip release/dbg/ 2>/dev/null || true
+          mv release/*.zip release/rel/ 2>/dev/null || true
+
       - uses: actions/upload-artifact@v4
         with:
           name: ta-enhanced-release-zip
-          path: release/*-v*.zip
+          path: release/rel/*.zip
           retention-days: 30
 
       - uses: actions/upload-artifact@v4
         with:
           name: ta-enhanced-debug-zip
-          path: release/*-debug.zip
+          path: release/dbg/*.zip
           retention-days: 30
 
   release:
