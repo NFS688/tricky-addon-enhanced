@@ -10,6 +10,8 @@ BIN_DIR="$PROJECT_ROOT/bin"
 declare -A ABI_TARGET=(
     [arm64-v8a]=aarch64-linux-android
     [armeabi-v7a]=armv7-linux-androideabi
+    [x86_64]=x86_64-linux-android
+    [x86]=i686-linux-android
 )
 
 find_ndk() {
@@ -83,8 +85,12 @@ echo "NDK: $NDK_HOME"
 # cc-rs env vars so ring/other C deps find the right compiler
 export CC_aarch64_linux_android="$NDK_BIN/aarch64-linux-android26-clang"
 export CC_armv7_linux_androideabi="$NDK_BIN/armv7a-linux-androideabi26-clang"
+export CC_x86_64_linux_android="$NDK_BIN/x86_64-linux-android26-clang"
+export CC_i686_linux_android="$NDK_BIN/i686-linux-android26-clang"
 export AR_aarch64_linux_android="$NDK_BIN/llvm-ar"
 export AR_armv7_linux_androideabi="$NDK_BIN/llvm-ar"
+export AR_x86_64_linux_android="$NDK_BIN/llvm-ar"
+export AR_i686_linux_android="$NDK_BIN/llvm-ar"
 
 if ! command -v cargo >/dev/null 2>&1; then
     echo "FATAL: cargo not found. Install Rust toolchain." >&2

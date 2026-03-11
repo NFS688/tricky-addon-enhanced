@@ -108,15 +108,12 @@ for f in "${REQUIRED_FILES[@]}"; do
     fi
 done
 
-if [ ! -f "$REPO_DIR/bin/arm64-v8a/ta-enhanced" ]; then
-    echo "FATAL: bin/arm64-v8a/ta-enhanced not found. Run without --no-build or build manually." >&2
-    exit 1
-fi
-
-if [ ! -f "$REPO_DIR/bin/armeabi-v7a/ta-enhanced" ]; then
-    echo "FATAL: bin/armeabi-v7a/ta-enhanced not found. Run without --no-build or build manually." >&2
-    exit 1
-fi
+for abi in arm64-v8a armeabi-v7a x86_64 x86; do
+    if [ ! -f "$REPO_DIR/bin/${abi}/ta-enhanced" ]; then
+        echo "FATAL: bin/${abi}/ta-enhanced not found. Run without --no-build or build manually." >&2
+        exit 1
+    fi
+done
 
 if [ ! -f "$REPO_DIR/webui/index.html" ]; then
     echo "FATAL: webui/index.html missing" >&2

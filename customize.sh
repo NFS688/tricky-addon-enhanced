@@ -50,7 +50,7 @@ fi
 
 ABI=$(getprop ro.product.cpu.abi)
 case "$ABI" in
-    arm64-v8a|armeabi-v7a) ;;
+    arm64-v8a|armeabi-v7a|x86_64|x86) ;;
     *) abort "  ❌ Unsupported ABI: $ABI" ;;
 esac
 BIN="$MODPATH/bin/$ABI/ta-enhanced"

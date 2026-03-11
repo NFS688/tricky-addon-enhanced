@@ -25,11 +25,17 @@ jobs:
         target:
           - aarch64-linux-android
           - armv7-linux-androideabi
+          - x86_64-linux-android
+          - i686-linux-android
         include:
           - target: aarch64-linux-android
             abi: arm64-v8a
           - target: armv7-linux-androideabi
             abi: armeabi-v7a
+          - target: x86_64-linux-android
+            abi: x86_64
+          - target: i686-linux-android
+            abi: x86
 
     steps:
       - uses: actions/checkout@v4
@@ -61,8 +67,12 @@ jobs:
           export PATH="${NDK_BIN}:${PATH}"
           export CC_aarch64_linux_android="${NDK_BIN}/aarch64-linux-android26-clang"
           export CC_armv7_linux_androideabi="${NDK_BIN}/armv7a-linux-androideabi26-clang"
+          export CC_x86_64_linux_android="${NDK_BIN}/x86_64-linux-android26-clang"
+          export CC_i686_linux_android="${NDK_BIN}/i686-linux-android26-clang"
           export AR_aarch64_linux_android="${NDK_BIN}/llvm-ar"
           export AR_armv7_linux_androideabi="${NDK_BIN}/llvm-ar"
+          export AR_x86_64_linux_android="${NDK_BIN}/llvm-ar"
+          export AR_i686_linux_android="${NDK_BIN}/llvm-ar"
 
           FLAGS=""
           if [ "$PROFILE" = "release" ]; then
@@ -120,9 +130,8 @@ jobs:
 
       - name: Place release binaries
         run: |
-          for pair in "arm64-v8a:aarch64-linux-android" "armeabi-v7a:armv7-linux-androideabi"; do
+          for pair in "arm64-v8a:aarch64-linux-android" "armeabi-v7a:armv7-linux-androideabi" "x86_64:x86_64-linux-android" "x86:i686-linux-android"; do
             abi="${pair%%:*}"
-            target="${pair##*:}"
             src="artifacts/bin-${abi}-release/ta-enhanced"
             dst="bin/${abi}/ta-enhanced"
             mkdir -p "bin/${abi}"
@@ -144,7 +153,7 @@ jobs:
           MODULE_ID=$(grep '^id=' module.prop | cut -d= -f2)
           VER="${{ steps.ver.outputs.version }}"
 
-          for pair in "arm64-v8a:aarch64-linux-android" "armeabi-v7a:armv7-linux-androideabi"; do
+          for pair in "arm64-v8a:aarch64-linux-android" "armeabi-v7a:armv7-linux-androideabi" "x86_64:x86_64-linux-android" "x86:i686-linux-android"; do
             abi="${pair%%:*}"
             src="artifacts/bin-${abi}-debug/ta-enhanced"
             dst="bin/${abi}/ta-enhanced"
