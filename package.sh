@@ -171,6 +171,9 @@ zip -r9 "$ZIP_PATH" . \
     -x ".mcp-vector-search/*" \
     -x ".mcp.json" \
     -x ".gitignore" \
+    -x ".gitmodules" \
+    -x ".github/*" \
+    -x "external/*" \
     -x "CLAUDE.md" \
     -x "*.zip" \
     -x "*.db" -x "*.db-shm" -x "*.db-wal" \
