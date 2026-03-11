@@ -1,4 +1,4 @@
-name: Build Module ZIP
+name: Build
 
 on:
   push:
@@ -9,31 +9,32 @@ on:
       - 'common/**'
       - '*.sh'
       - 'module.prop'
+      - '.github/workflows/build.yml'
   pull_request:
     branches: [main]
+    paths:
+      - 'rust/**'
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        profile: [debug, release]
+        target:
+          - aarch64-linux-android
+          - armv7-linux-androideabi
+        include:
+          - target: aarch64-linux-android
+            abi: arm64-v8a
+          - target: armv7-linux-androideabi
+            abi: armeabi-v7a
 
     steps:
       - uses: actions/checkout@v4
-
-      - name: Install Rust toolchain
-        uses: dtolnay/rust-toolchain@stable
         with:
-          targets: aarch64-linux-android,armv7-linux-androideabi
-
-      - name: Cache Rust dependencies
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.cargo/registry
-            ~/.cargo/git
-            rust/target
-          key: ${{ runner.os }}-cargo-${{ hashFiles('rust/Cargo.lock') }}
-          restore-keys: ${{ runner.os }}-cargo-
+          submodules: recursive
 
       - name: Setup Android NDK
         uses: nttld/setup-ndk@v1
@@ -41,28 +42,214 @@ jobs:
         with:
           ndk-version: r27c
 
-      - name: Build release and package
-        env:
-          ANDROID_NDK_HOME: ${{ steps.ndk.outputs.ndk-path }}
-        run: bash package.sh --no-bump
-
-      - name: Upload release ZIP
-        uses: actions/upload-artifact@v4
+      - uses: dtolnay/rust-toolchain@stable
         with:
-          name: TA_enhanced-release-${{ github.sha }}
-          path: release/*.zip
-          retention-days: 30
+          targets: ${{ matrix.target }}
 
-      - name: Build debug binaries
-        env:
-          ANDROID_NDK_HOME: ${{ steps.ndk.outputs.ndk-path }}
-        run: bash rust/build.sh debug
-
-      - name: Upload debug binaries
-        uses: actions/upload-artifact@v4
+      - uses: actions/cache@v4
         with:
-          name: TA_enhanced-debug-${{ github.sha }}
           path: |
-            bin/arm64-v8a/ta-enhanced
-            bin/armeabi-v7a/ta-enhanced
+            ~/.cargo/registry
+            ~/.cargo/git
+            rust/target
+          key: cargo-${{ matrix.target }}-${{ matrix.profile }}-${{ hashFiles('rust/Cargo.lock') }}
+          restore-keys: cargo-${{ matrix.target }}-${{ matrix.profile }}-
+
+      - name: Build
+        run: |
+          NDK_BIN="${NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin"
+          export PATH="${NDK_BIN}:${PATH}"
+          export CC_aarch64_linux_android="${NDK_BIN}/aarch64-linux-android26-clang"
+          export CC_armv7_linux_androideabi="${NDK_BIN}/armv7a-linux-androideabi26-clang"
+          export AR_aarch64_linux_android="${NDK_BIN}/llvm-ar"
+          export AR_armv7_linux_androideabi="${NDK_BIN}/llvm-ar"
+
+          FLAGS=""
+          if [ "$PROFILE" = "release" ]; then
+            FLAGS="--release"
+          fi
+          cd rust
+          cargo build $FLAGS --target "$TARGET"
+        env:
+          PROFILE: ${{ matrix.profile }}
+          TARGET: ${{ matrix.target }}
+          NDK_HOME: ${{ steps.ndk.outputs.ndk-path }}
+
+      - name: Assert debug info preserved
+        if: matrix.profile == 'debug'
+        run: |
+          bin="rust/target/${TARGET}/debug/ta-enhanced"
+          file "$bin"
+          if ! readelf -S "$bin" | grep -q debug_info; then
+            echo "::error::debug binary missing debug_info section"
+            exit 1
+          fi
+        env:
+          TARGET: ${{ matrix.target }}
+
+      - name: Assert stripped
+        if: matrix.profile == 'release'
+        run: |
+          bin="rust/target/${TARGET}/release/ta-enhanced"
+          file "$bin"
+          if readelf -S "$bin" | grep -q debug_info; then
+            echo "::error::release binary still contains debug_info"
+            exit 1
+          fi
+        env:
+          TARGET: ${{ matrix.target }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bin-${{ matrix.abi }}-${{ matrix.profile }}
+          path: rust/target/${{ matrix.target }}/${{ matrix.profile }}/ta-enhanced
+          retention-days: 7
+
+  package:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Place release binaries
+        run: |
+          for pair in "arm64-v8a:aarch64-linux-android" "armeabi-v7a:armv7-linux-androideabi"; do
+            abi="${pair%%:*}"
+            target="${pair##*:}"
+            src="artifacts/bin-${abi}-release/ta-enhanced"
+            dst="bin/${abi}/ta-enhanced"
+            mkdir -p "bin/${abi}"
+            cp "$src" "$dst"
+            chmod +x "$dst"
+          done
+
+      - name: Read version
+        id: ver
+        run: |
+          ver=$(grep '^version=' module.prop | cut -d= -f2)
+          echo "version=${ver}" >> "$GITHUB_OUTPUT"
+
+      - name: Package release ZIP
+        run: bash package.sh --no-build --no-bump
+
+      - name: Package debug ZIP
+        run: |
+          MODULE_ID=$(grep '^id=' module.prop | cut -d= -f2)
+          VER="${{ steps.ver.outputs.version }}"
+
+          for pair in "arm64-v8a:aarch64-linux-android" "armeabi-v7a:armv7-linux-androideabi"; do
+            abi="${pair%%:*}"
+            src="artifacts/bin-${abi}-debug/ta-enhanced"
+            dst="bin/${abi}/ta-enhanced"
+            cp "$src" "$dst"
+            chmod +x "$dst"
+          done
+
+          mkdir -p release
+          ZIP_NAME="${MODULE_ID}-${VER}-debug.zip"
+          zip -r9 "release/${ZIP_NAME}" . \
+            -x ".git/*" \
+            -x ".claude/*" \
+            -x ".mcp-vector-search/*" \
+            -x ".mcp.json" \
+            -x ".gitignore" \
+            -x "CLAUDE.md" \
+            -x "*.zip" \
+            -x "*.db" -x "*.db-shm" -x "*.db-wal" \
+            -x "logs_llm/*" \
+            -x "evidence_*.png" \
+            -x "*.swp" -x "*~" \
+            -x "release/*" \
+            -x "package.sh" \
+            -x "rust/*" \
+            -x "node_modules/*" \
+            -x "webui/src/*" \
+            -x "webui/node_modules/*" \
+            -x "*.map" \
+            -x ".git" \
+            -x "webui/dist/*" \
+            -x "webui/public/*" \
+            -x "webui/package.json" \
+            -x "webui/package-lock.json" \
+            -x "webui/pnpm-lock.yaml" \
+            -x "webui/.npmrc" \
+            -x "webui/vite.config.ts" \
+            -x "webui/tsconfig.json" \
+            -x "common/archive/*" \
+            -x "bin/archive/*" \
+            -x "webui-mockup/*" \
+            -x "bin/*/supervisor" \
+            -x "bin/*/keygen" \
+            -x "config/*" \
+            -x "glob" -x "os" \
+            -x "*.new" \
+            -x "vectors.db*" \
+            -x "webui/assets/index-CExZ91Qz.js.bak" \
+            -x "webui/material-symbols-outlined.woff2" \
+            -x "*.md"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ta-enhanced-release-zip
+          path: release/*-v*.zip
           retention-days: 30
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ta-enhanced-debug-zip
+          path: release/*-debug.zip
+          retention-days: 30
+
+  release:
+    needs: [build, package]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Read version
+        id: ver
+        run: |
+          ver=$(grep '^version=' module.prop | cut -d= -f2)
+          echo "version=${ver}" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: ta-enhanced-release-zip
+          path: zips/release
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: ta-enhanced-debug-zip
+          path: zips/debug
+
+      - name: Extract changelog
+        id: notes
+        run: |
+          ver="${VER#v}"
+          awk "/^## v${ver}/{flag=1; next} /^## v/{if(flag) exit} flag" CHANGELOG.md > /tmp/notes.md
+          cat /tmp/notes.md
+        env:
+          VER: ${{ steps.ver.outputs.version }}
+
+      - name: Create release
+        run: |
+          gh release delete "$VER" --yes 2>/dev/null || true
+          gh release create "$VER" \
+            --title "$VER" \
+            --latest \
+            --notes-file /tmp/notes.md \
+            zips/release/*.zip \
+            zips/debug/*.zip
+        env:
+          VER: ${{ steps.ver.outputs.version }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
