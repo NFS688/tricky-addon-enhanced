@@ -1,8 +1,11 @@
+use std::path::Path;
+
 use anyhow::Result;
+use resetprop::PropSystem;
 use tracing::{debug, info, warn};
 
 use crate::config::Config;
-use crate::platform::props::{getprop, resetprop, resetprop_delete, resetprop_wait};
+use crate::platform::props::{getprop, set, delete, resetprop_wait};
 
 const BOOT_PROPS: &[(&str, &str)] = &[
     ("ro.boot.vbmeta.device_state", "locked"),
@@ -26,19 +29,26 @@ const BOOT_PROPS: &[(&str, &str)] = &[
     ("ro.boot.realmebootstate", "green"),
     ("ro.boot.realme.lockstate", "1"),
     ("ro.crypto.state", "encrypted"),
+    ("ro.is_ever_orange", "0"),
+    ("ro.bootimage.build.tags", "release-keys"),
+    ("ro.boot.verifiedbooterror", ""),
+    ("ro.boot.veritymode.managed", "yes"),
 ];
 
 const VBMETA_PROPS: &[(&str, &str)] = &[
     ("ro.boot.vbmeta.device_state", "locked"),
     ("ro.boot.vbmeta.invalidate_on_error", "yes"),
-    ("ro.boot.vbmeta.avb_version", "1.2"),
+    ("ro.boot.vbmeta.avb_version", "1.3"),
     ("ro.boot.vbmeta.hash_alg", "sha256"),
 ];
 
 const RECOVERY_PROPS: &[&str] = &[
     "ro.bootmode",
     "ro.boot.bootmode",
+    "ro.boot.mode",
+    "vendor.bootmode",
     "vendor.boot.bootmode",
+    "vendor.boot.mode",
 ];
 
 const BOOT_HASH_FILE: &str = "/data/adb/boot_hash";
@@ -50,12 +60,12 @@ pub struct SpoofResult {
     pub deleted: u32,
 }
 
-pub fn handle_props(cfg: &Config) -> Result<()> {
+pub fn handle_props(cfg: &Config, sys: &PropSystem) -> Result<()> {
     if !cfg.props.enabled {
         info!("props spoofing disabled");
         return Ok(());
     }
-    let result = spoof_all(cfg)?;
+    let result = spoof_all(cfg, sys)?;
     info!(
         "props: {} spoofed, {} failed, {} deleted",
         result.spoofed, result.failed, result.deleted
@@ -63,7 +73,7 @@ pub fn handle_props(cfg: &Config) -> Result<()> {
     Ok(())
 }
 
-pub fn spoof_all(cfg: &Config) -> Result<SpoofResult> {
+pub fn spoof_all(cfg: &Config, sys: &PropSystem) -> Result<SpoofResult> {
     let mut spoofed = 0u32;
     let mut failed = 0u32;
     let mut deleted = 0u32;
@@ -72,45 +82,51 @@ pub fn spoof_all(cfg: &Config) -> Result<SpoofResult> {
         warn!("resetprop -w timeout (non-fatal): {e}");
     }
 
-    for &(name, value) in BOOT_PROPS {
-        match check_reset_prop(name, value) {
-            Ok(true) => spoofed += 1,
-            Ok(false) => {}
-            Err(_) => failed += 1,
-        }
-    }
+    let zm = zeromount_active();
 
-    if delete_qemu_prop() {
-        deleted += 1;
+    if !zm {
+        for &(name, value) in BOOT_PROPS {
+            match check_reset_prop(sys, name, value) {
+                Ok(true) => spoofed += 1,
+                Ok(false) => {}
+                Err(_) => failed += 1,
+            }
+        }
+
+        if delete_qemu_prop(sys) {
+            deleted += 1;
+        }
     }
 
     for &name in RECOVERY_PROPS {
-        match contains_reset_prop(name, "recovery", "unknown") {
+        match contains_reset_prop(sys, name, "recovery", "unknown") {
             Ok(true) => spoofed += 1,
             Ok(false) => {}
             Err(_) => failed += 1,
         }
     }
 
-    if apply_vbmeta_digest() {
-        spoofed += 1;
-    }
+    if !zm {
+        if apply_vbmeta_digest(sys) {
+            spoofed += 1;
+        }
 
-    for &(name, value) in VBMETA_PROPS {
-        match ensure_prop(name, value) {
+        for &(name, value) in VBMETA_PROPS {
+            match ensure_prop(sys, name, value) {
+                Ok(true) => spoofed += 1,
+                Ok(false) => {}
+                Err(_) => failed += 1,
+            }
+        }
+
+        match apply_vbmeta_size(sys) {
             Ok(true) => spoofed += 1,
             Ok(false) => {}
             Err(_) => failed += 1,
         }
     }
 
-    match apply_vbmeta_size() {
-        Ok(true) => spoofed += 1,
-        Ok(false) => {}
-        Err(_) => failed += 1,
-    }
-
-    if let Err(e) = resetprop_delete("ro.sys.sdcardfs") {
+    if let Err(e) = delete(sys, "ro.sys.sdcardfs") {
         debug!("ro.sys.sdcardfs delete skipped: {e}");
     } else {
         deleted += 1;
@@ -118,7 +134,7 @@ pub fn spoof_all(cfg: &Config) -> Result<SpoofResult> {
 
     for prop in &cfg.props.custom_props {
         if prop.len() == 2 && !prop[0].is_empty() {
-            match check_reset_prop(&prop[0], &prop[1]) {
+            match check_reset_prop(sys, &prop[0], &prop[1]) {
                 Ok(true) => spoofed += 1,
                 Ok(false) => {}
                 Err(_) => failed += 1,
@@ -129,21 +145,26 @@ pub fn spoof_all(cfg: &Config) -> Result<SpoofResult> {
     Ok(SpoofResult { spoofed, failed, deleted })
 }
 
-fn check_reset_prop(name: &str, expected: &str) -> Result<bool> {
-    if let Some(current) = getprop(name) {
+fn zeromount_active() -> bool {
+    let dir = Path::new("/data/adb/modules/meta-zeromount");
+    dir.is_dir() && !dir.join("disable").exists() && !dir.join("remove").exists()
+}
+
+fn check_reset_prop(sys: &PropSystem, name: &str, expected: &str) -> Result<bool> {
+    if let Some(current) = getprop(sys, name) {
         if current == expected {
             return Ok(false);
         }
     }
-    resetprop(name, expected)?;
+    set(sys, name, expected)?;
     debug!("spoofed {name} = {expected}");
     Ok(true)
 }
 
-fn contains_reset_prop(name: &str, contains: &str, new_val: &str) -> Result<bool> {
-    if let Some(current) = getprop(name) {
+fn contains_reset_prop(sys: &PropSystem, name: &str, contains: &str, new_val: &str) -> Result<bool> {
+    if let Some(current) = getprop(sys, name) {
         if current.contains(contains) {
-            resetprop(name, new_val)?;
+            set(sys, name, new_val)?;
             debug!("replaced {name}: {current} -> {new_val}");
             return Ok(true);
         }
@@ -151,23 +172,23 @@ fn contains_reset_prop(name: &str, contains: &str, new_val: &str) -> Result<bool
     Ok(false)
 }
 
-fn ensure_prop(name: &str, value: &str) -> Result<bool> {
-    let current = getprop(name);
+fn ensure_prop(sys: &PropSystem, name: &str, value: &str) -> Result<bool> {
+    let current = getprop(sys, name);
     if current.as_ref().map(|s| !s.is_empty()).unwrap_or(false) {
         return Ok(false);
     }
-    resetprop(name, value)?;
+    set(sys, name, value)?;
     debug!("ensured {name} = {value}");
     Ok(true)
 }
 
-fn delete_qemu_prop() -> bool {
-    if getprop("ro.kernel.qemu").is_some() {
-        if resetprop_delete("ro.kernel.qemu").is_ok() {
+fn delete_qemu_prop(sys: &PropSystem) -> bool {
+    if getprop(sys, "ro.kernel.qemu").is_some() {
+        if delete(sys, "ro.kernel.qemu").is_ok() {
             debug!("deleted ro.kernel.qemu");
             return true;
         }
-        if resetprop("ro.kernel.qemu", "").is_ok() {
+        if set(sys, "ro.kernel.qemu", "").is_ok() {
             debug!("blanked ro.kernel.qemu");
             return true;
         }
@@ -175,7 +196,7 @@ fn delete_qemu_prop() -> bool {
     false
 }
 
-fn apply_vbmeta_digest() -> bool {
+fn apply_vbmeta_digest(sys: &PropSystem) -> bool {
     let hash = match std::fs::read_to_string(BOOT_HASH_FILE) {
         Ok(h) => h.trim().to_string(),
         Err(_) => return false,
@@ -186,7 +207,7 @@ fn apply_vbmeta_digest() -> bool {
         return false;
     }
 
-    match resetprop("ro.boot.vbmeta.digest", &hash) {
+    match set(sys, "ro.boot.vbmeta.digest", &hash) {
         Ok(_) => {
             debug!("applied vbmeta digest");
             true
@@ -198,13 +219,13 @@ fn apply_vbmeta_digest() -> bool {
     }
 }
 
-fn apply_vbmeta_size() -> Result<bool> {
-    let size = get_vbmeta_size();
-    ensure_prop("ro.boot.vbmeta.size", &size)
+fn apply_vbmeta_size(sys: &PropSystem) -> Result<bool> {
+    let size = get_vbmeta_size(sys);
+    ensure_prop(sys, "ro.boot.vbmeta.size", &size)
 }
 
-fn get_vbmeta_size() -> String {
-    let slot = getprop("ro.boot.slot_suffix").unwrap_or_default();
+fn get_vbmeta_size(sys: &PropSystem) -> String {
+    let slot = getprop(sys, "ro.boot.slot_suffix").unwrap_or_default();
 
     let candidates: Vec<String> = if slot.is_empty() {
         vec!["/dev/block/by-name/vbmeta".into()]

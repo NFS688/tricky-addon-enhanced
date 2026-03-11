@@ -20,6 +20,7 @@ ring = "0.17"
 rcgen = { version = "0.12", default-features = false, features = ["pem", "ring"] }
 rsa = { version = "0.9", default-features = false, features = ["std", "pem"] }
 rand = "0.8"
+resetprop = { path = "/home/president/Git-repo-success/resetprop-rs/crates/resetprop" }
 
 [profile.release]
 lto = true

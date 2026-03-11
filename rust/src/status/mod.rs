@@ -145,7 +145,7 @@ pub fn get_patch_level() -> String {
             }
         }
     }
-    crate::platform::props::getprop("ro.build.version.security_patch")
+    crate::platform::props::getprop_once("ro.build.version.security_patch")
         .unwrap_or_else(|| "unknown".into())
 }
 

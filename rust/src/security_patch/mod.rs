@@ -9,7 +9,7 @@ use tracing::{info, warn};
 use crate::cli::SecurityPatchAction;
 use crate::config::Config;
 use crate::platform::fs::atomic_write;
-use crate::platform::props::{getprop, resetprop};
+use crate::platform::props::{getprop_once as getprop, set_once as resetprop};
 
 const TS_DIR: &str = "/data/adb/tricky_store";
 const SECURITY_PATCH_FILE: &str = "/data/adb/tricky_store/security_patch.txt";
