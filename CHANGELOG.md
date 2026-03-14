@@ -1,5 +1,13 @@
 # Changelog
 
+## v5.25.0 (2026-03-14)
+
+### Bug Fixes
+- **`marketname` false positive in ROM fingerprint detection** — stock Xiaomi `marketname` props were being scrubbed as custom ROM indicators, breaking Xiaomi Share device naming and iOS Interconnectivity (#16, #17)
+- **ReSukiSU excluded from target list** — added `com.resukisu.resukisu` to the manager exclusion list alongside existing SukiSU Ultra entry (#18)
+
+---
+
 ## v5.24.0 (2026-03-11)
 
 ### Features
