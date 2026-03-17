@@ -12,15 +12,22 @@ _PROP_FAIL_COUNT=0
 
 _log "INFO" "Property cleanup starting"
 
+# Snapshot all props once — used for own-ROM detection below
+_all_props=$(getprop)
+
 FINGERPRINT_FILE="$MODPATH/common/rom-fingerprints.txt"
 if [ -f "$FINGERPRINT_FILE" ]; then
     fingerprints=""
     while IFS= read -r line; do
         case "$line" in \#*|"") continue ;; esac
+        # Don't wipe props belonging to the running ROM — breaks version display, OTA, etc.
+        if echo "$_all_props" | grep -qi "^\[ro\.${line}"; then
+            _log "INFO" "Preserving own ROM props: $line"
+            continue
+        fi
         fingerprints="$fingerprints $line"
     done < "$FINGERPRINT_FILE"
     if [ -n "$fingerprints" ]; then
-        # word splitting intentional — each fingerprint is a separate argument
         # shellcheck disable=SC2086
         hexpatch_deleteprop $fingerprints
     fi

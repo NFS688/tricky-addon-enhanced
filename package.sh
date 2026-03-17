@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Package TA_enhanced module ZIP
-# Usage: ./package.sh [--no-build] [--webui] [--no-bump] [--clean] [output_dir]
+# Usage: ./package.sh [--no-build] [--debug] [--webui] [--no-bump] [--clean] [output_dir]
 #
 # Single entry point for producing a release:
 #   1. Cross-compiles ta-enhanced for both ABIs (via rust/build.sh)
@@ -16,11 +16,13 @@ DO_BUILD=true
 DO_WEBUI=false
 DO_BUMP=true
 DO_CLEAN=false
+BUILD_PROFILE=release
 OUT_DIR=""
 
 while [ $# -gt 0 ]; do
     case "$1" in
         --no-build) DO_BUILD=false ;;
+        --debug)    BUILD_PROFILE=debug ;;
         --webui)    DO_WEBUI=true ;;
         --no-bump)  DO_BUMP=false ;;
         --clean)    DO_CLEAN=true ;;
@@ -69,7 +71,7 @@ fi
 if [ "$DO_BUILD" = true ]; then
     echo ""
     echo "=== Cross-compiling Rust binary ==="
-    bash "$REPO_DIR/rust/build.sh" release
+    bash "$REPO_DIR/rust/build.sh" "$BUILD_PROFILE"
 fi
 
 if [ "$DO_WEBUI" = true ]; then
