@@ -5,9 +5,6 @@
 ### Bug Fixes
 - **Custom ROM version wiped by propclean** — `hexpatch_deleteprop` was destroying all properties matching ROM fingerprint substrings (e.g. `crdroid`), including `ro.crdroid.build.version` which crDroid needs for its About screen and OTA updater. Now auto-detects the running ROM by checking for `ro.<fingerprint>*` properties before wiping — if the device owns those props, they're preserved. Generic fix that works for any ROM in the fingerprint list (LineageOS, EvolutionX, PixelOS, etc.)
 
-### Improvements
-- **Debug build support** — `package.sh --debug` produces unstripped binaries with full debuginfo symbols for crash diagnosis
-
 ---
 
 ## v5.25.0 (2026-03-14)
