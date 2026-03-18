@@ -1,4 +1,4 @@
-use std::collections::HashSet;
+use std::collections::{HashMap, HashSet};
 use std::path::Path;
 use std::process::Command;
 use crate::platform::fs::{atomic_write, ensure_dir};
@@ -7,6 +7,8 @@ use super::DaemonStatus;
 
 const AUTOMATION_DIR: &str = "/data/adb/tricky_store/.automation";
 const KNOWN_PACKAGES: &str = "/data/adb/tricky_store/.automation/known_packages.txt";
+const CLEANUP_GRACE: &str = "/data/adb/tricky_store/.automation/cleanup_grace.txt";
+const GRACE_THRESHOLD: u32 = 3;
 
 pub fn check_new_packages(exclude_list: &[String], manager: Option<&str>) -> anyhow::Result<u32> {
     ensure_dir(Path::new(AUTOMATION_DIR))?;
@@ -45,17 +47,31 @@ pub fn check_new_packages(exclude_list: &[String], manager: Option<&str>) -> any
 pub fn cleanup_dead_apps() -> anyhow::Result<u32> {
     let installed = list_third_party_packages()?;
     let target_list = target::read_target()?;
+    let mut grace = load_grace_counts();
     let mut removed = 0u32;
 
     for pkg in &target_list {
-        if !installed.contains(pkg) && !is_system_package(pkg) {
-            if target::remove_package(pkg)? {
-                removed += 1;
-                tracing::info!("removed uninstalled {pkg} from target");
-            }
+        if installed.contains(pkg) || app_data_exists(pkg) {
+            grace.remove(pkg);
+            continue;
         }
+
+        let count = grace.entry(pkg.clone()).or_insert(0);
+        *count += 1;
+
+        if *count < GRACE_THRESHOLD {
+            tracing::debug!("{pkg} not visible to pm ({count}/{GRACE_THRESHOLD})");
+            continue;
+        }
+
+        if target::remove_package(pkg)? {
+            removed += 1;
+            tracing::info!("removed uninstalled {pkg} from target");
+        }
+        grace.remove(pkg);
     }
 
+    save_grace_counts(&grace)?;
     Ok(removed)
 }
 
@@ -129,12 +145,6 @@ fn list_third_party_packages() -> anyhow::Result<HashSet<String>> {
         .collect())
 }
 
-fn is_system_package(pkg: &str) -> bool {
-    pkg.starts_with("com.android.")
-        || pkg.starts_with("com.google.android.")
-        || pkg.starts_with("android")
-}
-
 fn get_apk_path(package: &str) -> Option<String> {
     Command::new("pm")
         .args(["path", package])
@@ -148,6 +158,10 @@ fn get_apk_path(package: &str) -> Option<String> {
                 .and_then(|l| l.strip_prefix("package:"))
                 .map(|s| s.trim().to_string())
         })
+}
+
+fn app_data_exists(pkg: &str) -> bool {
+    Path::new(&format!("/data/data/{pkg}")).exists()
 }
 
 fn load_known_packages() -> HashSet<String> {
@@ -168,4 +182,31 @@ fn save_known_packages(packages: &HashSet<String>) -> anyhow::Result<()> {
         data.push('\n');
     }
     atomic_write(Path::new(KNOWN_PACKAGES), data.as_bytes())
+}
+
+fn load_grace_counts() -> HashMap<String, u32> {
+    std::fs::read_to_string(CLEANUP_GRACE)
+        .unwrap_or_default()
+        .lines()
+        .filter_map(|l| {
+            let (pkg, count) = l.rsplit_once(':')?;
+            Some((pkg.to_string(), count.parse().ok()?))
+        })
+        .collect()
+}
+
+fn save_grace_counts(counts: &HashMap<String, u32>) -> anyhow::Result<()> {
+    if counts.is_empty() {
+        let _ = std::fs::remove_file(CLEANUP_GRACE);
+        return Ok(());
+    }
+    let mut pairs: Vec<_> = counts.iter().collect();
+    pairs.sort_by_key(|(k, _)| k.as_str());
+    let content: String = pairs.iter()
+        .map(|(k, v)| format!("{k}:{v}"))
+        .collect::<Vec<_>>()
+        .join("\n");
+    let mut data = content;
+    data.push('\n');
+    atomic_write(Path::new(CLEANUP_GRACE), data.as_bytes())
 }
