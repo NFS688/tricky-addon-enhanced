@@ -1,3 +1,0 @@
-[submodule "external/resetprop-rs"]
-	path = external/resetprop-rs
-	url = https://github.com/Enginex0/resetprop-rs.git

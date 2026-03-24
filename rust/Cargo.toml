@@ -20,7 +20,7 @@ ring = "0.17"
 rcgen = { version = "0.12", default-features = false, features = ["pem", "ring"] }
 rsa = { version = "0.9", default-features = false, features = ["std", "pem"] }
 rand = "0.8"
-resetprop = { path = "../external/resetprop-rs/crates/resetprop" }
+resetprop = { git = "https://github.com/Enginex0/resetprop-rs" }
 
 [profile.dev]
 strip = false

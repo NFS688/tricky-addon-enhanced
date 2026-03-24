@@ -101,17 +101,32 @@ contains_reset_prop "vendor.boot.bootmode" "recovery" "unknown"
 contains_reset_prop "vendor.boot.mode" "recovery" "unknown"
 
 if [ "$_ZEROMOUNT_ACTIVE" != "true" ]; then
-    # VBMeta digest — prefer TEESimulator's persisted value, fall back to ours
     _hash_src=""
     hash_value=""
-    if [ -f "$TS_DIR/boot_hash.bin" ]; then
+
+    # only defer to boot_hash.bin when our TEESimulator variant is active
+    _ts_mod="/data/adb/modules/tricky_store"
+    _ts_mp=$(cat "$_ts_mod/module.prop" 2>/dev/null)
+    _teesim_ok=false
+    case "$_ts_mp" in
+        *TEESimulator-RS*)
+            [ -d "$_ts_mod" ] && [ ! -f "$_ts_mod/disable" ] && [ ! -f "$_ts_mod/remove" ] && _teesim_ok=true ;;
+    esac
+
+    if [ "$_teesim_ok" = "true" ] && [ -f "$TS_DIR/boot_hash.bin" ]; then
         hash_value=$(od -A n -t x1 "$TS_DIR/boot_hash.bin" 2>/dev/null | tr -d ' \n')
-        [ -n "$hash_value" ] && _hash_src="teesim"
+        if echo "$hash_value" | grep -qE '^[a-f0-9]{64}$'; then
+            _hash_src="teesim"
+        else
+            hash_value=""
+        fi
     fi
+
     if [ -z "$hash_value" ] && [ -f "/data/adb/boot_hash" ]; then
         hash_value=$(grep -v '^#' "/data/adb/boot_hash" 2>/dev/null | tr -d '[:space:]' | tr '[:upper:]' '[:lower:]')
         [ -n "$hash_value" ] && _hash_src="boot_hash"
     fi
+
     if echo "$hash_value" | grep -qE '^[a-f0-9]{64}$'; then
         if resetprop -n ro.boot.vbmeta.digest "$hash_value" 2>/dev/null; then
             _PROP_SPOOF_COUNT=$((_PROP_SPOOF_COUNT + 1))
