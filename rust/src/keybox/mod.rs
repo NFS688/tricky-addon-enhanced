@@ -106,15 +106,16 @@ pub fn fetch(config: &Config) -> Result<FetchResult> {
     let preferred = KeyboxSource::from_str(&config.keybox.source)
         .unwrap_or_default();
     let custom_url = &config.keybox.custom_url;
+    let github_proxy = &config.keybox.github_proxy;
 
     let order = build_source_order(preferred);
     let existing_hash = current_keybox_hash();
 
     for source in &order {
         let result = match source {
-            KeyboxSource::Yurikey => sources::fetch_yurikey(),
-            KeyboxSource::Upstream => sources::fetch_upstream(),
-            KeyboxSource::IntegrityBox => sources::fetch_integritybox(),
+            KeyboxSource::Yurikey => sources::fetch_yurikey(github_proxy),
+            KeyboxSource::Upstream => sources::fetch_upstream(github_proxy),
+            KeyboxSource::IntegrityBox => sources::fetch_integritybox(github_proxy),
             KeyboxSource::Custom => {
                 if custom_url.is_empty() {
                     continue;

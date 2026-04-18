@@ -106,7 +106,7 @@
     <string name="security_patch_fetching">Fetching...</string>
     <string name="security_patch_fetched">Done</string>
     <string name="security_patch_get_failed">Failed to fetch security patch date</string>
-    <string name="security_patch_unable_to_connect">Unable to connect to source.android.com</string>
+    <string name="security_patch_unable_to_connect">Unable to connect to the security bulletin source</string>
     <string name="security_patch_auto_success">Auto config enabled successfully</string>
     <string name="security_patch_auto_failed">Failed to enable auto config</string>
     <string name="security_patch_save_success">Security patch saved successfully</string>
@@ -136,12 +136,15 @@
     <string name="automation_src_device">Device generated</string>
     <string name="automation_src_stock">Stock keybox</string>
     <string name="automation_src_custom">Your keybox</string>
+    <string name="automation_proxy_header">GitHub Proxy</string>
+    <string name="automation_proxy_hint">Leave blank to disable GitHub proxy wrapping.</string>
     <string name="automation_interval_header">Fetch Interval</string>
     <string name="automation_interval_custom">Custom</string>
     <string name="automation_interval_set">Set</string>
     <string name="automation_manual_header">Manual Actions</string>
     <string name="automation_fetch_key">Fetch Key</string>
     <string name="automation_patch_header">Security Patch Auto-Update</string>
+    <string name="automation_cn_optimization">China Mainland Optimization</string>
     <string name="automation_set_patch">Set Patch</string>
     <string name="automation_region_header">Region Props</string>
     <string name="automation_appearance_header">Appearance</string>
@@ -155,6 +158,8 @@
     <string name="prompt_keybox_fetch_disabled">Keybox auto-fetch disabled</string>
     <string name="prompt_patch_auto_enabled">Security patch auto-update enabled</string>
     <string name="prompt_patch_auto_disabled">Security patch auto-update disabled</string>
+    <string name="prompt_cn_optimization_enabled">China Mainland optimization enabled</string>
+    <string name="prompt_cn_optimization_disabled">China Mainland optimization disabled</string>
     <string name="prompt_region_enabled">Region prop enforcement enabled</string>
     <string name="prompt_region_disabled">Region prop enforcement disabled</string>
     <string name="prompt_config_save_failed">Failed to save config</string>

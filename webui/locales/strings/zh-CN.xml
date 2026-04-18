@@ -143,12 +143,15 @@
     <string name="automation_src_device">设备生成</string>
     <string name="automation_src_stock">原厂密钥</string>
     <string name="automation_src_custom">自定义密钥</string>
+    <string name="automation_proxy_header">GitHub 代理</string>
+    <string name="automation_proxy_hint">留空可禁用 GitHub 代理包装。</string>
     <string name="automation_interval_header">获取间隔</string>
     <string name="automation_interval_custom">自定义</string>
     <string name="automation_interval_set">设置</string>
     <string name="automation_manual_header">手动操作</string>
     <string name="automation_fetch_key">获取密钥</string>
     <string name="automation_patch_header">安全补丁自动更新</string>
+    <string name="automation_cn_optimization">中国大陆优化</string>
     <string name="automation_set_patch">设置补丁</string>
     <string name="automation_region_header">区域属性</string>
     <string name="prompt_region_enabled">区域属性强制已启用</string>
@@ -159,6 +162,8 @@
     <string name="prompt_keybox_fetch_disabled">密钥自动获取已禁用</string>
     <string name="prompt_patch_auto_enabled">安全补丁自动更新已启用</string>
     <string name="prompt_patch_auto_disabled">安全补丁自动更新已禁用</string>
+    <string name="prompt_cn_optimization_enabled">中国大陆优化已启用</string>
+    <string name="prompt_cn_optimization_disabled">中国大陆优化已禁用</string>
     <string name="prompt_config_save_failed">保存配置失败</string>
     <string name="prompt_denylist_failed">读取排除列表失败</string>
     <string name="prompt_exclude_list_failed">读取排除列表失败</string>

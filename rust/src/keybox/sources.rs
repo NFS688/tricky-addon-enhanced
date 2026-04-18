@@ -15,9 +15,9 @@ const INTEGRITYBOX_MIRROR: &str =
 
 const FILTER_WORDS: &[&str] = &["every", "soul", "will", "taste", "death"];
 
-pub fn fetch_yurikey() -> Result<Vec<u8>> {
+pub fn fetch_yurikey(github_proxy: &str) -> Result<Vec<u8>> {
     debug!("fetching keybox from yurikey");
-    let text = network::download_text(YURIKEY_URL)
+    let text = network::download_text(&with_github_proxy(YURIKEY_URL, github_proxy))
         .context("yurikey download failed")?;
     let decoded = base64::engine::general_purpose::STANDARD
         .decode(text.trim())
@@ -25,9 +25,9 @@ pub fn fetch_yurikey() -> Result<Vec<u8>> {
     Ok(decoded)
 }
 
-pub fn fetch_upstream() -> Result<Vec<u8>> {
+pub fn fetch_upstream(github_proxy: &str) -> Result<Vec<u8>> {
     debug!("fetching keybox from upstream");
-    let text = network::download_text(UPSTREAM_URL)
+    let text = network::download_text(&with_github_proxy(UPSTREAM_URL, github_proxy))
         .context("upstream download failed")?;
     let hex_decoded = hex_decode(text.trim())
         .context("upstream hex decode failed")?;
@@ -37,9 +37,9 @@ pub fn fetch_upstream() -> Result<Vec<u8>> {
     Ok(decoded)
 }
 
-pub fn fetch_integritybox() -> Result<Vec<u8>> {
+pub fn fetch_integritybox(github_proxy: &str) -> Result<Vec<u8>> {
     debug!("fetching keybox from integritybox");
-    let raw = network::download(INTEGRITYBOX_URL)
+    let raw = network::download(&with_github_proxy(INTEGRITYBOX_URL, github_proxy))
         .or_else(|e| {
             warn!("integritybox primary failed: {e}, trying mirror");
             network::download(INTEGRITYBOX_MIRROR)
@@ -54,6 +54,26 @@ pub fn fetch_custom_url(url: &str) -> Result<Vec<u8>> {
     let data = network::download(url)
         .context("custom URL download failed")?;
     Ok(data)
+}
+
+fn with_github_proxy(url: &str, github_proxy: &str) -> String {
+    let proxy = github_proxy.trim().trim_end_matches('/');
+    if proxy.is_empty() || !is_github_url(url) || url.starts_with(proxy) {
+        return url.to_string();
+    }
+    format!("{proxy}/{url}")
+}
+
+fn is_github_url(url: &str) -> bool {
+    [
+        "https://github.com/",
+        "https://raw.githubusercontent.com/",
+        "https://api.github.com/",
+        "https://objects.githubusercontent.com/",
+        "https://codeload.github.com/",
+    ]
+    .iter()
+    .any(|prefix| url.starts_with(prefix))
 }
 
 fn decode_integritybox(raw: &[u8]) -> Result<Vec<u8>> {
@@ -124,5 +144,43 @@ pub fn compute_sha256(data: &[u8]) -> String {
             out.split_whitespace().next().unwrap_or("").to_string()
         }
         Err(_) => String::new(),
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::with_github_proxy;
+
+    #[test]
+    fn github_proxy_wraps_raw_github_urls() {
+        assert_eq!(
+            with_github_proxy(
+                "https://raw.githubusercontent.com/Yurii0307/yurikey/main/key",
+                "https://gh.llkk.cc",
+            ),
+            "https://gh.llkk.cc/https://raw.githubusercontent.com/Yurii0307/yurikey/main/key"
+        );
+    }
+
+    #[test]
+    fn github_proxy_is_trimmed_and_trailing_slash_is_removed() {
+        assert_eq!(
+            with_github_proxy(
+                "https://api.github.com/repos/test/example/releases/latest",
+                " https://gh.llkk.cc/ ",
+            ),
+            "https://gh.llkk.cc/https://api.github.com/repos/test/example/releases/latest"
+        );
+    }
+
+    #[test]
+    fn github_proxy_does_not_wrap_non_github_urls() {
+        assert_eq!(
+            with_github_proxy(
+                "https://source.android.com/docs/security/bulletin/pixel",
+                "https://gh.llkk.cc",
+            ),
+            "https://source.android.com/docs/security/bulletin/pixel"
+        );
     }
 }

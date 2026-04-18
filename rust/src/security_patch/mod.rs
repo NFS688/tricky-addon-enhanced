@@ -49,7 +49,7 @@ pub fn handle_security_patch(action: SecurityPatchAction, cfg: &Config) -> Resul
         }
         SecurityPatchAction::Update { force } => {
             if force {
-                update_force()?;
+                update_force(cfg)?;
             } else {
                 update(cfg)?;
             }
@@ -149,11 +149,11 @@ pub fn update(config: &Config) -> Result<()> {
         info!("security patch auto-update is disabled");
         return Ok(());
     }
-    update_force()
+    update_force(config)
 }
 
-pub fn update_force() -> Result<()> {
-    let latest = bulletin::fetch_latest_patch()?;
+pub fn update_force(config: &Config) -> Result<()> {
+    let latest = bulletin::fetch_latest_patch(config.security_patch.china_mainland_optimized)?;
     let dates = PatchDates {
         system: latest.clone(),
         boot: latest.clone(),

@@ -3,29 +3,40 @@ use tracing::{info, warn};
 
 use crate::platform::network;
 
-const BULLETIN_URL: &str =
+const BULLETIN_URL_GLOBAL: &str =
     "https://source.android.com/docs/security/bulletin/pixel";
+const BULLETIN_URL_CN: &str =
+    "https://source.android.google.cn/docs/security/bulletin/pixel";
 
 const FALLBACK_PATCHES: &[&str] = &[
     "2026-03-01", "2026-02-01", "2026-01-01",
     "2025-12-01", "2025-11-01", "2025-10-01",
 ];
 
-pub fn fetch_latest_patch() -> Result<String> {
-    match fetch_from_bulletin() {
+pub fn fetch_latest_patch(china_mainland_optimized: bool) -> Result<String> {
+    let source = bulletin_url(china_mainland_optimized);
+    match fetch_from_bulletin(source) {
         Ok(date) => {
-            info!("fetched latest patch date from bulletin: {date}");
+            info!("fetched latest patch date from bulletin {}: {date}", source);
             Ok(date)
         }
         Err(e) => {
-            warn!("bulletin scrape failed: {e}, using fallback table");
+            warn!("bulletin scrape failed for {}: {e}, using fallback table", source);
             fallback_patch_date()
         }
     }
 }
 
-fn fetch_from_bulletin() -> Result<String> {
-    let html = network::download_text(BULLETIN_URL)
+fn bulletin_url(china_mainland_optimized: bool) -> &'static str {
+    if china_mainland_optimized {
+        BULLETIN_URL_CN
+    } else {
+        BULLETIN_URL_GLOBAL
+    }
+}
+
+fn fetch_from_bulletin(url: &str) -> Result<String> {
+    let html = network::download_text(url)
         .context("failed to download security bulletin")?;
     parse_patch_date(&html)
 }

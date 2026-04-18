@@ -64,6 +64,7 @@ pub struct KeyboxConfig {
     pub interval: u32,
     pub source: String,
     pub custom_url: String,
+    pub github_proxy: String,
     pub boot_retries: u32,
     pub retry_delay: u32,
 }
@@ -75,6 +76,7 @@ impl Default for KeyboxConfig {
             interval: 300,
             source: "yurikey".into(),
             custom_url: String::new(),
+            github_proxy: "https://gh.llkk.cc".into(),
             boot_retries: 10,
             retry_delay: 3,
         }
@@ -85,6 +87,7 @@ impl Default for KeyboxConfig {
 #[serde(default)]
 pub struct SecurityPatchConfig {
     pub auto_update: bool,
+    pub china_mainland_optimized: bool,
     pub interval: u32,
     pub custom_date: String,
     pub boot_retries: u32,
@@ -94,6 +97,7 @@ impl Default for SecurityPatchConfig {
     fn default() -> Self {
         Self {
             auto_update: true,
+            china_mainland_optimized: false,
             interval: 86400,
             custom_date: String::new(),
             boot_retries: 10,
@@ -289,11 +293,22 @@ fn parse_bool(s: &str) -> anyhow::Result<bool> {
     }
 }
 
+fn normalize_optional_url_prefix(value: &str) -> String {
+    let trimmed = value.trim();
+    if trimmed.is_empty() {
+        String::new()
+    } else {
+        trimmed.trim_end_matches('/').to_string()
+    }
+}
+
 const ALL_KEYS: &[&str] = &[
     "general.module_id",
     "keybox.enabled", "keybox.interval", "keybox.source", "keybox.custom_url",
+    "keybox.github_proxy",
     "keybox.boot_retries", "keybox.retry_delay",
-    "security_patch.auto_update", "security_patch.interval",
+    "security_patch.auto_update", "security_patch.china_mainland_optimized",
+    "security_patch.interval",
     "security_patch.custom_date", "security_patch.boot_retries",
     "automation.enabled", "automation.interval", "automation.use_inotify",
     "automation.exclude_list", "automation.merge_denylist",
@@ -365,9 +380,13 @@ impl Config {
             "keybox.interval" => Some(self.keybox.interval.to_string()),
             "keybox.source" => Some(self.keybox.source.clone()),
             "keybox.custom_url" => Some(self.keybox.custom_url.clone()),
+            "keybox.github_proxy" => Some(self.keybox.github_proxy.clone()),
             "keybox.boot_retries" => Some(self.keybox.boot_retries.to_string()),
             "keybox.retry_delay" => Some(self.keybox.retry_delay.to_string()),
             "security_patch.auto_update" => Some(self.security_patch.auto_update.to_string()),
+            "security_patch.china_mainland_optimized" => {
+                Some(self.security_patch.china_mainland_optimized.to_string())
+            }
             "security_patch.interval" => Some(self.security_patch.interval.to_string()),
             "security_patch.custom_date" => Some(self.security_patch.custom_date.clone()),
             "security_patch.boot_retries" => Some(self.security_patch.boot_retries.to_string()),
@@ -411,9 +430,13 @@ impl Config {
             "keybox.interval" => self.keybox.interval = value.parse()?,
             "keybox.source" => self.keybox.source = value.to_string(),
             "keybox.custom_url" => self.keybox.custom_url = value.to_string(),
+            "keybox.github_proxy" => self.keybox.github_proxy = value.to_string(),
             "keybox.boot_retries" => self.keybox.boot_retries = value.parse()?,
             "keybox.retry_delay" => self.keybox.retry_delay = value.parse()?,
             "security_patch.auto_update" => self.security_patch.auto_update = parse_bool(value)?,
+            "security_patch.china_mainland_optimized" => {
+                self.security_patch.china_mainland_optimized = parse_bool(value)?
+            }
             "security_patch.interval" => self.security_patch.interval = value.parse()?,
             "security_patch.custom_date" => self.security_patch.custom_date = value.to_string(),
             "security_patch.boot_retries" => self.security_patch.boot_retries = value.parse()?,
@@ -484,6 +507,7 @@ impl Config {
 
         self.keybox.boot_retries = self.keybox.boot_retries.clamp(1, 30);
         self.keybox.retry_delay = self.keybox.retry_delay.clamp(1, 30);
+        self.keybox.github_proxy = normalize_optional_url_prefix(&self.keybox.github_proxy);
         self.security_patch.boot_retries = self.security_patch.boot_retries.clamp(1, 30);
         self.health.grace_period = self.health.grace_period.max(1);
         self.health.max_restarts = self.health.max_restarts.max(1);

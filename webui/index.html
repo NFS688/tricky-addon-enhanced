@@ -418,6 +418,9 @@
                             <div class="source-check"><md-icon>check_circle</md-icon></div>
                         </button>
                     </div>
+                    <div class="section-label" data-i18n="automation_proxy_header">GitHub Proxy</div>
+                    <md-outlined-text-field id="github-proxy-input" label="GitHub Proxy" placeholder="https://gh.llkk.cc" autocapitalize="none" style="width: 100%; margin-top: 8px;"></md-outlined-text-field>
+                    <div class="section-label" data-i18n="automation_proxy_hint">Leave blank to disable GitHub proxy wrapping.</div>
                 </div>
 
                 <div class="setting-section">
@@ -456,6 +459,14 @@
                     <div class="setting-row">
                         <span data-i18n="automation_enable">Enable</span>
                         <div class="custom-toggle" id="security-patch-auto-toggle">
+                            <div class="toggle-track">
+                                <div class="toggle-thumb"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="setting-row">
+                        <span data-i18n="automation_cn_optimization">China Mainland Optimization</span>
+                        <div class="custom-toggle" id="china-optimization-toggle">
                             <div class="toggle-track">
                                 <div class="toggle-thumb"></div>
                             </div>

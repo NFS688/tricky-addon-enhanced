@@ -143,12 +143,15 @@
     <string name="automation_src_device">裝置產生</string>
     <string name="automation_src_stock">原廠金鑰</string>
     <string name="automation_src_custom">自訂金鑰</string>
+    <string name="automation_proxy_header">GitHub 代理</string>
+    <string name="automation_proxy_hint">留空可停用 GitHub 代理包裝。</string>
     <string name="automation_interval_header">取得間隔</string>
     <string name="automation_interval_custom">自訂</string>
     <string name="automation_interval_set">設定</string>
     <string name="automation_manual_header">手動操作</string>
     <string name="automation_fetch_key">取得金鑰</string>
     <string name="automation_patch_header">安全修補程式自動更新</string>
+    <string name="automation_cn_optimization">中國大陸優化</string>
     <string name="automation_set_patch">設定修補程式</string>
     <string name="automation_region_header">區域屬性</string>
     <string name="prompt_region_enabled">區域屬性強制已啟用</string>
@@ -159,6 +162,8 @@
     <string name="prompt_keybox_fetch_disabled">金鑰自動取得已停用</string>
     <string name="prompt_patch_auto_enabled">安全修補程式自動更新已啟用</string>
     <string name="prompt_patch_auto_disabled">安全修補程式自動更新已停用</string>
+    <string name="prompt_cn_optimization_enabled">中國大陸優化已啟用</string>
+    <string name="prompt_cn_optimization_disabled">中國大陸優化已停用</string>
     <string name="prompt_config_save_failed">儲存設定失敗</string>
     <string name="prompt_denylist_failed">讀取排除清單失敗</string>
     <string name="prompt_exclude_list_failed">讀取排除清單失敗</string>
